@@ -32,7 +32,7 @@ jobs:
         id: build
         uses: josephbmanley/build-godot-action@v1.4.1
         with:
-          name: Team_H_Godot_Game
+          name: Team_H_Godot_Game.zip
           preset: ${{ matrix.platform }}
           debugMode: "true"
           # Set true to output an artifact zip file
