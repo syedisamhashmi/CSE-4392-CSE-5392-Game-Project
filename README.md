@@ -1,5 +1,8 @@
 # CSE-4392-CSE-5392-Game-Project
 
+[![CI for OSX/Windows/Linux ](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml/badge.svg)](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml)
+
+
 Video Game Design Project for CSE-4392 / CSE-5392
 
 Team Members
