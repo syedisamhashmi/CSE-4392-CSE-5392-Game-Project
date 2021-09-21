@@ -38,7 +38,7 @@ jobs:
           # Name of the exported binary
           name: Team_H_Godot_Game
           # Name of the preset in `export_presets.cfg` to use
-          preset: ./Team_H_Project/export_presets.cfg
+          preset: Team_H_Godot_Game_OSX
           # Optional name of the subdirectory to put exported project in
           subdirectory: ./Team_H_Project/Output
           # Set true to output an artifact zip file
