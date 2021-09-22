@@ -36,6 +36,7 @@ jobs:
         run: sudo apt-get -y install texlive texlive-publishers texlive-science latexmk cm-super
 
       - name: LaTeX Action
+        id: build
         # You may pin to the exact commit or the version.
         # uses: fudan-mse/latex-action@eb2eb7ba472011213ac0a6286fd776494623362c
         uses: fudan-mse/latex-action@v0.0.1
@@ -48,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "project_charter.pdf"
-          path: ${{ github.workspace }}/Project_Proposal/project_charter.pdf
+          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
