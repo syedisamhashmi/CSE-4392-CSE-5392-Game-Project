@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the develop branch
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install TeXlive
+        run: sudo apt-get update
+
+      - name: Install TeXlive
+        run: sudo apt-get -y install texlive texlive-publishers texlive-science latexmk cm-super
+
+      - name: LaTeX Action
+        # You may pin to the exact commit or the version.
+        # uses: fudan-mse/latex-action@eb2eb7ba472011213ac0a6286fd776494623362c
+        uses: fudan-mse/latex-action@v0.0.1
+        with:
+          # The root LaTeX file to be compiled
+          root_file: "project_proposal.tex"
+          # The working directory for the LaTeX engine
+          working_directory: "Project_Proposal"
+          # The LaTeX engine to be invoked
+          # compiler: "/usr/bin/latexmk"
+          # Extra arguments to be passed to the LaTeX engine
+          # args: # optional, default is -pdf -file-line-error -interaction=nonstopmode
+          # Install extra packages by tlmgr
+          # extra_packages: # optional
+          # Install extra packages by apk
+          # extra_system_packages: # optional
