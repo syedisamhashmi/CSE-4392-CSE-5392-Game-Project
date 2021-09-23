@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI for Project Proposal
+name: Project Proposal
 
 # Controls when the workflow will run
 on:
@@ -48,5 +48,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: "project_charter"
+          name: "project_proposal"
           path: ${{ github.workspace }}/${{ steps.build.outputs.build }}/Project_Proposal/project_proposal.pdf

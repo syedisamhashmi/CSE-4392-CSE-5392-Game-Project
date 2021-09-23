@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI Build For Team-H-Game-Name (All Platforms)
+name: Team-Hashmi Game-Name (All Platforms)
 
 # Controls when the workflow will run
 on:
@@ -8,11 +8,11 @@ on:
   push:
     branches: [develop]
     paths:
-      - 'Team_H_Project/**'
+      - "Team_Hashmi_Project/**"
   pull_request:
     branches: [develop]
     paths:
-      - 'Team_H_Project/**'
+      - "Team_Hashmi_Project/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,9 +24,9 @@ jobs:
       matrix:
         platform:
           [
-            Team_H_Godot_Game_Linux_x64,
-            Team_H_Godot_Game_Windows_x64,
-            Team_H_Godot_Game_OSX,
+            Team_Hashmi_Godot_Game_Linux_x64,
+            Team_Hashmi_Godot_Game_Windows_x64,
+            Team_Hashmi_Godot_Game_OSX,
           ]
     steps:
       - uses: actions/checkout@v2
@@ -36,13 +36,13 @@ jobs:
         id: build
         uses: josephbmanley/build-godot-action@v1.4.1
         with:
-          name: Team_H_Godot_Game.zip
+          name: Team_Hashmi_Godot_Game.zip
           preset: ${{ matrix.platform }}
           debugMode: "true"
           # Set true to output an artifact zip file
           package: "true"
           # Location of Godot project in repository
-          projectDir: "./Team_H_Project"
+          projectDir: "./Team_Hashmi_Project"
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
