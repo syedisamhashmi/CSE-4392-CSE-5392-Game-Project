@@ -48,5 +48,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: "project_charter.pdf"
-          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          name: "project_charter"
+          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}/Project_Proposal/project_proposal.pdf
