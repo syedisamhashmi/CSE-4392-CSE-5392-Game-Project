@@ -9,7 +9,7 @@ Video Game Design Project for CSE-4392 / CSE-5392
 Team Members
 
 - Syed Isam Hashmi
-- Eric Kressler
+- Edward Kressler
 - Natraj Hullikunte
 - Sundeep Kumar Gurrapusala
 - Balamurale Balusamy Siva
