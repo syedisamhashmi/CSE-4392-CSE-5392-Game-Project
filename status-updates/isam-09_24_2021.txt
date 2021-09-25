@@ -1,0 +1,23 @@
+Team Hashmi status update
+
+What we (I) did:
+- Set meeting times throughout the week.
+- Added LaTeX skeleton for project proposal to repository and filled it in a bit.
+- Finalized repository layout
+- Added CI pipelines for Godot and LaTeX for PR validation. 
+- Discussed a couple game ideas, fleshed them out, feature scoping.
+
+What we will do:
+- Finalize on game we want to proceed on.
+- Start prototyping.
+
+Struggles/Concerns:
+- Team communication
+
+
+Team Hashmi:
+Talking to eachother? Yes. 4/5
+Everyone? No. One team member is a ghost.
+Communication method: WhatsApp, Microsoft Teams
+Code Share Method: Github
+Team name OK? Of course it is. :)
