@@ -6,6 +6,7 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Banana" parent="." instance=ExtResource( 2 )]
+position = Vector2( 25, 93 )
 
 [node name="TileMap" parent="." instance=ExtResource( 1 )]
 position = Vector2( 300.48, 236.839 )
