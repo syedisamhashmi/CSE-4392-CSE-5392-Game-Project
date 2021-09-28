@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/images/test_banana.png" type="Texture" id=1]
+[ext_resource path="res://entities/player/player.gd" type="Script" id=2]
+
+[node name="Banana" type="KinematicBody2D"]
+collision_layer = 2
+script = ExtResource( 2 )
+
+[node name="BananaBoundingBox" type="CollisionPolygon2D" parent="."]
+position = Vector2( -1.78814e-07, -16 )
+scale = Vector2( 2.51122, 1.90243 )
+polygon = PoolVector2Array( 7.1206e-08, -16.8206, 2.84224, -24.969, 6.3714, -29.4361, 15.9285, -33.6413, 9.55711, -21.0258, 9.55711, -8.41032, 12.7428, -4.20516, 19.1142, 4.20516, 19.1142, 8.41032, 10.8861, 8.19923, 3.1857, 4.20516, 0.134396, -0.605316 )
+
+[node name="BananaImage" type="Sprite" parent="."]
+position = Vector2( 24.25, -40 )
+scale = Vector2( 1.48437, 1.23507 )
+texture = ExtResource( 1 )
