@@ -1,7 +1,7 @@
 extends Node2D
 
 var perDeltaRotAngle: float = PI / 16
-var gravity: float = -10.0
+var gravity: float = 10.0
 var velocity: Vector2 = Vector2.ZERO
 
 func init(positionP: Vector2, velocityP: Vector2) -> void:
@@ -11,7 +11,7 @@ func init(positionP: Vector2, velocityP: Vector2) -> void:
 func _process(delta: float) -> void:
     $player_projectile_image.transform = $player_projectile_image.transform.rotated(perDeltaRotAngle)
     velocity.y += gravity * delta
-    position -= velocity
+    position += velocity
 
 func _on_projectile_area_body_entered(_body: Node) -> void:
     #TODO: do something to the enemy, make them lose health, etc.

@@ -10,7 +10,7 @@ var halfWidth = 24
 var halfHeight = 40 
 
 # These are very sensitive, change with care
-var projectile_speed: Vector2 = Vector2(-4, 4)
+var projectile_speed: Vector2 = Vector2(4, -4)
 
 # some of these variables could be exported for easy modification
 # in the editor's user interface
@@ -72,7 +72,7 @@ func _input(event: InputEvent) -> void:
         pass
 
 func spawnPlayerProjectile() -> void:
-    var proj = PLAYER_PROJECTILE.instance()
+    var projectile_instance = PLAYER_PROJECTILE.instance()
     
     var projectile_speed_to_use = projectile_speed
     if velocity.x < 0:
@@ -81,13 +81,13 @@ func spawnPlayerProjectile() -> void:
     # Add some of the players velocity to the projectile
     # horizontally so that it doesn't exactly go behind the player
     # NOT vertically, feels off to do that.
-    projectile_speed_to_use.x = (projectile_speed_to_use.x - (velocity.x / 60))
-    proj.init(
+    projectile_speed_to_use.x = (projectile_speed_to_use.x + (velocity.x / 60))
+    projectile_instance.init(
         # Add projectile halfway up the player so that it
         # spawns in a good place.
         Vector2(self.position.x + halfWidth, self.position.y - halfHeight), 
         projectile_speed_to_use)
-    $Projectiles.add_child(proj)
+    $Projectiles.add_child(projectile_instance)
 
 
 # Called when the node enters the scene tree for the first time.
