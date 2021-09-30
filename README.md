@@ -1,10 +1,8 @@
-# Team Hashmi Project
+# Team Hashmi Project CSE-5392/CSE-4392
 
 [![CI for OSX/Windows/Linux ](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml/badge.svg)](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml)
 
 [![CI for Project Proposal](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-project-proposal.yml/badge.svg)](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-project-proposal.yml)
-
-Video Game Design Project for CSE-4392 / CSE-5392
 
 Team Members
 
@@ -19,51 +17,27 @@ Technologies Used
 - Godot v3.3.3
 - LaTeX
 
-# Tooling
+Read more on
 
-## OSX
+- [Tooling](docs/tooling.md)
+- [Contributing](docs/contributing.md)
+
+<br/>
+<br/>
 
 ---
+# [___GAME DOCUMENTATION___](docs/game.md)
 
-### LaTeX
+<br/>
+<br/>
 
-1. In order to format LaTeX files on , you must install [MaxTeX](http://www.tug.org/mactex/).
-
-> As per personal preferences, VS Code is my IDE of choice.
-> As a result of this, an extension for LaTeX is suggested
-> for the workspace (james-yu.latex-workshop). This should appear
-> when opening VS Code.
-
-2. In order to format \*.tex files through VS Code (without error), you must also must run `brew install latexindent`
 
 ---
-
-<br/>
-<br/>
-
-# Operating System Agnostic
-
-### Formatters
-
-Prettier is suggested for automatic formatting of
-files in order to prevent user preference from becoming
-a cause for merge conflicts.
-
-> As per personal preferences, VS Code is my IDE of choice.
-> As a result of this, an extension for Prettier is suggested
-> for the workspace (esbenp.prettier-vscode). This should appear
-> when opening VS Code.
-
----
-
-<br/>
-<br/>
 
 # Repository Layout
 
 - Meetings_And_Attendance
-  - Weekly meetings attendance and timestamps of
-    users who joined for auditing purposes
+  - Weekly meetings attendance and timestamps of users who joined for auditing purposes
 - Project Proposal
   - LaTeX files used during the process of
     writing up our project proposal
