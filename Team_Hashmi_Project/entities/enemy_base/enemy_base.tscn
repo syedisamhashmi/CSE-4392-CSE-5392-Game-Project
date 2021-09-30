@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/images/icon.png" type="Texture" id=1]
+[ext_resource path="res://entities/enemy_base/enemy_base.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
+
+[node name="Enemy_Base" type="KinematicBody2D"]
+collision_layer = 4
+script = ExtResource( 2 )
+
+[node name="Enemy_Base_Bounding_Box" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Enemy_Base_Image" type="Sprite" parent="."]
+texture = ExtResource( 1 )
