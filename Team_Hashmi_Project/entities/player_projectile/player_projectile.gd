@@ -13,6 +13,10 @@ func _process(delta: float) -> void:
     velocity.y += gravity * delta
     position += velocity
 
-func _on_projectile_area_body_entered(_body: Node) -> void:
+func _on_projectile_area_body_entered(body: Node) -> void:
     #TODO: do something to the enemy, make them lose health, etc.
+    if body.has_method("damage"):
+      body.damage(25)
     self.queue_free()
+
+

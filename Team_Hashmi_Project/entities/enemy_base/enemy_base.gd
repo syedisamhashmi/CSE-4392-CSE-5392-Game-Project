@@ -8,3 +8,5 @@ func _physics_process(delta: float) -> void:
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
+func damage(knockback):
+  velocity.x += knockback
