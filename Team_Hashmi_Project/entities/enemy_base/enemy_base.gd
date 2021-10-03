@@ -12,7 +12,9 @@ func _physics_process(delta: float) -> void:
     
 func damage(knockback):
   damage_flash_effect()
+  print(knockback)
   velocity.x += knockback
+  velocity.y += -abs(knockback)
 
 func damage_flash_effect():
   $damage_sound.play()

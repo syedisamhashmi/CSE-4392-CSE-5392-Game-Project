@@ -15,8 +15,12 @@ func _process(delta: float) -> void:
 
 func _on_projectile_area_body_entered(body: Node) -> void:
     #TODO: do something to the enemy, make them lose health, etc.
+    var knockback_scaling = 10;
+    var knockback = knockback_scaling * velocity.x;
+    
     if body.has_method("damage"):
-      body.damage(25)
+      body.damage(knockback)
+      
     self.queue_free()
 
 
