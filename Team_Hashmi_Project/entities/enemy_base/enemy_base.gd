@@ -15,6 +15,7 @@ func damage(knockback):
   velocity.x += knockback
 
 func damage_flash_effect():
+  $damage_sound.play()
   $Enemy_Base_Image.material.set_shader_param("intensity", 0.75)
   yield(get_tree().create_timer(0.1), "timeout")
   $Enemy_Base_Image.material.set_shader_param("intensity", 0.0)
