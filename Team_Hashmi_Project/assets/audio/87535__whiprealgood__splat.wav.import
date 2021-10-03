@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/87535__whiprealgood__splat.wav-8662c9777e99be459b744c3728a913a6.sample"
+
+[deps]
+
+source_file="res://assets/audio/87535__whiprealgood__splat.wav"
+dest_files=[ "res://.import/87535__whiprealgood__splat.wav-8662c9777e99be459b744c3728a913a6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
