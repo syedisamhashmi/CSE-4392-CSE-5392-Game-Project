@@ -123,6 +123,3 @@ func spawnPlayerProjectile() -> void:
 func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
-    
-    $BananaImage.region_rect = rightFace
-    pass # Replace with function body.
