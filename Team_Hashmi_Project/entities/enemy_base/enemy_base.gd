@@ -12,7 +12,9 @@ func _physics_process(delta: float) -> void:
     
 func damage(knockback):
   damage_flash_effect()
-  print(knockback)
+  
+  # pushes the enemy away from the player depending on the projectile speed
+  # also knocks the enemy slightly up into the air
   velocity.x += knockback
   velocity.y += -abs(knockback)
 
