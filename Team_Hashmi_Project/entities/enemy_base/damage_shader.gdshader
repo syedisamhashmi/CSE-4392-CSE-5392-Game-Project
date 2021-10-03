@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 const vec4 damage_color = vec4(1.0, 1.0, 1.0, 1.0);
-const float intensity = 0.0;
+uniform float intensity: hint_range(0.0, 1.0);
 
 void fragment() {
   // color data for textured parts of sprite
