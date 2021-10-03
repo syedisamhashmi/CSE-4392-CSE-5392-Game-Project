@@ -31,7 +31,9 @@ func _physics_process(delta: float) -> void:
     # want to feel instant and responsive, so don't bother with acceleration
     # i.e. just set their velocity to the jump acceleration.
     if Input.is_action_just_pressed("jump") and is_on_floor():
-      velocity.y = -acceleration.y
+        # Increase player data for jump count
+        PlayerData.setJumpCount(PlayerData.getJumpCount() + 1)
+        velocity.y = -acceleration.y
       
     # checks if jump is interrupted, if so, stop player from moving up
     if isJumpInterrupted :
@@ -72,6 +74,9 @@ func _input(event: InputEvent) -> void:
         pass
 
 func spawnPlayerProjectile() -> void:
+    # Increase player data for shots fired
+    PlayerData.setShotsFired(PlayerData.getShotsFired() + 1)
+
     var projectile_instance = PLAYER_PROJECTILE.instance()
     
     var projectile_speed_to_use = projectile_speed
@@ -92,9 +97,6 @@ func spawnPlayerProjectile() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    # Load player stats file
+    Globals.load_stats()
     pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#    pass

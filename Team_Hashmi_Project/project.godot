@@ -17,6 +17,7 @@ config/icon="res://assets/images/icon.png"
 [autoload]
 
 Globals="*res://Autoloads/Globals.gd"
+PlayerData="*res://Autoloads/PlayerData.gd"
 Signals="*res://Autoloads/Signals.gd"
 
 [debug]
