@@ -1,5 +1,6 @@
 extends Node
 
-func _physics_process(_delta: float) -> void:
-    pass
+# warning-ignore:unused_signal
+signal exit_game()
     
+ 
