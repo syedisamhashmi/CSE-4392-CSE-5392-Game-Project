@@ -65,7 +65,7 @@ func setPlayerData(a) -> void:
 # If you get this throwback, we can be friends :)
 const DIFFICULTIES = {
     CAN_I_PLAY_DADDY      = "Can I Play, Daddy?",      # Easy
-    IM_TOO_SQUISHY_TO_DIE = "I'm tot squishy to die!", # Medium
+    IM_TOO_SQUISHY_TO_DIE = "I'm too squishy to die!", # Medium
     BRUISE_ME_PLENTY      = "Bruise Me Plenty",        # Hard
     I_AM_BANANA_INCARNATE = "I Am Banana Incarnate!",  # Nightmare   
 }
