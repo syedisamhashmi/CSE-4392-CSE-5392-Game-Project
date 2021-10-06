@@ -129,21 +129,21 @@ func _input(event: InputEvent) -> void:
 
 #region Weapon Management
 func equipNextWeapon() -> void:
+    currentWeapon += 1
     skipWeapons(true)
     if (currentWeapon == Weapons.MAX):
         currentWeapon = 0
     print("Player switched to next weapon " + str(currentWeapon))
 func equipPreviousWeapon() -> void:
+    currentWeapon -=1
     skipWeapons(false)
-    if (currentWeapon == Weapons.MIN):
+    if (currentWeapon <= Weapons.MIN):
         currentWeapon = Weapons.MAX - 1
         # Since it cycles back, we have to check the highest weapon again.
         skipWeapons(false) 
     print("Player switched to previous weapon " + str(currentWeapon))
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
-    if add: currentWeapon += 1
-    else: currentWeapon -=1
     while !hasAllowedWeapon:
         if currentWeapon == Weapons.MELEE :
             if !PlayerData.getIsMeleeUnlocked():
@@ -152,14 +152,14 @@ func skipWeapons(add: bool) -> void:
             else: 
                 hasAllowedWeapon = true
                 break
-        if currentWeapon == Weapons.BANANA_THROW:
+        elif currentWeapon == Weapons.BANANA_THROW:
             if !PlayerData.getIsBananaThrowUnlocked():
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
-        if currentWeapon == Weapons.MAX or currentWeapon == Weapons.MIN:
+        elif currentWeapon >= Weapons.MAX or currentWeapon <= Weapons.MIN:
             break
         # If the weapon isn't accounted for, they probably don't have it. NEXT!
         else:
