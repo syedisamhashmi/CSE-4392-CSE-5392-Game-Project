@@ -123,7 +123,7 @@ func setIsMeleeUnlocked(a) -> void:
 #region IsBananaThrowUnlocked
 func getIsBananaThrowUnlocked() -> bool:
     if !savedGame.has(IS_BANANA_THROW_UNLOCKED):
-        setIsMeleeUnlocked(PlayerDefaults.IS_BANANA_THROW_UNLOCKED)
+        setIsBananaThrowUnlocked(PlayerDefaults.IS_BANANA_THROW_UNLOCKED)
         return PlayerDefaults.IS_BANANA_THROW_UNLOCKED
     return savedGame[IS_BANANA_THROW_UNLOCKED]
 func setIsBananaThrowUnlocked(a) -> void:
@@ -136,7 +136,7 @@ func getPlayerMoveSpeed() -> float:
         return PlayerDefaults.PLAYER_MOVE_SPEED
     return savedGame[PLAYER_MOVE_SPEED]
 func setPlayerMoveSpeed(a) -> void:
-    savedGame[IS_BANANA_THROW_UNLOCKED] = a
+    savedGame[PLAYER_MOVE_SPEED] = a
 #endregion
 #region PlayerJumpHeight
 func getPlayerJumpHeight() -> float:

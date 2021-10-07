@@ -1,23 +1,31 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/images/test_banana_atlas.png" type="Texture" id=1]
+[ext_resource path="res://entities/player/banana_idle.tres" type="Texture" id=1]
 [ext_resource path="res://entities/player/player.gd" type="Script" id=2]
 
 [node name="Banana" type="KinematicBody2D"]
+position = Vector2( 0, 11 )
 collision_layer = 2
+collision_mask = 5
 script = ExtResource( 2 )
 
-[node name="BananaBoundingBox" type="CollisionPolygon2D" parent="."]
-position = Vector2( -1.78814e-07, -16 )
+[node name="BananaBoundingBoxLeft" type="CollisionPolygon2D" parent="."]
+visible = false
+position = Vector2( 0, -18 )
 scale = Vector2( 2.51122, 1.90243 )
-polygon = PoolVector2Array( 7.1206e-08, -16.8206, 2.84224, -24.969, 6.3714, -29.4361, 15.9285, -33.6413, 9.55711, -21.0258, 9.55711, -8.41032, 12.7428, -4.20516, 19.1142, 4.20516, 19.1142, 8.41032, 10.8861, 8.19923, 3.1857, 4.20516, 0.134396, -0.605316 )
+polygon = PoolVector2Array( 16.7249, -7.35901, 16.3267, -17.3462, 13.9374, -21.0257, 8.36247, -25.2309, 1.59285, -23.654, 7.96426, -17.3462, 9.15889, -13.6667, 9.95532, -8.4103, 9.95532, -5.25644, 5.17677, 3.6795, 19.5124, 3.6795 )
+
+[node name="BananaBoundingBoxRight" type="CollisionPolygon2D" parent="."]
+position = Vector2( 0, -18 )
+scale = Vector2( 2.511, 1.902 )
+polygon = PoolVector2Array( 3.1857, -8.4103, 3.1857, -16.8206, 6.37141, -21.0257, 11.5482, -24.7052, 17.1232, -23.654, 11.9464, -18.9232, 10.3535, -13.1411, 9.55711, -8.41032, 11.5492, 3.68034, 6.37141, 3.6795, 1.99124, 3.68034 )
 
 [node name="BananaImage" type="Sprite" parent="."]
 position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 32, 64 )
+region_rect = Rect2( 0, 0, 64, 64 )
 
 [node name="Projectiles" type="Node" parent="."]
 
