@@ -1,9 +1,10 @@
 extends KinematicBody2D
 
-#REGION PRELOAD
+#region PRELOAD
 var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_projectile.tscn")
-#ENDREGION
+#endregion
 
+#region Player Atlas stuff
 # Half of the players width, determines where the projectile is spawned horizontally
 var horizontalLaunchArea = 24 
 var fullWidthOfPlayer = 32 
@@ -13,31 +14,47 @@ var fullHeightOfPlayer = 64
 
 var rightFace = Rect2(Vector2(0,0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
 var leftFace = Rect2(Vector2(fullWidthOfPlayer, 0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
-
-var SPEED_DEADZONE = 3
+#endregion
 
 # These are very sensitive, change with care
 var projectile_speed: Vector2 = Vector2(4, -4)
 
-# some of these variables could be exported for easy modification
-# in the editor's user interface
+#region Physics & Movement
+var SPEED_DEADZONE = 3
 var acceleration: Vector2 = Vector2(600, 400)
-var topSpeed: Vector2 = Vector2(400.0, 500.0)
 var airControlModifier: Vector2 = Vector2(0.95, 0.0)
-
 var friction: float = 0.90
-
 var velocity: Vector2 = Vector2.ZERO
 var gravity: float = 900.0
+#endregion
 
 # Player can only be facing one of these two directions.
 enum PlayerDirection {
- LEFT  = -1,
- RIGHT =  1,   
+    LEFT  = -1,
+    UH_OH = 0
+    RIGHT =  1,   
 }
 
+enum Weapons {
+    MIN          = -1
+    MELEE        =  0,
+    BANANA_THROW =  1,
+    BANANA_GUN   =  2,
+    MAX          =  3,
+}
+
+#region PlayerAttributes
+var playerHealth:          float   = PlayerDefaults.DEFAULT_PLAYER_HEALTH
+var currentWeapon:         int     = PlayerDefaults.DEFAULT_WEAPON
+var isMeleeUnlocked:       bool    = PlayerDefaults.IS_MELEE_UNLOCKED
+var isBananaThrowUnlocked: bool    = PlayerDefaults.IS_BANANA_THROW_UNLOCKED
+var topSpeed:      Vector2 = Vector2( 
+    PlayerDefaults.PLAYER_MOVE_SPEED, 
+    PlayerDefaults.PLAYER_JUMP_HEIGHT
+)
 # Start off saying player was last facing to the right.
-var lastDir = PlayerDirection.RIGHT 
+var lastDir:               int     = PlayerDirection.RIGHT 
+#endregion
 
 func _physics_process(delta: float) -> void:
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -93,18 +110,68 @@ func _physics_process(delta: float) -> void:
     velocity = move_and_slide(velocity, Vector2.UP)
     
 func _input(event: InputEvent) -> void:
+    if (event.is_action_pressed("quicksave")):
+        quicksave()
+    
+    if (event.is_action_pressed("weapon_next")):
+        equipNextWeapon()
+    if (event.is_action_pressed("weapon_previous")):
+        equipPreviousWeapon()
+    
     if (event.is_action_pressed("fire_projectile")):
-        spawnPlayerProjectile()
+        if (currentWeapon == Weapons.MELEE):
+            print("Player punched")
+            PlayerData.setPunchesThrown(PlayerData.getPunchesThrown() + 1)
+        if (currentWeapon == Weapons.BANANA_THROW):
+            print("Player threw banana")
+            spawnPlayerProjectile()
         pass
+
+#region Weapon Management
+func equipNextWeapon() -> void:
+    currentWeapon += 1
+    skipWeapons(true)
+    if (currentWeapon == Weapons.MAX):
+        currentWeapon = 0
+    print("Player switched to next weapon " + str(currentWeapon))
+func equipPreviousWeapon() -> void:
+    currentWeapon -=1
+    skipWeapons(false)
+    if (currentWeapon <= Weapons.MIN):
+        currentWeapon = Weapons.MAX - 1
+        # Since it cycles back, we have to check the highest weapon again.
+        skipWeapons(false) 
+    print("Player switched to previous weapon " + str(currentWeapon))
+func skipWeapons(add: bool) -> void:
+    var hasAllowedWeapon: bool = false
+    while !hasAllowedWeapon:
+        if currentWeapon == Weapons.MELEE :
+            if !PlayerData.getIsMeleeUnlocked():
+                if add: currentWeapon += 1
+                else: currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
+        elif currentWeapon == Weapons.BANANA_THROW:
+            if !PlayerData.getIsBananaThrowUnlocked():
+                if add: currentWeapon += 1
+                else: currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
+        elif currentWeapon >= Weapons.MAX or currentWeapon <= Weapons.MIN:
+            break
+        # If the weapon isn't accounted for, they probably don't have it. NEXT!
+        else:
+            if add: currentWeapon += 1
+            else: currentWeapon -=1
+#endregion
 
 func spawnPlayerProjectile() -> void:
     # Increase player data for shots fired
-    PlayerData.setShotsFired(PlayerData.getShotsFired() + 1)
-
+    PlayerData.setBananasThrown(PlayerData.getBananasThrown() + 1)
     var projectile_instance = PLAYER_PROJECTILE.instance()
-    
     var projectile_speed_to_use = projectile_speed
-     
     # Add some of the players velocity to the projectile
     # horizontally so that it doesn't exactly go behind the player
     # NOT vertically, feels off to do that.
@@ -118,8 +185,26 @@ func spawnPlayerProjectile() -> void:
         projectile_speed_to_use)
     $Projectiles.add_child(projectile_instance)
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
+    Globals.load_game()
+    setLoadedData()
+
+
+func setLoadedData() -> void:
+    playerHealth = PlayerData.getPlayerHealth()
+    currentWeapon = PlayerData.getCurrentWeapon()
+    isMeleeUnlocked = PlayerData.getIsMeleeUnlocked()
+    isBananaThrowUnlocked = PlayerData.getIsBananaThrowUnlocked()
+    topSpeed = Vector2(PlayerData.getPlayerMoveSpeed(), PlayerData.getPlayerJumpHeight())
+func quicksave() -> void:
+    PlayerData.setPlayerHealth(playerHealth)
+    PlayerData.setCurrentWeapon(currentWeapon)
+    PlayerData.setIsMeleeUnlocked(isMeleeUnlocked)
+    PlayerData.setIsMeleeUnlocked(isBananaThrowUnlocked)
+    PlayerData.setPlayerMoveSpeed(topSpeed.x)
+    PlayerData.setPlayerJumpHeight(topSpeed.y)
+    Globals.save_game()
+    Globals.save_stats()

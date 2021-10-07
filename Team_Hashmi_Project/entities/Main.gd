@@ -1,6 +1,9 @@
 extends Node
 
 func _input(_event: InputEvent) -> void:
+    # TODO: this should come from making a new game, and choosing the proper save slot
+    PlayerData.saveSlot = 0
+    
     # TODO:
     # ! This should go to a pause menu, and 
     # ! an exit button should trigger this!
