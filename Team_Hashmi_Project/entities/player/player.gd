@@ -4,7 +4,7 @@ extends KinematicBody2D
 var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_projectile.tscn")
 var BANANA_RUN = preload("res://entities/player//banana_run.tres")
 var BANANA_IDLE = preload("res://entities/player//banana_idle.tres")
-
+var BANANA_SLIDE = preload("res://entities/player//banana_slide.tres")
 #endregion
 
 #region Player Atlas stuff
@@ -43,7 +43,8 @@ enum Weapons {
     MELEE        =  0,
     BANANA_THROW =  1,
     BANANA_GUN   =  2,
-    MAX          =  3,
+    BFG9000      =  3
+    MAX          =  4,
 }
 
 #region PlayerAttributes
@@ -91,6 +92,11 @@ func _physics_process(delta: float) -> void:
     # If player was last seen going to the right, set that.
     if (velocity.x > 0):
         lastDir = PlayerDirection.RIGHT
+        #If moving to right and they press left
+        if (Input.is_action_pressed("move_left")):
+            $BananaImage/ParticleSlideRight.emitting = true
+            # Set texture to the slide animation
+            $BananaImage.set_texture(BANANA_SLIDE)
         # Undo any flip to the image
         $BananaImage.flip_h = false
         #Disable the left bounding box, and enable the right one
@@ -99,6 +105,13 @@ func _physics_process(delta: float) -> void:
     # If player was last seen going to the left, set that.
     elif (velocity.x < 0):
         lastDir = PlayerDirection.LEFT
+        # If moving to left and they press right
+        if (Input.is_action_pressed("move_right")):
+            $BananaImage/ParticleSlideLeft.emitting = true
+            # ? NOTE: The texture is already flipped below ;)
+            # Set texture to the slide animation
+            $BananaImage.set_texture(BANANA_SLIDE)
+            
         # Apply flip to the image
         $BananaImage.flip_h = true
         #Disable the left bounding box, and enable the right one
@@ -131,6 +144,13 @@ func _physics_process(delta: float) -> void:
     if (abs(velocity.x) < SPEED_DEADZONE * 25):
         # Set them to be idle.
         $BananaImage.set_texture(BANANA_IDLE)
+        # If they aren't moving, don't emit the slide particles anymore 
+        $BananaImage/ParticleSlideLeft.emitting = false
+        $BananaImage/ParticleSlideRight.emitting = false
+    if !is_on_floor():
+        # If they are in the air, don't emit the slide particles anymore
+        $BananaImage/ParticleSlideLeft.emitting = false
+        $BananaImage/ParticleSlideRight.emitting = false
     # removes jitter when player is slowing down
     if abs(velocity.x) < SPEED_DEADZONE:
         velocity.x = 0
@@ -192,6 +212,13 @@ func skipWeapons(add: bool) -> void:
                 break
         elif currentWeapon == Weapons.BANANA_THROW:
             if !PlayerData.getIsBananaThrowUnlocked():
+                if add: currentWeapon += 1
+                else: currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
+        elif currentWeapon == Weapons.BFG9000:
+            if !PlayerData.getIsBFG9000Unlocked():
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 

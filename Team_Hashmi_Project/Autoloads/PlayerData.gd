@@ -8,7 +8,7 @@ func setSaveSlot(i: int) -> void:
 
 #region PlayerStats
 # Various keys in our stat tracker
-var SHOTS_FIRED: String = "shotsFired"
+var BFG9000_SHOTS_FIRED: String = "BFG9000ShotsFired"
 var PUNCHES_THROWN: String = "punchesThrown"
 var JUMP_COUNT: String = "jumpCount"
 var BANANAS_THROWN: String = "bananasThrown"
@@ -16,7 +16,7 @@ var BANANAS_THROWN: String = "bananasThrown"
 var DEFAULT_PLAYER_STATS: Dictionary = {
     PUNCHES_THROWN: 0,
     BANANAS_THROWN: 0,
-    SHOTS_FIRED: 0,
+    BFG9000_SHOTS_FIRED: 0,
     JUMP_COUNT: 0
 }
 func getDefaultPlayerStats() -> Dictionary:
@@ -39,6 +39,15 @@ func getBananasThrown() -> int:
     return playerData[BANANAS_THROWN]
 func setBananasThrown(a) -> void:
     playerData[BANANAS_THROWN] = a
+#endregion
+#region bfg9000ShotsFired
+func getBFG9000ShotsFired() -> int:
+    if !playerData.has(BFG9000_SHOTS_FIRED):
+        setBFG9000ShotsFired(0)
+        return 0
+    return playerData[BFG9000_SHOTS_FIRED]
+func setBFG9000ShotsFired(a) -> void:
+    playerData[BFG9000_SHOTS_FIRED] = a
 #endregion
 #region punchesThrown
 func getPunchesThrown() -> int:
@@ -73,12 +82,14 @@ const DIFFICULTIES = {
 # Various keys that will be in save data
 var IS_MELEE_UNLOCKED:        String = "isMeleeUnlocked"
 var IS_BANANA_THROW_UNLOCKED: String = "isBananaThrowUnlocked"
+var IS_BFG9000_UNLOCKED:      String = "isBFG9000Unlocked"
 var DIFFICULTY:               String = "difficulty"
 var PLAYER_HEALTH:            String = "playerHealth"
 var PLAYER_MOVE_SPEED:        String = "playerMoveSpeed"
 var PLAYER_JUMP_HEIGHT:       String = "playerJumpHeight"
 var CURRENT_WEAPON:           String = "currentWeapon"
 
+# ? Object containing default values for game save data
 # Should be called when creating a new save game
 # Returns the default state with the difficulty
 func getDefaultSaveGame(difficulty: String) -> Dictionary:
@@ -87,11 +98,12 @@ func getDefaultSaveGame(difficulty: String) -> Dictionary:
         CURRENT_WEAPON          : PlayerDefaults.DEFAULT_WEAPON,   # Melee
         IS_MELEE_UNLOCKED       : PlayerDefaults.IS_MELEE_UNLOCKED,
         IS_BANANA_THROW_UNLOCKED: PlayerDefaults.IS_BANANA_THROW_UNLOCKED,
+        # Banana Flinging Gun 9000 ;)
+        IS_BFG9000_UNLOCKED     : PlayerDefaults.IS_BFG9000_UNLOCKED,
         DIFFICULTY              : difficulty,
         PLAYER_MOVE_SPEED       : PlayerDefaults.PLAYER_MOVE_SPEED,
         PLAYER_JUMP_HEIGHT      : PlayerDefaults.PLAYER_JUMP_HEIGHT,
     }
-# ? Object containing default values for game save data
 
 #region PlayerHealth
 func getPlayerHealth() -> int:
@@ -119,6 +131,15 @@ func getIsMeleeUnlocked() -> bool:
     return savedGame[IS_MELEE_UNLOCKED]
 func setIsMeleeUnlocked(a) -> void:
     savedGame[IS_MELEE_UNLOCKED] = a
+#endregion
+#region IsBFG9000Unlocked
+func getIsBFG9000Unlocked() -> bool:
+    if !savedGame.has(IS_BFG9000_UNLOCKED):
+        setIsBFG9000Unlocked(PlayerDefaults.IS_BFG9000_UNLOCKED)
+        return PlayerDefaults.IS_BFG9000_UNLOCKED
+    return savedGame[IS_BFG9000_UNLOCKED]
+func setIsBFG9000Unlocked(a) -> void:
+    savedGame[IS_BFG9000_UNLOCKED] = a
 #endregion
 #region IsBananaThrowUnlocked
 func getIsBananaThrowUnlocked() -> bool:
