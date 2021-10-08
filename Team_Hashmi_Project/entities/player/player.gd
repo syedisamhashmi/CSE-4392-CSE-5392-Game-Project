@@ -2,18 +2,21 @@ extends KinematicBody2D
 
 #region PRELOAD
 var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_projectile.tscn")
+var BANANA_RUN = preload("res://entities/player//banana_run.tres")
+var BANANA_IDLE = preload("res://entities/player//banana_idle.tres")
+var BANANA_SLIDE = preload("res://entities/player//banana_slide.tres")
 #endregion
 
 #region Player Atlas stuff
 # Half of the players width, determines where the projectile is spawned horizontally
 var horizontalLaunchArea = 24 
-var fullWidthOfPlayer = 32 
+#var fullWidthOfPlayer = 64 
 # Half of the players height, determines where the projectile is spawned vertically
 var verticalLaunchArea = 40
-var fullHeightOfPlayer = 64 
+#var fullHeightOfPlayer = 64 
 
-var rightFace = Rect2(Vector2(0,0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
-var leftFace = Rect2(Vector2(fullWidthOfPlayer, 0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
+#var rightFace = Rect2(Vector2(0,0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
+#var leftFace = Rect2(Vector2(fullWidthOfPlayer, 0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
 #endregion
 
 # These are very sensitive, change with care
@@ -40,7 +43,8 @@ enum Weapons {
     MELEE        =  0,
     BANANA_THROW =  1,
     BANANA_GUN   =  2,
-    MAX          =  3,
+    BFG9000      =  3
+    MAX          =  4,
 }
 
 #region PlayerAttributes
@@ -74,16 +78,47 @@ func _physics_process(delta: float) -> void:
     
     # increases velocity on the x axis every frame
     velocity.x += (acceleration.x * leftToRightRatio * delta) 
-
+    
+    # If the player is moving
+    if (abs(velocity.x) > SPEED_DEADZONE):
+        # Set the texture to be them running
+        $BananaImage.set_texture(BANANA_RUN)
+        # If it was paused (from idle)
+        if $BananaImage.get_texture().get_pause():
+            #Restart the animation, and unpause it.
+            $BananaImage.get_texture().set_current_frame(0)
+            $BananaImage.get_texture().set_pause(false)
+    
     # If player was last seen going to the right, set that.
     if (velocity.x > 0):
         lastDir = PlayerDirection.RIGHT
-        $BananaImage.region_rect = rightFace
+        #If moving to right and they press left
+        if (Input.is_action_pressed("move_left")):
+            $BananaImage/ParticleSlideRight.emitting = true
+            # Set texture to the slide animation
+            $BananaImage.set_texture(BANANA_SLIDE)
+        # Undo any flip to the image
+        $BananaImage.flip_h = false
+        #Disable the left bounding box, and enable the right one
+        $BananaBoundingBoxLeft.set_disabled(true)
+        $BananaBoundingBoxRight.set_disabled(false)
     # If player was last seen going to the left, set that.
     elif (velocity.x < 0):
         lastDir = PlayerDirection.LEFT
-        $BananaImage.region_rect = leftFace
+        # If moving to left and they press right
+        if (Input.is_action_pressed("move_right")):
+            $BananaImage/ParticleSlideLeft.emitting = true
+            # ? NOTE: The texture is already flipped below ;)
+            # Set texture to the slide animation
+            $BananaImage.set_texture(BANANA_SLIDE)
+            
+        # Apply flip to the image
+        $BananaImage.flip_h = true
+        #Disable the left bounding box, and enable the right one
+        $BananaBoundingBoxLeft.set_disabled(false)
+        $BananaBoundingBoxRight.set_disabled(true)
 
+    
     # If player is in the air, make it slower for them to move horizontally.
     if (velocity.y != 0):
         velocity.x *= airControlModifier.x
@@ -102,10 +137,33 @@ func _physics_process(delta: float) -> void:
     ):
         velocity.x *= friction
     
+    # ? For when the player is slowing down,
+    # ? If the player is (appearing) to not move
+    # ? The speed is small enough that the eye can't see it move
+    # ? stops the animation from looking horrible
+    if (abs(velocity.x) < SPEED_DEADZONE * 25):
+        # Set them to be idle.
+        $BananaImage.set_texture(BANANA_IDLE)
+        # If they aren't moving, don't emit the slide particles anymore 
+        $BananaImage/ParticleSlideLeft.emitting = false
+        $BananaImage/ParticleSlideRight.emitting = false
+    if !is_on_floor():
+        # If they are in the air, don't emit the slide particles anymore
+        $BananaImage/ParticleSlideLeft.emitting = false
+        $BananaImage/ParticleSlideRight.emitting = false
     # removes jitter when player is slowing down
     if abs(velocity.x) < SPEED_DEADZONE:
-      velocity.x = 0
-    
+        velocity.x = 0
+        if (lastDir == PlayerDirection.RIGHT):
+            $BananaBoundingBoxLeft.set_disabled(true)
+            $BananaBoundingBoxRight.set_disabled(false)
+        else:
+            $BananaBoundingBoxLeft.set_disabled(false)
+            $BananaBoundingBoxRight.set_disabled(true)
+
+    # Set the FPS on the animation to increase as 
+    # the player goes faster.
+    $BananaImage.get_texture().set_fps(2 + (abs(velocity.x) / 50))
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
@@ -159,6 +217,13 @@ func skipWeapons(add: bool) -> void:
             else: 
                 hasAllowedWeapon = true
                 break
+        elif currentWeapon == Weapons.BFG9000:
+            if !PlayerData.getIsBFG9000Unlocked():
+                if add: currentWeapon += 1
+                else: currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
         elif currentWeapon >= Weapons.MAX or currentWeapon <= Weapons.MIN:
             break
         # If the weapon isn't accounted for, they probably don't have it. NEXT!
@@ -192,6 +257,11 @@ func _ready() -> void:
     Globals.load_game()
     setLoadedData()
 
+    # ? Connect the exit_game signal to save the game
+    # ? This way, before the game exits, the game state is saved.
+    # warning-ignore:return_value_discarded
+    Signals.connect("exit_game", self, "quicksave")
+
 
 func setLoadedData() -> void:
     playerHealth = PlayerData.getPlayerHealth()
@@ -203,7 +273,7 @@ func quicksave() -> void:
     PlayerData.setPlayerHealth(playerHealth)
     PlayerData.setCurrentWeapon(currentWeapon)
     PlayerData.setIsMeleeUnlocked(isMeleeUnlocked)
-    PlayerData.setIsMeleeUnlocked(isBananaThrowUnlocked)
+    PlayerData.setIsBananaThrowUnlocked(isBananaThrowUnlocked)
     PlayerData.setPlayerMoveSpeed(topSpeed.x)
     PlayerData.setPlayerJumpHeight(topSpeed.y)
     Globals.save_game()

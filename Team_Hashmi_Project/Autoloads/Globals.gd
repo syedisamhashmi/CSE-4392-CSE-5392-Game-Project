@@ -13,15 +13,7 @@ func getPlayerSaveFileName():
 
 
 func _ready() -> void:
-    # ? Connect the exit_game signal to save stats
-    # ? This way, before the game exits, player stats are saved.
-    # warning-ignore:return_value_discarded
-    Signals.connect("exit_game", self, "save_stats")
-
-    # ? Connect the exit_game signal to save the game
-    # ? This way, before the game exits, the game state is saved.
-    # warning-ignore:return_value_discarded
-    Signals.connect("exit_game", self, "save_game")
+    pass
 
 func load_stats() -> void:
     var playerStats = Utils.loadDataFromFile(getPlayerStatsFileName(), 
