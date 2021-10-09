@@ -1,5 +1,6 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=44 format=2]
 
+[ext_resource path="res://assets/images/banana_idle/idle_right_arm/banana-idle3.png" type="Texture" id=1]
 [ext_resource path="res://entities/player/player.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/banana_slide/slide_particle.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm4.png" type="Texture" id=4]
@@ -18,17 +19,24 @@
 [ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm5.png" type="Texture" id=17]
 [ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm3.png" type="Texture" id=18]
 [ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm1.png" type="Texture" id=19]
-[ext_resource path="res://assets/images/banana_idle/banana-idle2.png" type="Texture" id=20]
-[ext_resource path="res://assets/images/banana_idle/banana-idle4.png" type="Texture" id=21]
+[ext_resource path="res://assets/images/banana_idle/idle_right_arm/banana-idle4.png" type="Texture" id=20]
+[ext_resource path="res://assets/images/banana_idle/idle_left_arm/banana-idle4.png" type="Texture" id=21]
 [ext_resource path="res://assets/images/banana_run/banana-run3.png" type="Texture" id=22]
 [ext_resource path="res://assets/images/banana_run/banana-run1.png" type="Texture" id=23]
 [ext_resource path="res://assets/images/banana_run/banana-run6.png" type="Texture" id=24]
 [ext_resource path="res://assets/images/banana_run/banana-run2.png" type="Texture" id=25]
 [ext_resource path="res://assets/images/banana_run/banana-run4.png" type="Texture" id=26]
-[ext_resource path="res://assets/images/banana_idle/banana-idle1.png" type="Texture" id=27]
+[ext_resource path="res://assets/images/banana_idle/idle_left_arm/banana-idle1.png" type="Texture" id=27]
 [ext_resource path="res://assets/images/banana_run/banana-run5.png" type="Texture" id=28]
-[ext_resource path="res://assets/images/banana_idle/banana-idle3.png" type="Texture" id=29]
+[ext_resource path="res://assets/images/banana_idle/idle_left_arm/banana-idle2.png" type="Texture" id=29]
 [ext_resource path="res://assets/images/banana_slide/banana_slide.png" type="Texture" id=30]
+[ext_resource path="res://assets/images/banana_idle/idle_left_arm/banana-idle3.png" type="Texture" id=31]
+[ext_resource path="res://assets/images/banana_idle/idle_right_arm/banana-idle1.png" type="Texture" id=32]
+[ext_resource path="res://assets/images/banana_idle/idle_body/banana-idle2.png" type="Texture" id=33]
+[ext_resource path="res://assets/images/banana_idle/idle_right_arm/banana-idle2.png" type="Texture" id=34]
+[ext_resource path="res://assets/images/banana_idle/idle_body/banana-idle1.png" type="Texture" id=35]
+[ext_resource path="res://assets/images/banana_idle/idle_body/banana-idle3.png" type="Texture" id=36]
+[ext_resource path="res://assets/images/banana_idle/idle_body/banana-idle4.png" type="Texture" id=37]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -37,7 +45,7 @@ animations = [ {
 "name": "Run",
 "speed": 5.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 27 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 21 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -45,17 +53,17 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 24 ) ],
-"loop": true,
-"name": "Run",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 30 ) ],
 "loop": true,
 "name": "Slide",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 27 ), ExtResource( 20 ), ExtResource( 29 ), ExtResource( 21 ) ],
+"frames": [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 24 ) ],
+"loop": true,
+"name": "Run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 35 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 37 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -90,7 +98,7 @@ animations = [ {
 "name": "Punch",
 "speed": 5.0
 }, {
-"frames": [  ],
+"frames": [ ExtResource( 32 ), ExtResource( 34 ), ExtResource( 1 ), ExtResource( 20 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -120,7 +128,6 @@ position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
 frames = SubResource( 1 )
 animation = "Idle"
-playing = true
 
 [node name="Projectiles" type="Node" parent="."]
 
@@ -154,7 +161,6 @@ animation = "Idle"
 
 [node name="RightPunchArea" type="Area2D" parent="."]
 position = Vector2( 42, -39 )
-scale = Vector2( 1, 1 )
 collision_layer = 0
 collision_mask = 4
 
@@ -164,7 +170,6 @@ disabled = true
 
 [node name="LeftPunchArea" type="Area2D" parent="."]
 position = Vector2( 0, -39 )
-scale = Vector2( 1, 1 )
 collision_layer = 0
 collision_mask = 4
 
