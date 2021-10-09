@@ -2,21 +2,20 @@ extends KinematicBody2D
 
 #region PRELOAD
 var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_projectile.tscn")
-var BANANA_RUN = preload("res://entities/player//banana_run.tres")
-var BANANA_IDLE = preload("res://entities/player//banana_idle.tres")
-var BANANA_SLIDE = preload("res://entities/player//banana_slide.tres")
 #endregion
 
-#region Player Atlas stuff
+#region Animation Names
+var IDLE:  String = "Idle"
+var RUN:   String = "Run"
+var PUNCH: String = "Punch"
+var SLIDE: String = "Slide"
+#endregion
+
+#region Projectile stuff
 # Half of the players width, determines where the projectile is spawned horizontally
-var horizontalLaunchArea = 24 
-#var fullWidthOfPlayer = 64 
+var horizontalLaunchArea = 24
 # Half of the players height, determines where the projectile is spawned vertically
 var verticalLaunchArea = 40
-#var fullHeightOfPlayer = 64 
-
-#var rightFace = Rect2(Vector2(0,0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
-#var leftFace = Rect2(Vector2(fullWidthOfPlayer, 0), Vector2(fullWidthOfPlayer, fullHeightOfPlayer))
 #endregion
 
 # These are very sensitive, change with care
@@ -48,10 +47,15 @@ enum Weapons {
 }
 
 #region PlayerAttributes
+# Used to track what to do with the arms after animations complete.
+var isMoving:              bool    = false
 var playerHealth:          float   = PlayerDefaults.DEFAULT_PLAYER_HEALTH
 var currentWeapon:         int     = PlayerDefaults.DEFAULT_WEAPON
 var isMeleeUnlocked:       bool    = PlayerDefaults.IS_MELEE_UNLOCKED
 var isBananaThrowUnlocked: bool    = PlayerDefaults.IS_BANANA_THROW_UNLOCKED
+var isBFG9000Unlocked:     bool    = PlayerDefaults.IS_BFG9000_UNLOCKED
+# TODO: Put this into save file, maybe upgrade it idk.
+var PUNCH_DAMAGE:          int     = 200
 var topSpeed:      Vector2 = Vector2( 
     PlayerDefaults.PLAYER_MOVE_SPEED, 
     PlayerDefaults.PLAYER_JUMP_HEIGHT
@@ -81,42 +85,45 @@ func _physics_process(delta: float) -> void:
     
     # If the player is moving
     if (abs(velocity.x) > SPEED_DEADZONE):
-        # Set the texture to be them running
-        $BananaImage.set_texture(BANANA_RUN)
-        # If it was paused (from idle)
-        if $BananaImage.get_texture().get_pause():
-            #Restart the animation, and unpause it.
-            $BananaImage.get_texture().set_current_frame(0)
-            $BananaImage.get_texture().set_pause(false)
+        # If player is moving from idle
+        if $BananaImage.get_animation() == IDLE:
+            #Restart the animation.
+            $BananaImage.set_frame(0)
+            # Set the texture to be them running
+            $BananaImage.set_animation(RUN)
+            handleArmAnimation()
     
     # If player was last seen going to the right, set that.
     if (velocity.x > 0):
+        isMoving = true
+        handleArmAnimation()
+        
         lastDir = PlayerDirection.RIGHT
         #If moving to right and they press left
         if (Input.is_action_pressed("move_left")):
             $BananaImage/ParticleSlideRight.emitting = true
             # Set texture to the slide animation
-            $BananaImage.set_texture(BANANA_SLIDE)
-        # Undo any flip to the image
-        $BananaImage.flip_h = false
-        #Disable the left bounding box, and enable the right one
-        $BananaBoundingBoxLeft.set_disabled(true)
-        $BananaBoundingBoxRight.set_disabled(false)
+            # TODO: @Edward, need slide texture
+            $BananaImage.set_animation(SLIDE)
+
+        applyAllImageFlips(false)
+        updatePlayerBoundingBox()
+
     # If player was last seen going to the left, set that.
     elif (velocity.x < 0):
         lastDir = PlayerDirection.LEFT
+        isMoving = true
+        handleArmAnimation()
         # If moving to left and they press right
         if (Input.is_action_pressed("move_right")):
             $BananaImage/ParticleSlideLeft.emitting = true
             # ? NOTE: The texture is already flipped below ;)
             # Set texture to the slide animation
-            $BananaImage.set_texture(BANANA_SLIDE)
-            
-        # Apply flip to the image
-        $BananaImage.flip_h = true
-        #Disable the left bounding box, and enable the right one
-        $BananaBoundingBoxLeft.set_disabled(false)
-        $BananaBoundingBoxRight.set_disabled(true)
+            # TODO: @Edward, need slide texture
+            $BananaImage.set_animation(SLIDE)
+
+        applyAllImageFlips(true)
+        updatePlayerBoundingBox()
 
     
     # If player is in the air, make it slower for them to move horizontally.
@@ -142,8 +149,12 @@ func _physics_process(delta: float) -> void:
     # ? The speed is small enough that the eye can't see it move
     # ? stops the animation from looking horrible
     if (abs(velocity.x) < SPEED_DEADZONE * 25):
+        isMoving = false
         # Set them to be idle.
-        $BananaImage.set_texture(BANANA_IDLE)
+        $BananaImage.set_animation(IDLE)
+        if ($RightArm.get_animation() != PUNCH):
+            $RightArm.set_animation(IDLE)
+        $LeftArm.set_animation(IDLE)
         # If they aren't moving, don't emit the slide particles anymore 
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
@@ -153,17 +164,16 @@ func _physics_process(delta: float) -> void:
         $BananaImage/ParticleSlideRight.emitting = false
     # removes jitter when player is slowing down
     if abs(velocity.x) < SPEED_DEADZONE:
+        isMoving = false
         velocity.x = 0
-        if (lastDir == PlayerDirection.RIGHT):
-            $BananaBoundingBoxLeft.set_disabled(true)
-            $BananaBoundingBoxRight.set_disabled(false)
-        else:
-            $BananaBoundingBoxLeft.set_disabled(false)
-            $BananaBoundingBoxRight.set_disabled(true)
+        updatePlayerBoundingBox()
 
-    # Set the FPS on the animation to increase as 
-    # the player goes faster.
-    $BananaImage.get_texture().set_fps(2 + (abs(velocity.x) / 50))
+    # Set the FPS on the animation to 
+    # increase as the player goes faster.
+    $BananaImage.frames.set_animation_speed("Run", 2 + (abs(velocity.x) / 50))
+    $RightArm.frames.set_animation_speed("Run", (2 + (abs(velocity.x) / 50)))
+    $LeftArm.frames.set_animation_speed("Run", (2 + (abs(velocity.x) / 50)))
+
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
@@ -178,12 +188,16 @@ func _input(event: InputEvent) -> void:
     
     if (event.is_action_pressed("fire_projectile")):
         if (currentWeapon == Weapons.MELEE):
+            # If punch animation currently animating, don't allow punch.
+            if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
+                return
             print("Player punched")
+            $RightArm.set_frame(0)
+            $RightArm.set_animation(PUNCH)
             PlayerData.setPunchesThrown(PlayerData.getPunchesThrown() + 1)
         if (currentWeapon == Weapons.BANANA_THROW):
             print("Player threw banana")
             spawnPlayerProjectile()
-        pass
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -204,21 +218,21 @@ func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
     while !hasAllowedWeapon:
         if currentWeapon == Weapons.MELEE :
-            if !PlayerData.getIsMeleeUnlocked():
+            if !isMeleeUnlocked:
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
         elif currentWeapon == Weapons.BANANA_THROW:
-            if !PlayerData.getIsBananaThrowUnlocked():
+            if !isBananaThrowUnlocked:
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
         elif currentWeapon == Weapons.BFG9000:
-            if !PlayerData.getIsBFG9000Unlocked():
+            if !isBFG9000Unlocked:
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 
@@ -257,6 +271,10 @@ func _ready() -> void:
     Globals.load_game()
     setLoadedData()
 
+    # Default play animations to start idle process.
+    $BananaImage._set_playing(true)
+    $RightArm._set_playing(true)
+    $LeftArm._set_playing(true)
     # ? Connect the exit_game signal to save the game
     # ? This way, before the game exits, the game state is saved.
     # warning-ignore:return_value_discarded
@@ -268,13 +286,79 @@ func setLoadedData() -> void:
     currentWeapon = PlayerData.getCurrentWeapon()
     isMeleeUnlocked = PlayerData.getIsMeleeUnlocked()
     isBananaThrowUnlocked = PlayerData.getIsBananaThrowUnlocked()
+    isBFG9000Unlocked = PlayerData.getIsBananaThrowUnlocked()
     topSpeed = Vector2(PlayerData.getPlayerMoveSpeed(), PlayerData.getPlayerJumpHeight())
 func quicksave() -> void:
     PlayerData.setPlayerHealth(playerHealth)
     PlayerData.setCurrentWeapon(currentWeapon)
     PlayerData.setIsMeleeUnlocked(isMeleeUnlocked)
     PlayerData.setIsBananaThrowUnlocked(isBananaThrowUnlocked)
+    PlayerData.setIsBFG9000Unlocked(isBFG9000Unlocked)
     PlayerData.setPlayerMoveSpeed(topSpeed.x)
     PlayerData.setPlayerJumpHeight(topSpeed.y)
     Globals.save_game()
     Globals.save_stats()
+
+func handleArmAnimation() -> void:
+    # If they are punching, don't impact right hand.
+    # Animation finished call back will handle that
+    if ($RightArm.get_animation() != PUNCH):
+        $RightArm.set_animation(RUN)
+    # Left arm isn't impacted by animations.
+    $LeftArm.set_animation(RUN)
+
+func applyAllImageFlips(shouldFlip: bool) -> void:
+    $BananaImage.flip_h = shouldFlip
+    $RightArm.flip_h = shouldFlip
+    $LeftArm.flip_h = shouldFlip
+
+func updatePlayerBoundingBox() -> void:
+    if (lastDir == PlayerDirection.RIGHT):
+        $BananaBoundingBoxLeft.set_disabled(true)
+        $BananaBoundingBoxRight.set_disabled(false)
+    else:
+        $BananaBoundingBoxLeft.set_disabled(false)
+        $BananaBoundingBoxRight.set_disabled(true)
+
+func _on_RightArm_animation_finished() -> void:
+    # Disable ability to deal punch damage.
+    $RightPunchArea/Collider.set_disabled(true)
+    $LeftPunchArea/Collider.set_disabled(true)
+    if $RightArm.get_animation() == PUNCH:
+        if isMoving:
+            $RightArm.set_animation(RUN)
+        else:
+            $RightArm.set_animation(IDLE)
+
+func _on_PunchArea_body_entered(body: Node) -> void:
+    if body.has_method("damage"):
+      body.damage(PUNCH_DAMAGE * lastDir)
+
+
+func _on_RightArm_frame_changed() -> void:
+    var currFrame: int = $RightArm.get_frame()
+    match lastDir:
+        PlayerDirection.RIGHT:
+            # If the right arm is punching, and 
+            # within the appropriate looking frames
+            if (
+            ($RightArm.get_animation() == PUNCH and
+            currFrame >= 1 and 
+            currFrame <= 3
+            )):
+                # Allow punch.
+                $RightPunchArea/Collider.set_disabled(false)
+                return
+            # Otherwise disable the collision detection.
+            $RightPunchArea/Collider.set_disabled(true)
+            return
+        PlayerDirection.LEFT:
+            if (
+            ($RightArm.get_animation() == PUNCH and
+            currFrame >= 1 and 
+            currFrame <= 3
+            )):
+                $LeftPunchArea/Collider.set_disabled(false)
+                return
+            $LeftPunchArea/Collider.set_disabled(true)
+            return

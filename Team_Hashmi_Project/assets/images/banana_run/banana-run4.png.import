@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana_run_1.png-71024697e88c126b57928c87840322a9.stex"
+path="res://.import/banana-run4.png-6af56e86acaa43783d376a99b4653a8f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/banana_run/banana_run_1.png"
-dest_files=[ "res://.import/banana_run_1.png-71024697e88c126b57928c87840322a9.stex" ]
+source_file="res://assets/images/banana_run/banana-run4.png"
+dest_files=[ "res://.import/banana-run4.png-6af56e86acaa43783d376a99b4653a8f.stex" ]
 
 [params]
 

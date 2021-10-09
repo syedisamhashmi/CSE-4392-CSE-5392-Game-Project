@@ -1,16 +1,73 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=36 format=2]
 
-[ext_resource path="res://entities/player/banana_idle.tres" type="Texture" id=1]
 [ext_resource path="res://entities/player/player.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/banana_slide/slide_particle.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm4.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm5.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm2.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm6.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm3.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/banana_run/run-left-arm/banana-run-left-arm1.png" type="Texture" id=9]
+[ext_resource path="res://assets/images/banana_run/punch/banana-punch3.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/banana_run/punch/banana-punch1.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/banana_run/punch/banana-punch2.png" type="Texture" id=12]
+[ext_resource path="res://assets/images/banana_run/punch/banana-punch4.png" type="Texture" id=13]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm2.png" type="Texture" id=14]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm6.png" type="Texture" id=15]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm4.png" type="Texture" id=16]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm5.png" type="Texture" id=17]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm3.png" type="Texture" id=18]
+[ext_resource path="res://assets/images/banana_run/run-right-arm/banana-run-right-arm1.png" type="Texture" id=19]
+[ext_resource path="res://assets/images/banana_idle/banana-idle2.png" type="Texture" id=20]
+[ext_resource path="res://assets/images/banana_idle/banana-idle4.png" type="Texture" id=21]
+[ext_resource path="res://assets/images/banana_run/banana-run3.png" type="Texture" id=22]
+[ext_resource path="res://assets/images/banana_run/banana-run1.png" type="Texture" id=23]
+[ext_resource path="res://assets/images/banana_run/banana-run6.png" type="Texture" id=24]
+[ext_resource path="res://assets/images/banana_run/banana-run2.png" type="Texture" id=25]
+[ext_resource path="res://assets/images/banana_run/banana-run4.png" type="Texture" id=26]
+[ext_resource path="res://assets/images/banana_idle/banana-idle1.png" type="Texture" id=27]
+[ext_resource path="res://assets/images/banana_run/banana-run5.png" type="Texture" id=28]
+[ext_resource path="res://assets/images/banana_idle/banana-idle3.png" type="Texture" id=29]
+[ext_resource path="res://assets/images/banana_slide/banana_slide.png" type="Texture" id=30]
 
-[sub_resource type="CanvasItemMaterial" id=1]
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Run",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 24 ) ],
+"loop": true,
+"name": "Run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 30 ) ],
+"loop": true,
+"name": "Slide",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 27 ), ExtResource( 20 ), ExtResource( 29 ), ExtResource( 21 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="CanvasItemMaterial" id=3]
 particles_animation = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticlesMaterial" id=4]
 flag_disable_z = true
 gravity = Vector3( -3, -1, 0 )
 initial_velocity = 10.0
@@ -20,6 +77,27 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 anim_speed = 0.64
 anim_speed_random = 0.75
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 19 ), ExtResource( 14 ), ExtResource( 18 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 15 ) ],
+"loop": true,
+"name": "Run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 10 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "Punch",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 21, 28 )
 
 [node name="Banana" type="KinematicBody2D"]
 position = Vector2( 0, 11 )
@@ -37,30 +115,62 @@ position = Vector2( 0, -18 )
 scale = Vector2( 2.511, 1.902 )
 polygon = PoolVector2Array( 3.1857, -8.4103, 3.1857, -16.8206, 6.37141, -21.0257, 11.5482, -24.7052, 17.1232, -23.654, 11.9464, -18.9232, 10.3535, -13.1411, 9.55711, -8.41032, 11.5492, 3.68034, 6.37141, 3.6795, 1.99124, 3.68034 )
 
-[node name="BananaImage" type="Sprite" parent="."]
+[node name="LeftArm" type="AnimatedSprite" parent="."]
 position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 64, 64 )
+frames = SubResource( 1 )
+animation = "Idle"
+playing = true
+
+[node name="Projectiles" type="Node" parent="."]
+
+[node name="BananaImage" type="AnimatedSprite" parent="."]
+position = Vector2( 24, -40 )
+scale = Vector2( 1.5, 1.25 )
+frames = SubResource( 2 )
+animation = "Idle"
 
 [node name="ParticleSlideRight" type="Particles2D" parent="BananaImage"]
-material = SubResource( 1 )
+material = SubResource( 3 )
 position = Vector2( 16, 20 )
 amount = 4
 lifetime = 0.2
-process_material = SubResource( 2 )
+process_material = SubResource( 4 )
 texture = ExtResource( 3 )
 
 [node name="ParticleSlideLeft" type="Particles2D" parent="BananaImage"]
-material = SubResource( 1 )
+material = SubResource( 3 )
 position = Vector2( -12, 20 )
 amount = 4
 lifetime = 0.2
-process_material = SubResource( 2 )
+process_material = SubResource( 4 )
 texture = ExtResource( 3 )
 
-[node name="Projectiles" type="Node" parent="."]
+[node name="RightArm" type="AnimatedSprite" parent="."]
+position = Vector2( 24, -40 )
+scale = Vector2( 1.5, 1.25 )
+frames = SubResource( 5 )
+animation = "Idle"
+
+[node name="RightPunchArea" type="Area2D" parent="."]
+position = Vector2( 42, -39 )
+scale = Vector2( 1, 1 )
+collision_layer = 0
+collision_mask = 4
+
+[node name="Collider" type="CollisionShape2D" parent="RightPunchArea"]
+shape = SubResource( 6 )
+disabled = true
+
+[node name="LeftPunchArea" type="Area2D" parent="."]
+position = Vector2( 0, -39 )
+scale = Vector2( 1, 1 )
+collision_layer = 0
+collision_mask = 4
+
+[node name="Collider" type="CollisionShape2D" parent="LeftPunchArea"]
+shape = SubResource( 6 )
+disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 72, -24 )
@@ -71,3 +181,8 @@ drag_margin_top = 0.5
 drag_margin_right = 0.5
 drag_margin_bottom = 0.5
 editor_draw_drag_margin = true
+
+[connection signal="animation_finished" from="RightArm" to="." method="_on_RightArm_animation_finished"]
+[connection signal="frame_changed" from="RightArm" to="." method="_on_RightArm_frame_changed"]
+[connection signal="body_entered" from="RightPunchArea" to="." method="_on_PunchArea_body_entered"]
+[connection signal="body_entered" from="LeftPunchArea" to="." method="_on_PunchArea_body_entered"]
