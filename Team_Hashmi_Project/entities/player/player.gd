@@ -170,9 +170,9 @@ func _physics_process(delta: float) -> void:
 
     # Set the FPS on the animation to 
     # increase as the player goes faster.
-    $BananaImage.frames.set_animation_speed("Run", 2 + (abs(velocity.x) / 50))
-    $RightArm.frames.set_animation_speed("Run", (2 + (abs(velocity.x) / 50)))
-    $LeftArm.frames.set_animation_speed("Run", (2 + (abs(velocity.x) / 50)))
+    $BananaImage.frames.set_animation_speed(RUN, 2 + (abs(velocity.x) / 50))
+    $RightArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
+    $LeftArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
 
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
