@@ -100,7 +100,10 @@ func _physics_process(delta: float) -> void:
         
         lastDir = PlayerDirection.RIGHT
         #If moving to right and they press left
-        if (Input.is_action_pressed("move_left")):
+        if (
+            (Input.is_action_pressed("move_left") and
+            !Input.is_action_pressed("move_right"))
+        ):
             $BananaImage/ParticleSlideRight.emitting = true
             # Set texture to the slide animation
             # TODO: @Edward, need slide texture
@@ -115,7 +118,10 @@ func _physics_process(delta: float) -> void:
         isMoving = true
         handleArmAnimation()
         # If moving to left and they press right
-        if (Input.is_action_pressed("move_right")):
+        if (
+            (Input.is_action_pressed("move_right") and
+            !Input.is_action_pressed("move_left"))
+        ):
             $BananaImage/ParticleSlideLeft.emitting = true
             # ? NOTE: The texture is already flipped below ;)
             # Set texture to the slide animation
