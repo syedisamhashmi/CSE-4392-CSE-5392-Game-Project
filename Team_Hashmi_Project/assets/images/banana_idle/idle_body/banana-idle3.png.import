@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana-idle4.png-1d9fdebc103470a6e2d530f2aa0bfc14.stex"
+path="res://.import/banana-idle3.png-0b94e93800c7d2a6ea7529c5aa99e4c3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/banana_idle/banana-idle4.png"
-dest_files=[ "res://.import/banana-idle4.png-1d9fdebc103470a6e2d530f2aa0bfc14.stex" ]
+source_file="res://assets/images/banana_idle/idle_body/banana-idle3.png"
+dest_files=[ "res://.import/banana-idle3.png-0b94e93800c7d2a6ea7529c5aa99e4c3.stex" ]
 
 [params]
 
