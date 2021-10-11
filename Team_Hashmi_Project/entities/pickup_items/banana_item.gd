@@ -17,6 +17,13 @@ func _ready() -> void:
 
 
 func _on_banana_item_body_entered(_body: Node) -> void:
+  # make bananas invisible
+  $Sprite.visible = false
+  # play pickup sound
+  $AudioStreamPlayer.play()
+  # wait for pickup sound to end
+  yield($AudioStreamPlayer, "finished")
+  # unlock banana throwing
   PlayerData.setIsBananaThrowUnlocked(true)
   queue_free()
   pass # Replace with function body.
