@@ -231,7 +231,8 @@ func skipWeapons(add: bool) -> void:
                 hasAllowedWeapon = true
                 break
         elif currentWeapon == Weapons.BANANA_THROW:
-            if !isBananaThrowUnlocked:
+            #if !isBananaThrowUnlocked:
+            if !PlayerData.getIsBananaThrowUnlocked():
                 if add: currentWeapon += 1
                 else: currentWeapon -=1
             else: 

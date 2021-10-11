@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana-pickup-item.png-2e9fb88dc1e03854af40b01efe83b436.stex"
+path="res://.import/banana-item.png-237f0da6d906d66a78582076f8298363.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pickup_items/banana-pickup-item.png"
-dest_files=[ "res://.import/banana-pickup-item.png-2e9fb88dc1e03854af40b01efe83b436.stex" ]
+source_file="res://assets/images/pickup_items/banana-item.png"
+dest_files=[ "res://.import/banana-item.png-237f0da6d906d66a78582076f8298363.stex" ]
 
 [params]
 
