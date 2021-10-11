@@ -1,0 +1,179 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://entities/Main.gd" type="Script" id=3]
+[ext_resource path="res://assets/images/Menu/difficulties/CanIPlayDaddy.png" type="Texture" id=4]
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0.0197044, 0.997537, 1 )
+colors = PoolColorArray( 0, 0, 0, 0.727877, 0.652344, 0.652344, 0.652344, 0.180392, 0, 0, 0, 0.599726 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+width = 1000
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameCreation" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="NewGameCreation"]
+margin_left = 23.0
+margin_right = 1023.0
+margin_bottom = 600.0
+rect_pivot_offset = Vector2( -520, -70 )
+texture = SubResource( 4 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DifficultyImage" type="TextureRect" parent="NewGameCreation"]
+margin_left = 564.0
+margin_top = 80.0
+margin_right = 852.0
+margin_bottom = 320.0
+texture = ExtResource( 4 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameTitle" type="Label" parent="NewGameCreation"]
+margin_left = 23.0
+margin_top = 22.0
+margin_right = 259.0
+margin_bottom = 63.0
+size_flags_stretch_ratio = 2.9
+theme = SubResource( 2 )
+text = "New Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackToMainMenu" type="Button" parent="NewGameCreation"]
+margin_left = 23.0
+margin_top = 522.0
+margin_right = 268.0
+margin_bottom = 562.0
+text = "Back"
+
+[node name="Difficulties" type="OptionButton" parent="NewGameCreation"]
+margin_left = 23.0
+margin_top = 120.0
+margin_right = 403.0
+margin_bottom = 190.0
+text = "Difficulty"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DifficultyDescription" type="RichTextLabel" parent="NewGameCreation"]
+margin_left = 560.0
+margin_top = 320.0
+margin_right = 880.0
+margin_bottom = 480.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveSlots" type="OptionButton" parent="NewGameCreation"]
+anchor_bottom = 0.017
+margin_left = 23.0
+margin_top = 252.0
+margin_right = 403.0
+margin_bottom = 309.8
+text = "Save Slot"
+
+[node name="Start" type="Button" parent="NewGameCreation"]
+margin_left = 723.0
+margin_top = 522.0
+margin_right = 968.0
+margin_bottom = 562.0
+text = "START"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainMenuSelection" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BananaManiaTitle" type="Label" parent="MainMenuSelection"]
+margin_left = 23.0
+margin_top = 22.0
+margin_right = 259.0
+margin_bottom = 63.0
+size_flags_stretch_ratio = 2.9
+theme = SubResource( 2 )
+text = "Banana Mania"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGame" type="Button" parent="MainMenuSelection"]
+margin_left = 23.0
+margin_top = 162.0
+margin_right = 268.0
+margin_bottom = 202.0
+text = "New Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadGame" type="Button" parent="MainMenuSelection"]
+margin_left = 23.0
+margin_top = 242.0
+margin_right = 268.0
+margin_bottom = 282.0
+text = "Load Game"
+
+[node name="Exit" type="Button" parent="MainMenuSelection"]
+margin_left = 23.0
+margin_top = 522.0
+margin_right = 268.0
+margin_bottom = 562.0
+text = "Exit Game"
+
+[node name="ExitConfirmation" type="ConfirmationDialog" parent="MainMenuSelection"]
+visible = true
+margin_left = 312.0
+margin_top = 180.0
+margin_right = 712.0
+margin_bottom = 320.0
+rect_min_size = Vector2( 400, 140 )
+popup_exclusive = true
+window_title = "Quit Game?"
+
+[connection signal="pressed" from="NewGameCreation/BackToMainMenu" to="." method="_on_BackToMainMenu_pressed"]
+[connection signal="item_selected" from="NewGameCreation/Difficulties" to="." method="_on_Difficulties_item_selected"]
+[connection signal="item_selected" from="NewGameCreation/SaveSlots" to="." method="_on_SaveSlots_item_selected"]
+[connection signal="pressed" from="NewGameCreation/Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="MainMenuSelection/NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="pressed" from="MainMenuSelection/Exit" to="." method="_on_Exit_pressed"]
+[connection signal="confirmed" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_confirmed"]
+[connection signal="hide" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_hide"]

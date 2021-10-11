@@ -68,9 +68,6 @@ func setPlayerData(a) -> void:
 
 #region SaveData
 
-# TODO: these are going to be labels on the UI,
-# Furthermore, they will probably be translated into numbers
-#   as multipliers of enemy damage/health.
 # If you get this throwback, we can be friends :)
 const DIFFICULTIES = {
     CAN_I_PLAY_DADDY      = "Can I Play, Daddy?",      # Easy
@@ -78,6 +75,25 @@ const DIFFICULTIES = {
     BRUISE_ME_PLENTY      = "Bruise Me Plenty",        # Hard
     I_AM_BANANA_INCARNATE = "I Am Banana Incarnate!",  # Nightmare   
 }
+const DIFFICULTIES_DESCRIPTIONS = [
+    "Gameplay for babies. (i.e. Dr. Dalio)",
+    "If you heard the saying 'If you can't handle the heat, get out of the kitchen'. You probably left the kitchen.", # Medium
+    "So, you think you are worthy...",
+    "This is a literal nightmare."   
+]
+
+const ExitMessages = [
+    "Don't leave yet -- There's a banana around that corner!",
+    "Are you sure you want to quit this amazing game?",
+    "Look, man. You leave now and you forfeit your stats!",
+    "Just leave. When you come back, I'll be waiting with a banana.",
+    "You're lucky I don't delete your save game for thinking about leaving.",
+    "Get outta here and go back to your boring life."
+]
+
+
+
+
 
 # Various keys that will be in save data
 var IS_MELEE_UNLOCKED:        String = "isMeleeUnlocked"
