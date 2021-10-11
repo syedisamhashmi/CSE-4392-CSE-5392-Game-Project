@@ -24,6 +24,7 @@ func _on_banana_item_body_entered(_body: Node) -> void:
   # wait for pickup sound to end
   yield($AudioStreamPlayer, "finished")
   # unlock banana throwing
-  PlayerData.setIsBananaThrowUnlocked(true)
+  Signals.emit_signal("banana_throw_pickup_get")
+
   queue_free()
   pass # Replace with function body.
