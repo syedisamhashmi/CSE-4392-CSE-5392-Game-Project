@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/253172__suntemple__retro-bonus-pickup-sfx.wav-319fe3b2d1e67a51ee4dfae8b408e185.sample"
+
+[deps]
+
+source_file="res://assets/audio/253172__suntemple__retro-bonus-pickup-sfx.wav"
+dest_files=[ "res://.import/253172__suntemple__retro-bonus-pickup-sfx.wav-319fe3b2d1e67a51ee4dfae8b408e185.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

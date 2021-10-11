@@ -262,7 +262,9 @@ func spawnPlayerProjectile() -> void:
     # NOT vertically, feels off to do that.
     # Set direction horizontally by using the last direction the player was facing.
     # When you stop moving, you don't just turn back to the right side.
-    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
+    #TODO: for some reason, this got destroyed on my end and this makes it feel better...
+    # someone please investigate
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 100))
     projectile_instance.init(
         # Add projectile halfway up the player so that it
         # spawns in a good place.
@@ -285,6 +287,11 @@ func _ready() -> void:
     # ? This way, before the game exits, the game state is saved.
     # warning-ignore:return_value_discarded
     Signals.connect("exit_game", self, "quicksave")
+    # warning-ignore:return_value_discarded
+    Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
+    
+func banana_throw_pickup_get():
+    isBananaThrowUnlocked = true    
 
 
 func setLoadedData() -> void:
@@ -292,7 +299,7 @@ func setLoadedData() -> void:
     currentWeapon = PlayerData.getCurrentWeapon()
     isMeleeUnlocked = PlayerData.getIsMeleeUnlocked()
     isBananaThrowUnlocked = PlayerData.getIsBananaThrowUnlocked()
-    isBFG9000Unlocked = PlayerData.getIsBananaThrowUnlocked()
+    isBFG9000Unlocked = PlayerData.getIsBFG9000Unlocked()
     topSpeed = Vector2(PlayerData.getPlayerMoveSpeed(), PlayerData.getPlayerJumpHeight())
 func quicksave() -> void:
     PlayerData.setPlayerHealth(playerHealth)
