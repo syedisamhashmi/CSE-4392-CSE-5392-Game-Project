@@ -5,20 +5,20 @@
 [ext_resource path="res://entities/Main.gd" type="Script" id=3]
 [ext_resource path="res://assets/images/Menu/difficulties/CanIPlayDaddy.png" type="Texture" id=4]
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0197044, 0.997537, 1 )
 colors = PoolColorArray( 0, 0, 0, 0.727877, 0.652344, 0.652344, 0.652344, 0.180392, 0, 0, 0, 0.599726 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 width = 1000
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 size = 40
 font_data = ExtResource( 2 )
 
-[sub_resource type="Theme" id=2]
-default_font = SubResource( 1 )
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -42,7 +42,7 @@ margin_left = 23.0
 margin_right = 1023.0
 margin_bottom = 600.0
 rect_pivot_offset = Vector2( -520, -70 )
-texture = SubResource( 4 )
+texture = SubResource( 2 )
 stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -65,7 +65,7 @@ margin_top = 22.0
 margin_right = 259.0
 margin_bottom = 63.0
 size_flags_stretch_ratio = 2.9
-theme = SubResource( 2 )
+theme = SubResource( 4 )
 text = "New Game"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -129,7 +129,7 @@ margin_top = 22.0
 margin_right = 259.0
 margin_bottom = 63.0
 size_flags_stretch_ratio = 2.9
-theme = SubResource( 2 )
+theme = SubResource( 4 )
 text = "Banana Mania"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -160,7 +160,6 @@ margin_bottom = 562.0
 text = "Exit Game"
 
 [node name="ExitConfirmation" type="ConfirmationDialog" parent="MainMenuSelection"]
-visible = true
 margin_left = 312.0
 margin_top = 180.0
 margin_right = 712.0
@@ -168,6 +167,9 @@ margin_bottom = 320.0
 rect_min_size = Vector2( 400, 140 )
 popup_exclusive = true
 window_title = "Quit Game?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="pressed" from="NewGameCreation/BackToMainMenu" to="." method="_on_BackToMainMenu_pressed"]
 [connection signal="item_selected" from="NewGameCreation/Difficulties" to="." method="_on_Difficulties_item_selected"]

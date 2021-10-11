@@ -7,7 +7,6 @@
 [ext_resource path="res://entities/pickup_items/banana_item.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Node2D"]
-script = ExtResource( 4 )
 
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 position = Vector2( 25, 93 )
