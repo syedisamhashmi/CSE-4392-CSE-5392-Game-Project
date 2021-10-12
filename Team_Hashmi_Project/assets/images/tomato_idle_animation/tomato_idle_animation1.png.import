@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana-run-right-arm1.png-68319a993c027f687b5536425d47dfe5.stex"
+path="res://.import/tomato_idle_animation1.png-96c4b6996ac8f1e8dd803254fe4674eb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/banana_run/run-right-arm/banana-run-right-arm1.png"
-dest_files=[ "res://.import/banana-run-right-arm1.png-68319a993c027f687b5536425d47dfe5.stex" ]
+source_file="res://assets/images/tomato_idle_animation/tomato_idle_animation1.png"
+dest_files=[ "res://.import/tomato_idle_animation1.png-96c4b6996ac8f1e8dd803254fe4674eb.stex" ]
 
 [params]
 

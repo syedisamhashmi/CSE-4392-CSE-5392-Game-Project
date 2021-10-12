@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana-run1.png-19321a178208042d2f3198a0f3c38e64.stex"
+path="res://.import/banana-slide-spritesheet.png-ea18e29b10b223d12b0491aadd18651b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/banana_run/banana-run1.png"
-dest_files=[ "res://.import/banana-run1.png-19321a178208042d2f3198a0f3c38e64.stex" ]
+source_file="res://assets/images/banana_slide/banana-slide-spritesheet.png"
+dest_files=[ "res://.import/banana-slide-spritesheet.png-ea18e29b10b223d12b0491aadd18651b.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

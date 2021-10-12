@@ -265,9 +265,7 @@ func spawnPlayerProjectile() -> void:
     # NOT vertically, feels off to do that.
     # Set direction horizontally by using the last direction the player was facing.
     # When you stop moving, you don't just turn back to the right side.
-    #TODO: for some reason, this got destroyed on my end and this makes it feel better...
-    # someone please investigate
-    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 100))
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
     projectile_instance.init(
         # Add projectile halfway up the player so that it
         # spawns in a good place.
