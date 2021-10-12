@@ -108,7 +108,9 @@ func _physics_process(delta: float) -> void:
             # Set texture to the slide animation
             # TODO: @Edward, need slide texture
             $BananaImage.set_animation(SLIDE)
-
+        else:
+            $BananaImage/ParticleSlideRight.emitting = false
+            $BananaImage.set_animation(RUN)
         applyAllImageFlips(false)
         updatePlayerBoundingBox()
 
@@ -127,7 +129,9 @@ func _physics_process(delta: float) -> void:
             # Set texture to the slide animation
             # TODO: @Edward, need slide texture
             $BananaImage.set_animation(SLIDE)
-
+        else:
+            $BananaImage/ParticleSlideLeft.emitting = false
+            $BananaImage.set_animation(RUN)
         applyAllImageFlips(true)
         updatePlayerBoundingBox()
 
@@ -198,7 +202,6 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             print("Player punched")
-            $RightArm.set_frame(0)
             $RightArm.set_animation(PUNCH)
             PlayerData.setPunchesThrown(PlayerData.getPunchesThrown() + 1)
         if (currentWeapon == Weapons.BANANA_THROW):
@@ -340,6 +343,9 @@ func _on_RightArm_animation_finished() -> void:
     if $RightArm.get_animation() == PUNCH:
         if isMoving:
             $RightArm.set_animation(RUN)
+            $LeftArm.set_animation(RUN)
+            $LeftArm.set_frame(0)
+            $RightArm.set_frame(0)
         else:
             $RightArm.set_animation(IDLE)
 
