@@ -68,6 +68,9 @@ func setPlayerData(a) -> void:
 
 #region SaveData
 
+# Likely can use these as multipliers to reduce 
+# player damage and increase enemy health
+const DIFFICULTIES_I = [1,2,3,4] 
 # If you get this throwback, we can be friends :)
 const DIFFICULTIES = {
     CAN_I_PLAY_DADDY      = "Can I Play, Daddy?",      # Easy
@@ -92,9 +95,6 @@ const ExitMessages = [
 ]
 
 
-
-
-
 # Various keys that will be in save data
 var IS_MELEE_UNLOCKED:        String = "isMeleeUnlocked"
 var IS_BANANA_THROW_UNLOCKED: String = "isBananaThrowUnlocked"
@@ -108,7 +108,7 @@ var CURRENT_WEAPON:           String = "currentWeapon"
 # ? Object containing default values for game save data
 # Should be called when creating a new save game
 # Returns the default state with the difficulty
-func getDefaultSaveGame(difficulty: String) -> Dictionary:
+func getDefaultSaveGame(difficulty: int) -> Dictionary:
     return {
         PLAYER_HEALTH           : PlayerDefaults.DEFAULT_PLAYER_HEALTH,
         CURRENT_WEAPON          : PlayerDefaults.DEFAULT_WEAPON,   # Melee

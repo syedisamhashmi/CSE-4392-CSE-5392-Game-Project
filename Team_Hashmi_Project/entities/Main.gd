@@ -13,6 +13,7 @@ func _ready() -> void:
     var root = get_tree().get_root()
     Globals.current_scene = root.get_child(root.get_child_count() - 1)
     PlayerData.saveSlot = 0
+    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(0))
     
     $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.CAN_I_PLAY_DADDY, 0)
     $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[0])
@@ -31,6 +32,7 @@ func _ready() -> void:
 
 func _on_Difficulties_item_selected(index: int) -> void:
     $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[index])
+    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(index))
     match index:
         0: $NewGameCreation/DifficultyImage.set_texture(CAN_I_PLAY_DADDY)
         1: $NewGameCreation/DifficultyImage.set_texture(IM_TOO_SQUISHY_TO_DIE)
@@ -71,4 +73,24 @@ func _on_SaveSlots_item_selected(index: int) -> void:
 func _on_Start_pressed() -> void:
     Globals.inGame = true 
     $NewGameCreation/Start.set_disabled(true)
+    $NewGameCreation/BackToMainMenu.set_disabled(true)
+    $NewGameCreation/Difficulties.set_disabled(true)
+    $NewGameCreation/SaveSlots.set_disabled(true)
+    if (Utils.doesFileExist(Globals.getPlayerSaveFileName())):
+        $NewGameCreation/OverwriteGame.get_cancel().set_text("No!")
+        $NewGameCreation/OverwriteGame.get_ok().set_text("Yes")
+        $NewGameCreation/OverwriteGame.set_visible(true)
+    else:
+        _on_OverwriteGame_confirmed()
+
+
+func _on_OverwriteGame_confirmed() -> void:
+    Globals.save_game()
     Globals.goto_scene("res://entities/Main.tscn")
+
+
+func _on_OverwriteGame_hide() -> void:
+    $NewGameCreation/Start.set_disabled(false)
+    $NewGameCreation/BackToMainMenu.set_disabled(false)
+    $NewGameCreation/Difficulties.set_disabled(false)
+    $NewGameCreation/SaveSlots.set_disabled(false)

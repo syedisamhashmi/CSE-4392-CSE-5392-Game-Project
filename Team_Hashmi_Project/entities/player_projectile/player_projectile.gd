@@ -8,10 +8,11 @@ func init(positionP: Vector2, velocityP: Vector2) -> void:
     self.position = positionP
     self.velocity = velocityP
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
     $player_projectile_image.transform = $player_projectile_image.transform.rotated(perDeltaRotAngle)
     velocity.y += gravity * delta
-    position += velocity
+    set_position(position + velocity)
+
 
 func _on_projectile_area_body_entered(body: Node) -> void:
     #TODO: do something to the enemy, make them lose health, etc.

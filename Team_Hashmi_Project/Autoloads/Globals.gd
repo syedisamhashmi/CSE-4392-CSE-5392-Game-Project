@@ -31,7 +31,7 @@ func load_game() -> void:
     var saveGame = Utils.loadDataFromFile(
         getPlayerSaveFileName(), 
         PlayerData.getDefaultSaveGame(
-            PlayerData.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE
+            PlayerData.DIFFICULTIES_I[0]
         )
     )
     PlayerData.setSavedGame(saveGame)
