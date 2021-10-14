@@ -1,0 +1,58 @@
+Animation work TBD:
+BFG - 2-3d (for inspiration, google BFG 9000)
+- Holding weapon animation. 
+- Projectiles?
+
+Program/Executable Icon - 1hr
+
+Throwing banana - est. 30m-1hr
+
+Background - 1w, maybe 2w?
+- scrolling? (Parallax)
+
+Tiles - 1w
+- floor
+- wall (punching destroyable tile)
+
+Pineapple - WIP 1w
+
+Onion - 1w-2w
+ - walking
+ - attacking
+ - (transparent green gas)
+
+Isam:
+What I did: 
+	- main menu, saving
+What I'm doing: 
+	- start working on enemy ai
+		- walking towards player
+		- aggressiveness
+		- did they SEE the player
+	- stretch goal: loading, pause menu, flow from start to end
+What I will do: 
+	- Implementation of any new animations and sprites.
+	- General game mechanics
+
+Edward:
+What I did: Pineapple
+What I'm doing: Finish up the pineapple
+What I will do: 
+	- Banana throwing
+	- one background initial work
+	- tile map initial work
+
+Bala:
+What I did: Nothing
+What I'm doing: Looking into main menu improvements
+What I will do: Looking into main menu improvements
+
+Sundeep:
+What I did: On-hold on teams, no response
+What I'm doing: On-hold on teams, no response
+What I will do: On-hold on teams, no response
+
+Natraj:
+What I did: The one time I do scoping, he didn't attend
+What I'm doing: The one time I do scoping, he didn't attend
+What I will do: The one time I do scoping, he didn't attend
