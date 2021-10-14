@@ -30,6 +30,7 @@ __meta__ = {
 }
 
 [node name="NewGameCreation" type="ColorRect" parent="."]
+visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 color = Color( 0, 0, 0, 1 )
@@ -37,8 +38,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="NewGameCreation"]
-margin_left = 23.0
+[node name="Gradient" type="TextureRect" parent="NewGameCreation"]
 margin_right = 1023.0
 margin_bottom = 600.0
 rect_pivot_offset = Vector2( -520, -70 )
@@ -115,6 +115,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="OverwriteGame" type="ConfirmationDialog" parent="NewGameCreation"]
+margin_left = 332.0
+margin_top = 202.0
+margin_right = 732.0
+margin_bottom = 342.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Are you sure?"
+dialog_text = "Game already exists in the selected save slot.
+Confirming will overwrite your game."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MainMenuSelection" type="ColorRect" parent="."]
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -175,6 +188,8 @@ __meta__ = {
 [connection signal="item_selected" from="NewGameCreation/Difficulties" to="." method="_on_Difficulties_item_selected"]
 [connection signal="item_selected" from="NewGameCreation/SaveSlots" to="." method="_on_SaveSlots_item_selected"]
 [connection signal="pressed" from="NewGameCreation/Start" to="." method="_on_Start_pressed"]
+[connection signal="confirmed" from="NewGameCreation/OverwriteGame" to="." method="_on_OverwriteGame_confirmed"]
+[connection signal="hide" from="NewGameCreation/OverwriteGame" to="." method="_on_OverwriteGame_hide"]
 [connection signal="pressed" from="MainMenuSelection/NewGame" to="." method="_on_NewGame_pressed"]
 [connection signal="pressed" from="MainMenuSelection/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="confirmed" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_confirmed"]
