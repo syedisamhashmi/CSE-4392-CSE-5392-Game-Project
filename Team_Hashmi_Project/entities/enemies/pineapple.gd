@@ -1,31 +1,117 @@
-extends KinematicBody2D
+extends "res://entities/enemy_base/enemy_base.gd"
 
-var velocity: Vector2 = Vector2.ZERO
-var gravity: float = 900.0
-var friction: float = 0.9
+var playerInside: KinematicBody2D = null
+var canChestBump = true
+var startChestBump = OS.get_system_time_msecs()
+
+var isJumping = false
+var jumpVel = 0
+var canJump = true
+var startJump = OS.get_system_time_msecs()
+
+var JUMPING_DISTANCE = 500
+var WALKING_DISTANCE = 400 
+var JUMP_HEIGHT = 800
+var MOVEMENT_SPEED = 10
+var JUMP_TIMEOUT = 5000
+var CHEST_BUMP_TIMEOUT = 1500
+
+func _ready() -> void:
+    pass
 
 func _physics_process(delta: float) -> void:
-    velocity.y += gravity * delta
-    velocity.x *= friction;
+    ._physics_process(delta)
+    if playerInside != null:
+        _on_ChestBox_body_entered(playerInside)
     
-    if velocity.x == 0:
-      $AnimatedSprite.play("Idle")
+    if isJumping:
+        velocity.x += jumpVel
     
-    # Godot's built in function to determine final velocity
-    velocity = move_and_slide(velocity, Vector2.UP)
+    if is_on_floor() :
+        isJumping = false
+
+    if ($Image.get_animation() != "Chest_Bump" and
+        $Image.get_animation() != "Take_Damage" and
+        !isJumping):
+        handleAnimationState()
     
-func damage(knockback):
-  damage_flash_effect()
-  
-  # pushes the enemy away from the player depending on the projectile speed
-  # also knocks the enemy slightly up into the air
-  velocity.x += knockback
-  velocity.y += -abs(knockback)
+func player_location_changed(_position: Vector2):
+    if($Image.get_animation() == "Take_Damage"):
+        return
+    var dist = self.position.distance_to(_position)
+    var dir = self.position.direction_to(_position)
+    # If they are further than walking distance units
+    
+    if (abs(dist) < JUMPING_DISTANCE and 
+        abs(dist) > WALKING_DISTANCE and 
+        !isJumping and
+        canJump
+    ):
+        isJumping = true 
+        $Image.set_animation("Jump_Attack")
+        if dir.x <= 0:   
+            jumpVel = -(dist/12)
+        else:
+            jumpVel = dist / 12
+        velocity.y -= JUMP_HEIGHT
+
+    if (abs(dist) < WALKING_DISTANCE 
+    # and not trying inside the player on the left side
+        and ((dir.x > 0 and abs(dist) > 70) 
+    # or the right side, numbers are different due to the sprite and bounding boxes
+            or (dir.x < 0 and abs(dist) > 100)
+        )
+    ):
+        if dir.x <= 0:
+            velocity.x -= MOVEMENT_SPEED
+        else:
+            velocity.x += MOVEMENT_SPEED
+        handle_enemy_direction(dir.x )
+    
+    
+func handle_enemy_direction(dir: float) -> void:
+    $Image.flip_h = dir > 0
+    $LeftChestBox/LeftChestBoxCollision.set_disabled(dir > 0)
+    $RightChestBox/RightChestBoxCollision.set_disabled(dir < 0)
+
+func _on_ChestBox_body_entered(_body: Node) -> void:
+    playerInside = _body
+    if (canChestBump and (OS.get_system_time_msecs() - startChestBump) >= 1500):
+        canChestBump = false
+        startChestBump = OS.get_system_time_msecs()
+        $Image.set_frame(0)
+        $Image.set_animation("Chest_Bump")
+
+func _on_Image_animation_finished() -> void:
+    if ($Image.get_animation() == "Jump_Attack"):
+        handleAnimationState()
+    
+    if (OS.get_system_time_msecs() - startChestBump >= CHEST_BUMP_TIMEOUT):
+        canChestBump = true
+
+    if (OS.get_system_time_msecs() - startJump >= JUMP_TIMEOUT):
+        canJump = true
+
+    if ($Image.get_animation() == "Chest_Bump" or
+        $Image.get_animation() == "Take_Damage"):
+        canChestBump = true
+        handleAnimationState()
 
 
-func damage_flash_effect():
-  print("hit!")
-  $AudioStreamPlayer.play()
-  $AnimatedSprite.material.set_shader_param("intensity", 0.75)
-  yield(get_tree().create_timer(0.1), "timeout")
-  $AnimatedSprite.material.set_shader_param("intensity", 0.0)
+func damage(knockback, isPunch : bool  = false):
+    .damage(knockback, isPunch)
+    $Image.set_animation("Take_Damage")
+    canChestBump = false
+    
+
+func _on_ChestBox_body_exited(_body: Node) -> void:
+    playerInside = null
+
+func handleAnimationState() -> void:
+    if abs(velocity.x) <= 5:
+        if $Image.get_animation() != "Idle":
+          $Image.set_animation("Idle")
+    else:
+        if ($Image.get_animation() != "Walk"):
+            $Image.set_animation("Walk")
+    return

@@ -184,6 +184,8 @@ func _physics_process(delta: float) -> void:
     $RightArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
     $LeftArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
 
+    Signals.emit_signal("player_location_changed", position)
+
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
@@ -349,7 +351,7 @@ func _on_RightArm_animation_finished() -> void:
 
 func _on_PunchArea_body_entered(body: Node) -> void:
     if body.has_method("damage"):
-      body.damage(PUNCH_DAMAGE * lastDir)
+      body.damage(PUNCH_DAMAGE * lastDir, true)
 
 
 func _on_RightArm_frame_changed() -> void:

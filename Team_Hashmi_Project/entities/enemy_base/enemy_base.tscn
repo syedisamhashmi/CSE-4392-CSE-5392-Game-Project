@@ -16,10 +16,10 @@ shader_param/intensity = null
 collision_layer = 4
 script = ExtResource( 2 )
 
-[node name="Enemy_Base_Bounding_Box" type="CollisionShape2D" parent="."]
+[node name="BoundingBox" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Enemy_Base_Image" type="Sprite" parent="."]
+[node name="Image" type="Sprite" parent="."]
 material = SubResource( 2 )
 texture = ExtResource( 1 )
 

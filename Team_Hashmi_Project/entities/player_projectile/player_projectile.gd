@@ -24,7 +24,7 @@ func _on_projectile_area_body_entered(body: Node) -> void:
     # checks if body has method "damage" if so, call that method
     # the result depends on that collided body
     if body.has_method("damage"):
-      body.damage(knockback)
+      body.damage(knockback, false)
       
     self.queue_free()
 

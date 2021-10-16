@@ -22,4 +22,4 @@ position = Vector2( 762.049, 155.038 )
 position = Vector2( -533.646, 406.189 )
 
 [node name="pineapple" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1236.77, 350.322 )
+position = Vector2( -731, 335 )
