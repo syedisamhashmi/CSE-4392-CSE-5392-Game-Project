@@ -23,7 +23,7 @@ var projectile_speed: Vector2 = Vector2(4, -4)
 
 #region Physics & Movement
 var SPEED_DEADZONE = 3
-var acceleration: Vector2 = Vector2(600, 400)
+var acceleration: Vector2 = Vector2(600, 500)
 var airControlModifier: Vector2 = Vector2(0.95, 0.0)
 var friction: float = 0.90
 var velocity: Vector2 = Vector2.ZERO

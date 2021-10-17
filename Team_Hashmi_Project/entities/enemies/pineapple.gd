@@ -11,7 +11,7 @@ var startJump = OS.get_system_time_msecs()
 
 var JUMPING_DISTANCE = 500
 var WALKING_DISTANCE = 400 
-var JUMP_HEIGHT = 800
+var JUMP_HEIGHT = 750
 var MOVEMENT_SPEED = 10
 var JUMP_TIMEOUT = 5000
 var CHEST_BUMP_TIMEOUT = 1500
@@ -50,9 +50,9 @@ func player_location_changed(_position: Vector2):
         isJumping = true 
         $Image.set_animation("Jump_Attack")
         if dir.x <= 0:   
-            jumpVel = -(dist/12)
+            jumpVel = -(dist/15)
         else:
-            jumpVel = dist / 12
+            jumpVel = dist / 15
         velocity.y -= JUMP_HEIGHT
 
     if (abs(dist) < WALKING_DISTANCE 
