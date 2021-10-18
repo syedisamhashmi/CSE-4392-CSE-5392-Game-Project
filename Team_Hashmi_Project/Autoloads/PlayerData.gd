@@ -123,6 +123,7 @@ const ExitMessages = [
 # Various keys that will be in save data
 var IS_MELEE_UNLOCKED:        String = "isMeleeUnlocked"
 var IS_BANANA_THROW_UNLOCKED: String = "isBananaThrowUnlocked"
+var BANANA_THROW_AMMO:        int    = 0
 var IS_BFG9000_UNLOCKED:      String = "isBFG9000Unlocked"
 var DIFFICULTY:               String = "difficulty"
 var PLAYER_HEALTH:            String = "playerHealth"
@@ -139,6 +140,7 @@ func getDefaultSaveGame(difficulty: int) -> Dictionary:
         CURRENT_WEAPON          : PlayerDefaults.DEFAULT_WEAPON,   # Melee
         IS_MELEE_UNLOCKED       : PlayerDefaults.IS_MELEE_UNLOCKED,
         IS_BANANA_THROW_UNLOCKED: PlayerDefaults.IS_BANANA_THROW_UNLOCKED,
+        BANANA_THROW_AMMO       : 0,
         # Banana Flinging Gun 9000 ;)
         IS_BFG9000_UNLOCKED     : PlayerDefaults.IS_BFG9000_UNLOCKED,
         DIFFICULTY              : difficulty,
@@ -154,7 +156,6 @@ func getDifficulty() -> int:
 func setDifficulty(a) -> void:
     savedGame[DIFFICULTY] = a
 #endregion
-
 #region PlayerHealth
 func getPlayerHealth() -> int:
     if !savedGame.has(PLAYER_HEALTH):
@@ -200,6 +201,17 @@ func getIsBananaThrowUnlocked() -> bool:
 func setIsBananaThrowUnlocked(a) -> void:
     savedGame[IS_BANANA_THROW_UNLOCKED] = a
 #endregion
+
+#region BananaThrowAmmo
+func getBananaThrowAmmo() -> int:
+    if !savedGame.has(BANANA_THROW_AMMO):
+        setBananaThrowAmmo(PlayerDefaults.BANANA_THROW_AMMO)
+        return PlayerDefaults.BANANA_THROW_AMMO
+    return savedGame[BANANA_THROW_AMMO]
+func setBananaThrowAmmo(a) -> void:
+    savedGame[BANANA_THROW_AMMO] = a
+#endregion
+
 #region PlayerMoveSpeed
 func getPlayerMoveSpeed() -> float:
     if !savedGame.has(PLAYER_MOVE_SPEED):

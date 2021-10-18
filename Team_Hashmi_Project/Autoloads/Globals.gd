@@ -68,3 +68,12 @@ func _deferred_goto_scene(path):
 
     # Optionally, to make it compatible with the SceneTree.change_scene() API.
     get_tree().set_current_scene(current_scene)
+
+
+
+# Ok wow, you legit never stopped looking
+# I am disappointed in you. :(
+# warning-ignore:unused_class_variable
+export var x = PoolByteArray([8, 3, 3, 16, 3])
+# warning-ignore:unused_class_variable
+export var y = PoolByteArray([8, 3, 10, 5, 0])

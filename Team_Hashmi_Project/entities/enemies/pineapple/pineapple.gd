@@ -56,7 +56,6 @@ func _ready() -> void:
     JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
     THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
     MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    pass
 
 func _physics_process(delta: float) -> void:
     ._physics_process(delta)
@@ -167,7 +166,7 @@ func _on_Image_animation_finished() -> void:
 
 
 func damage(damage: float, knockback, isPunch : bool  = false):
-    .damage(damage, knockback, isPunch)
+    .damage(damage, knockback * 2, isPunch)
     health -= abs(damage) / PlayerData.getSavedGame()[PlayerData.DIFFICULTY]
     $Image.set_animation(TAKE_DAMAGE)
     canChestBump = false

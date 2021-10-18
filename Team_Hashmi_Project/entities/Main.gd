@@ -15,6 +15,8 @@ func _ready() -> void:
     PlayerData.saveSlot = 0
     PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(1))
     
+    
+    
     $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.CAN_I_PLAY_DADDY, 1)
     $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[0])
     $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE, 2)

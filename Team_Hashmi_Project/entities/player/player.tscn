@@ -72,13 +72,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="ShaderMaterial" id=42]
+[sub_resource type="ShaderMaterial" id=12]
 shader = ExtResource( 12 )
 shader_param/intensity = null
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
@@ -120,13 +116,12 @@ region = Rect2( 128, 0, 64, 64 )
 atlas = ExtResource( 7 )
 region = Rect2( 192, 0, 64, 64 )
 
-[sub_resource type="SpriteFrames" id=23]
+[sub_resource type="AtlasTexture" id=23]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=24]
 animations = [ {
-"frames": [ SubResource( 12 ) ],
-"loop": true,
-"name": "Slide",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
 "name": "Run",
@@ -136,15 +131,20 @@ animations = [ {
 "loop": true,
 "name": "Idle",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 23 ) ],
+"loop": true,
+"name": "Slide",
+"speed": 5.0
 } ]
 
-[sub_resource type="CanvasItemMaterial" id=24]
+[sub_resource type="CanvasItemMaterial" id=25]
 particles_animation = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="ParticlesMaterial" id=25]
+[sub_resource type="ParticlesMaterial" id=26]
 flag_disable_z = true
 gravity = Vector3( -3, -1, 0 )
 initial_velocity = 10.0
@@ -155,91 +155,91 @@ orbit_velocity_random = 0.0
 anim_speed = 0.64
 anim_speed_random = 0.75
 
-[sub_resource type="AtlasTexture" id=26]
-flags = 4
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 64, 64 )
-
 [sub_resource type="AtlasTexture" id=27]
 flags = 4
 atlas = ExtResource( 9 )
-region = Rect2( 64, 0, 64, 64 )
+region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=28]
 flags = 4
 atlas = ExtResource( 9 )
-region = Rect2( 128, 0, 64, 64 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=29]
 flags = 4
 atlas = ExtResource( 9 )
-region = Rect2( 192, 0, 64, 64 )
+region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=30]
 flags = 4
 atlas = ExtResource( 9 )
-region = Rect2( 256, 0, 64, 64 )
+region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=31]
 flags = 4
 atlas = ExtResource( 9 )
-region = Rect2( 320, 0, 64, 64 )
+region = Rect2( 256, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 64, 64 )
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 320, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 8 )
-region = Rect2( 64, 0, 64, 64 )
+region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=34]
 atlas = ExtResource( 8 )
-region = Rect2( 128, 0, 64, 64 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=35]
 atlas = ExtResource( 8 )
-region = Rect2( 192, 0, 64, 64 )
+region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=36]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 0, 0, 64, 64 )
+atlas = ExtResource( 8 )
+region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=37]
 flags = 4
 atlas = ExtResource( 10 )
-region = Rect2( 64, 0, 64, 64 )
+region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=38]
 flags = 4
 atlas = ExtResource( 10 )
-region = Rect2( 128, 0, 64, 64 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=39]
 flags = 4
 atlas = ExtResource( 10 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=40]
+flags = 4
+atlas = ExtResource( 10 )
 region = Rect2( 192, 0, 64, 64 )
 
-[sub_resource type="SpriteFrames" id=40]
+[sub_resource type="SpriteFrames" id=41]
 animations = [ {
-"frames": [ SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ) ],
+"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
 "loop": true,
 "name": "Run",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ) ],
+"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
+"frames": [ SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
 "loop": true,
 "name": "Punch",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=41]
+[sub_resource type="RectangleShape2D" id=42]
 extents = Vector2( 21, 28 )
 
 [node name="Banana" type="KinematicBody2D"]
@@ -267,32 +267,34 @@ animation = "Idle"
 [node name="Projectiles" type="Node" parent="."]
 
 [node name="BananaImage" type="AnimatedSprite" parent="."]
-material = SubResource( 42 )
+material = SubResource( 12 )
 position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
-frames = SubResource( 23 )
+frames = SubResource( 24 )
 animation = "Idle"
 
 [node name="ParticleSlideRight" type="Particles2D" parent="BananaImage"]
-material = SubResource( 24 )
+material = SubResource( 25 )
 position = Vector2( 16, 20 )
+emitting = false
 amount = 4
 lifetime = 0.2
-process_material = SubResource( 25 )
+process_material = SubResource( 26 )
 texture = ExtResource( 3 )
 
 [node name="ParticleSlideLeft" type="Particles2D" parent="BananaImage"]
-material = SubResource( 24 )
+material = SubResource( 25 )
 position = Vector2( -12, 20 )
+emitting = false
 amount = 4
 lifetime = 0.2
-process_material = SubResource( 25 )
+process_material = SubResource( 26 )
 texture = ExtResource( 3 )
 
 [node name="RightArm" type="AnimatedSprite" parent="."]
 position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
-frames = SubResource( 40 )
+frames = SubResource( 41 )
 animation = "Idle"
 
 [node name="RightPunchArea" type="Area2D" parent="."]
@@ -301,7 +303,7 @@ collision_layer = 0
 collision_mask = 4
 
 [node name="Collider" type="CollisionShape2D" parent="RightPunchArea"]
-shape = SubResource( 41 )
+shape = SubResource( 42 )
 disabled = true
 
 [node name="LeftPunchArea" type="Area2D" parent="."]
@@ -310,8 +312,12 @@ collision_layer = 0
 collision_mask = 4
 
 [node name="Collider" type="CollisionShape2D" parent="LeftPunchArea"]
-shape = SubResource( 41 )
+shape = SubResource( 42 )
 disabled = true
+
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+volume_db = -20.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 72, -24 )
@@ -322,10 +328,6 @@ drag_margin_top = 0.5
 drag_margin_right = 0.5
 drag_margin_bottom = 0.5
 editor_draw_drag_margin = true
-
-[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 11 )
-volume_db = -20.0
 
 [connection signal="animation_finished" from="RightArm" to="." method="_on_RightArm_animation_finished"]
 [connection signal="frame_changed" from="RightArm" to="." method="_on_RightArm_frame_changed"]
