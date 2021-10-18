@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/images/icon.png" type="Texture" id=1]
-[ext_resource path="res://entities/enemy_base/enemy_base.gd" type="Script" id=2]
-[ext_resource path="res://entities/enemies/damage_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://entities/enemies/enemy_base/enemy_base.gd" type="Script" id=2]
+[ext_resource path="res://entities/damage_shader.gdshader" type="Shader" id=3]
 [ext_resource path="res://assets/audio/87535__whiprealgood__splat.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]

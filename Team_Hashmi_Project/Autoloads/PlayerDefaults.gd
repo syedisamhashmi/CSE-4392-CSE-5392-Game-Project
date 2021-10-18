@@ -1,5 +1,7 @@
 extends Node
 # warning-ignore:unused_class_variable
+var DEFAULT_DIFFICULTY:       int   = 1
+# warning-ignore:unused_class_variable
 var DEFAULT_PLAYER_HEALTH:    int   = 100
 # warning-ignore:unused_class_variable
 var DEFAULT_WEAPON:           int   = 0    # Melee

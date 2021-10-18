@@ -54,6 +54,7 @@ var currentWeapon:         int     = PlayerDefaults.DEFAULT_WEAPON
 var isMeleeUnlocked:       bool    = PlayerDefaults.IS_MELEE_UNLOCKED
 var isBananaThrowUnlocked: bool    = PlayerDefaults.IS_BANANA_THROW_UNLOCKED
 var isBFG9000Unlocked:     bool    = PlayerDefaults.IS_BFG9000_UNLOCKED
+var difficulty:            float   = PlayerDefaults.DEFAULT_DIFFICULTY
 # TODO: Put this into save file, maybe upgrade it idk.
 var PUNCH_DAMAGE:          int     = 200
 var topSpeed:      Vector2 = Vector2( 
@@ -64,10 +65,16 @@ var topSpeed:      Vector2 = Vector2(
 var lastDir:               int     = PlayerDirection.RIGHT 
 #endregion
 
+var damageStart = 0
+
+
 func _physics_process(delta: float) -> void:
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
     # used to allow shorter jumps if jump button is released quickly
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
+    
+    if (OS.get_system_time_msecs() - damageStart < 200):
+        position.x += xKnockback
     
     # want to feel instant and responsive, so don't bother with acceleration
     # i.e. just set their velocity to the jump acceleration.
@@ -298,11 +305,12 @@ func banana_throw_pickup_get():
 
 
 func setLoadedData() -> void:
-    playerHealth = PlayerData.getPlayerHealth()
-    currentWeapon = PlayerData.getCurrentWeapon()
-    isMeleeUnlocked = PlayerData.getIsMeleeUnlocked()
+    playerHealth          = PlayerData.getPlayerHealth()
+    currentWeapon         = PlayerData.getCurrentWeapon()
+    isMeleeUnlocked       = PlayerData.getIsMeleeUnlocked()
     isBananaThrowUnlocked = PlayerData.getIsBananaThrowUnlocked()
-    isBFG9000Unlocked = PlayerData.getIsBFG9000Unlocked()
+    isBFG9000Unlocked     = PlayerData.getIsBFG9000Unlocked()
+    difficulty            = PlayerData.getDifficulty()
     topSpeed = Vector2(PlayerData.getPlayerMoveSpeed(), PlayerData.getPlayerJumpHeight())
 func quicksave() -> void:
     PlayerData.setPlayerHealth(playerHealth)
@@ -310,6 +318,7 @@ func quicksave() -> void:
     PlayerData.setIsMeleeUnlocked(isMeleeUnlocked)
     PlayerData.setIsBananaThrowUnlocked(isBananaThrowUnlocked)
     PlayerData.setIsBFG9000Unlocked(isBFG9000Unlocked)
+    PlayerData.setDifficulty(difficulty)
     PlayerData.setPlayerMoveSpeed(topSpeed.x)
     PlayerData.setPlayerJumpHeight(topSpeed.y)
     Globals.save_game()
@@ -381,3 +390,18 @@ func _on_RightArm_frame_changed() -> void:
                 return
             $LeftPunchArea/Collider.set_disabled(true)
             return
+
+var xKnockback = 0
+func damage(damage, knockbackMultiplier):
+    damageStart = OS.get_system_time_msecs()
+    damage_flash_effect()
+    xKnockback = damage * knockbackMultiplier
+#    velocity.y += -500
+    playerHealth -= abs(damage) * PlayerData.getSavedGame()[PlayerData.DIFFICULTY]
+    print(playerHealth)
+
+func damage_flash_effect():
+    $damage_sound.play()
+    $BananaImage.material.set_shader_param("intensity", 0.75)
+    yield(get_tree().create_timer(0.1), "timeout")
+    $BananaImage.material.set_shader_param("intensity", 0.0)

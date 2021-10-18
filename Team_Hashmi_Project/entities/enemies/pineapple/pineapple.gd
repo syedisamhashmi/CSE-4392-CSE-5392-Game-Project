@@ -1,13 +1,15 @@
-extends "res://entities/enemy_base/enemy_base.gd"
+extends "res://entities/enemies/enemy_base/enemy_base.gd"
 
-var playerInside: KinematicBody2D = null
 var canChestBump = true
 var startChestBump = OS.get_system_time_msecs()
 
 var isJumping = false
 var jumpVel = 0
-var canJump = true
+var canJump = false
 var startJump = OS.get_system_time_msecs()
+
+var hitFloorStart = 0
+
 
 var JUMPING_DISTANCE = 500
 var WALKING_DISTANCE = 400 
@@ -21,14 +23,24 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
     ._physics_process(delta)
-    if playerInside != null:
-        _on_ChestBox_body_entered(playerInside)
+    if ($LeftChestBox.get_overlapping_bodies().size() != 0 or
+        $RightChestBox.get_overlapping_bodies().size() != 0):
+        _on_ChestBox_body_entered(null)
     
     if isJumping:
         velocity.x += jumpVel
     
     if is_on_floor() :
+        if (isJumping):
+            $JumpAttackBox/JumpAttackBoxCollision.disabled = false
+            hitFloorStart = OS.get_system_time_msecs()
+            $JumpAttackBox/JumpParticles.set_emitting(true)
+        else:
+            if (OS.get_system_time_msecs() - hitFloorStart > 100):
+                $JumpAttackBox/JumpAttackBoxCollision.disabled = true
+                $JumpAttackBox/JumpParticles.set_emitting(false)
         isJumping = false
+        canJump = true
 
     if ($Image.get_animation() != "Chest_Bump" and
         $Image.get_animation() != "Take_Damage" and
@@ -42,11 +54,14 @@ func player_location_changed(_position: Vector2):
     var dir = self.position.direction_to(_position)
     # If they are further than walking distance units
     
-    if (abs(dist) < JUMPING_DISTANCE and 
+    if (
+        canJump and 
+        (OS.get_system_time_msecs() - startJump) >= JUMP_TIMEOUT and
+        abs(dist) < JUMPING_DISTANCE and 
         abs(dist) > WALKING_DISTANCE and 
-        !isJumping and
-        canJump
+        !isJumping
     ):
+        startJump = OS.get_system_time_msecs()
         isJumping = true 
         $Image.set_animation("Jump_Attack")
         if dir.x <= 0:   
@@ -57,9 +72,9 @@ func player_location_changed(_position: Vector2):
 
     if (abs(dist) < WALKING_DISTANCE 
     # and not trying inside the player on the left side
-        and ((dir.x > 0 and abs(dist) > 70) 
+        and ((dir.x > 0 and abs(dist) > 100) 
     # or the right side, numbers are different due to the sprite and bounding boxes
-            or (dir.x < 0 and abs(dist) > 100)
+            or (dir.x < 0 and abs(dist) > 70)
         )
     ):
         if dir.x <= 0:
@@ -75,23 +90,22 @@ func handle_enemy_direction(dir: float) -> void:
     $RightChestBox/RightChestBoxCollision.set_disabled(dir < 0)
 
 func _on_ChestBox_body_entered(_body: Node) -> void:
-    playerInside = _body
-    if (canChestBump and (OS.get_system_time_msecs() - startChestBump) >= 1500):
-        canChestBump = false
-        startChestBump = OS.get_system_time_msecs()
-        $Image.set_frame(0)
-        $Image.set_animation("Chest_Bump")
+    var bodies = $LeftChestBox.get_overlapping_bodies() + $RightChestBox.get_overlapping_bodies()
+    if (canChestBump and 
+        (OS.get_system_time_msecs() - startChestBump) >= CHEST_BUMP_TIMEOUT):
+        for body in bodies:
+            canChestBump = false
+            startChestBump = OS.get_system_time_msecs()
+            $Image.set_frame(0)
+            $Image.set_animation("Chest_Bump")
+            if body.has_method("damage"):
+                body.damage(25 * (-1 if !$Image.flip_h else 1), .5)
 
 func _on_Image_animation_finished() -> void:
     if ($Image.get_animation() == "Jump_Attack"):
         handleAnimationState()
-    
     if (OS.get_system_time_msecs() - startChestBump >= CHEST_BUMP_TIMEOUT):
         canChestBump = true
-
-    if (OS.get_system_time_msecs() - startJump >= JUMP_TIMEOUT):
-        canJump = true
-
     if ($Image.get_animation() == "Chest_Bump" or
         $Image.get_animation() == "Take_Damage"):
         canChestBump = true
@@ -105,7 +119,8 @@ func damage(knockback, isPunch : bool  = false):
     
 
 func _on_ChestBox_body_exited(_body: Node) -> void:
-    playerInside = null
+#    playerInside = null
+    pass
 
 func handleAnimationState() -> void:
     if abs(velocity.x) <= 5:
@@ -115,3 +130,13 @@ func handleAnimationState() -> void:
         if ($Image.get_animation() != "Walk"):
             $Image.set_animation("Walk")
     return
+
+
+func _on_JumpAttackBox_body_entered(body: Node) -> void:
+    print("Player hit with jump attack")
+    if (OS.get_system_time_msecs() - hitFloorStart > 100):
+        $JumpAttackBox/JumpAttackBoxCollision.disabled = true
+        $JumpAttackBox/JumpParticles.set_emitting(false)
+        return
+    if body.has_method("damage"):
+      body.damage(50 * 1 if !$Image.flip_h else -1, 1)
