@@ -120,6 +120,15 @@ func getDefaultSaveGame(difficulty: int) -> Dictionary:
         PLAYER_MOVE_SPEED       : PlayerDefaults.PLAYER_MOVE_SPEED,
         PLAYER_JUMP_HEIGHT      : PlayerDefaults.PLAYER_JUMP_HEIGHT,
     }
+#region Difficulty
+func getDifficulty() -> int:
+    if !savedGame.has(DIFFICULTY):
+        setDifficulty(PlayerDefaults.DEFAULT_DIFFICULTY)
+        return PlayerDefaults.DEFAULT_DIFFICULTY
+    return savedGame[DIFFICULTY]
+func setDifficulty(a) -> void:
+    savedGame[DIFFICULTY] = a
+#endregion
 
 #region PlayerHealth
 func getPlayerHealth() -> int:

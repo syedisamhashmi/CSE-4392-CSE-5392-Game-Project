@@ -13,13 +13,13 @@ func _ready() -> void:
     var root = get_tree().get_root()
     Globals.current_scene = root.get_child(root.get_child_count() - 1)
     PlayerData.saveSlot = 0
-    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(0))
+    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(1))
     
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.CAN_I_PLAY_DADDY, 0)
+    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.CAN_I_PLAY_DADDY, 1)
     $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[0])
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE, 1)
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.BRUISE_ME_PLENTY, 2)
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.I_AM_BANANA_INCARNATE, 3)
+    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE, 2)
+    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.BRUISE_ME_PLENTY, 3)
+    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.I_AM_BANANA_INCARNATE, 4)
     
     rng.randomize()
     $MainMenuSelection.set_visible(true)

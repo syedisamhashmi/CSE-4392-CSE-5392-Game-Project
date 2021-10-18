@@ -1,0 +1,200 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://entities/damage_shader.gdshader" type="Shader" id=1]
+[ext_resource path="res://assets/images/enemies/pineapple-enemy.png" type="Texture" id=2]
+[ext_resource path="res://entities/enemies/pineapple/pineapple.gd" type="Script" id=3]
+[ext_resource path="res://assets/audio/87535__whiprealgood__splat.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/images/banana_slide/slide_particle.png" type="Texture" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/intensity = 0.0
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 512, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 576, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 640, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 704, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 768, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 832, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 896, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 2 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 2 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 2 )
+region = Rect2( 448, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 2 )
+region = Rect2( 1088, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 2 )
+region = Rect2( 1088, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 2 )
+region = Rect2( 960, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 2 )
+region = Rect2( 1024, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=21]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
+"loop": true,
+"name": "Jump_Attack",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 17 ), SubResource( 18 ) ],
+"loop": true,
+"name": "Take_Damage",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 19 ), SubResource( 20 ) ],
+"loop": true,
+"name": "Chest_Bump",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=22]
+extents = Vector2( 11.6869, 17.954 )
+
+[sub_resource type="RectangleShape2D" id=23]
+extents = Vector2( 11.6258, 18.0845 )
+
+[sub_resource type="RectangleShape2D" id=24]
+extents = Vector2( 11.6258, 18.5151 )
+
+[sub_resource type="ParticlesMaterial" id=25]
+emission_shape = 2
+emission_box_extents = Vector3( 40, 5, 1 )
+flag_disable_z = true
+direction = Vector3( 10, 5, 0 )
+gravity = Vector3( 0, -10, 0 )
+angular_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="RectangleShape2D" id=26]
+extents = Vector2( 44.1319, 25.773 )
+
+[node name="pineapple" type="KinematicBody2D"]
+scale = Vector2( 2.83242, 2.83242 )
+collision_layer = 4
+collision_mask = 3
+script = ExtResource( 3 )
+
+[node name="Image" type="AnimatedSprite" parent="."]
+material = SubResource( 1 )
+position = Vector2( -0.293777, -14.503 )
+frames = SubResource( 21 )
+animation = "Idle"
+frame = 1
+playing = true
+
+[node name="damage_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -20.0
+
+[node name="BoundingBox" type="CollisionShape2D" parent="."]
+position = Vector2( 0.136806, -0.293781 )
+shape = SubResource( 22 )
+
+[node name="LeftChestBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="LeftChestBoxCollision" type="CollisionShape2D" parent="LeftChestBox"]
+position = Vector2( -19.418, -0.353055 )
+shape = SubResource( 23 )
+
+[node name="RightChestBox" type="Area2D" parent="."]
+position = Vector2( 32.8341, -1.76527 )
+collision_layer = 0
+collision_mask = 2
+
+[node name="RightChestBoxCollision" type="CollisionShape2D" parent="RightChestBox"]
+position = Vector2( -17.9474, 0.861167 )
+shape = SubResource( 24 )
+
+[node name="JumpAttackBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="JumpParticles" type="Particles2D" parent="JumpAttackBox"]
+position = Vector2( -1.41222, 10.9447 )
+emitting = false
+amount = 50
+lifetime = 0.1
+explosiveness = 1.0
+process_material = SubResource( 25 )
+texture = ExtResource( 5 )
+
+[node name="JumpAttackBoxCollision" type="CollisionShape2D" parent="JumpAttackBox"]
+shape = SubResource( 26 )
+disabled = true
+
+[connection signal="animation_finished" from="Image" to="." method="_on_Image_animation_finished"]
+[connection signal="body_entered" from="LeftChestBox" to="." method="_on_ChestBox_body_entered"]
+[connection signal="body_exited" from="LeftChestBox" to="." method="_on_ChestBox_body_exited"]
+[connection signal="body_entered" from="RightChestBox" to="." method="_on_ChestBox_body_entered"]
+[connection signal="body_exited" from="RightChestBox" to="." method="_on_ChestBox_body_exited"]
+[connection signal="body_entered" from="JumpAttackBox" to="." method="_on_JumpAttackBox_body_entered"]
