@@ -79,10 +79,35 @@ const DIFFICULTIES = {
     I_AM_BANANA_INCARNATE = "I Am Banana Incarnate!",  # Nightmare   
 }
 const DIFFICULTIES_DESCRIPTIONS = [
-    "Gameplay for babies. (i.e. Dr. Dalio)",
-    "If you heard the saying 'If you can't handle the heat, get out of the kitchen'. You probably left the kitchen.", # Medium
-    "So, you think you are worthy...",
-    "This is a literal nightmare."   
+    """Gameplay for babies. (i.e. Dr. Dalio)
+    - Forgiving gameplay
+    - Slow and methodical, 
+      large damage cooldown after being hit.
+    - Lots of health pickups
+    - Lots of ammo pickups 
+    """,
+    """
+    If you heard the saying "If you can't handle the heat, get out of the kitchen". 
+    You probably left the kitchen...
+    - Enemies are not so kind.
+    - Smaller damage cooldowns.
+    - Lots of health pickups
+    - Lots of ammo pickups
+    """, # Medium
+    
+    """So, you think you are worthy... This is a challenge.
+    - Enemies are aggresive
+    - No rushing, but you might want to be in a hurry.
+    - Fewer health pickups
+    - Fewer ammo pickups
+    """,
+    
+    """This is a literal nightmare.
+    - Enemies are potassium-thirsty and aggressive.
+    - Damage cooldown is practically non-existent.
+    - Health pickups are rare. Be wise.
+    - Ammo pickups are rare. Be wise.
+    """   
 ]
 
 const ExitMessages = [

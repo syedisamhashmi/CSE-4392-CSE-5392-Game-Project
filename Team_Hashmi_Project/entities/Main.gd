@@ -28,11 +28,16 @@ func _ready() -> void:
     $NewGameCreation/SaveSlots.add_item("Save Slot 2", 1)
     $NewGameCreation/SaveSlots.add_item("Save Slot 3", 2)
     $NewGameCreation/SaveSlots.add_item("Save Slot 4", 3)
+    
+    $LoadGame/LoadSlots.add_item("Save Slot 1", 0)
+    $LoadGame/LoadSlots.add_item("Save Slot 2", 1)
+    $LoadGame/LoadSlots.add_item("Save Slot 3", 2)
+    $LoadGame/LoadSlots.add_item("Save Slot 4", 3)
 
 
 func _on_Difficulties_item_selected(index: int) -> void:
     $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[index])
-    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(index))
+    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(index + 1))
     match index:
         0: $NewGameCreation/DifficultyImage.set_texture(CAN_I_PLAY_DADDY)
         1: $NewGameCreation/DifficultyImage.set_texture(IM_TOO_SQUISHY_TO_DIE)
@@ -55,6 +60,7 @@ func _on_NewGame_pressed() -> void:
 func _on_BackToMainMenu_pressed() -> void:
     $MainMenuSelection.set_visible(true)
     $NewGameCreation.set_visible(false)
+    $LoadGame.set_visible(false)
 
 func _on_ExitConfirmation_confirmed() -> void:
     Signals.emit_signal("exit_game")
@@ -69,23 +75,32 @@ func _on_ExitConfirmation_hide() -> void:
 func _on_SaveSlots_item_selected(index: int) -> void:
     PlayerData.saveSlot = index
 
+func _on_LoadSlots_item_selected(index: int) -> void:
+    PlayerData.saveSlot = index
 
-func _on_Start_pressed() -> void:
+
+func _on_Start_pressed(newGame: bool) -> void:
     Globals.inGame = true 
     $NewGameCreation/Start.set_disabled(true)
     $NewGameCreation/BackToMainMenu.set_disabled(true)
     $NewGameCreation/Difficulties.set_disabled(true)
     $NewGameCreation/SaveSlots.set_disabled(true)
-    if (Utils.doesFileExist(Globals.getPlayerSaveFileName())):
+    if (newGame and
+        Utils.doesFileExist(Globals.getPlayerSaveFileName())
+    ):
         $NewGameCreation/OverwriteGame.get_cancel().set_text("No!")
         $NewGameCreation/OverwriteGame.get_ok().set_text("Yes")
         $NewGameCreation/OverwriteGame.set_visible(true)
+        return
     else:
-        _on_OverwriteGame_confirmed()
+        _on_OverwriteGame_confirmed(newGame)
+        return
 
-
-func _on_OverwriteGame_confirmed() -> void:
-    Globals.save_game()
+func _on_OverwriteGame_confirmed(newGame: bool) -> void:
+    if newGame:
+        Globals.save_game()
+    else:
+        Globals.load_game()
     Globals.goto_scene("res://entities/Main.tscn")
 
 
@@ -94,3 +109,10 @@ func _on_OverwriteGame_hide() -> void:
     $NewGameCreation/BackToMainMenu.set_disabled(false)
     $NewGameCreation/Difficulties.set_disabled(false)
     $NewGameCreation/SaveSlots.set_disabled(false)
+
+
+func _on_LoadGame_pressed() -> void:
+    $MainMenuSelection.set_visible(false)
+    $NewGameCreation.set_visible(false)
+    $LoadGame.set_visible(true)
+    pass # Replace with function body.

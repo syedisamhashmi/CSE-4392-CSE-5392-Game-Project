@@ -56,7 +56,7 @@ var isBananaThrowUnlocked: bool    = PlayerDefaults.IS_BANANA_THROW_UNLOCKED
 var isBFG9000Unlocked:     bool    = PlayerDefaults.IS_BFG9000_UNLOCKED
 var difficulty:            float   = PlayerDefaults.DEFAULT_DIFFICULTY
 # TODO: Put this into save file, maybe upgrade it idk.
-var PUNCH_DAMAGE:          int     = 200
+var PUNCH_DAMAGE:          int     = 50
 var topSpeed:      Vector2 = Vector2( 
     PlayerDefaults.PLAYER_MOVE_SPEED, 
     PlayerDefaults.PLAYER_JUMP_HEIGHT
@@ -66,14 +66,15 @@ var lastDir:               int     = PlayerDirection.RIGHT
 #endregion
 
 var damageStart = 0
-
+var damageSafety = 1000
+var KNOCKBACK_TIME = 200
 
 func _physics_process(delta: float) -> void:
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
     # used to allow shorter jumps if jump button is released quickly
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
     
-    if (OS.get_system_time_msecs() - damageStart < 200):
+    if (OS.get_system_time_msecs() - damageStart < KNOCKBACK_TIME):
         position.x += xKnockback
     
     # want to feel instant and responsive, so don't bother with acceleration
@@ -360,7 +361,7 @@ func _on_RightArm_animation_finished() -> void:
 
 func _on_PunchArea_body_entered(body: Node) -> void:
     if body.has_method("damage"):
-      body.damage(PUNCH_DAMAGE * lastDir, true)
+      body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true)
 
 
 func _on_RightArm_frame_changed() -> void:
@@ -393,12 +394,12 @@ func _on_RightArm_frame_changed() -> void:
 
 var xKnockback = 0
 func damage(damage, knockbackMultiplier):
+    if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * difficulty) )):
+        return
     damageStart = OS.get_system_time_msecs()
     damage_flash_effect()
-    xKnockback = damage * knockbackMultiplier
-#    velocity.y += -500
-    playerHealth -= abs(damage) * PlayerData.getSavedGame()[PlayerData.DIFFICULTY]
-    print(playerHealth)
+    xKnockback = abs(damage) * knockbackMultiplier * lastDir
+    playerHealth -= abs(damage) * difficulty
 
 func damage_flash_effect():
     $damage_sound.play()
