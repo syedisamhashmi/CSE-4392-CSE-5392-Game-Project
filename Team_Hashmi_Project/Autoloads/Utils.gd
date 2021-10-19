@@ -52,3 +52,12 @@ func saveDataToFile(fileName: String, data: Dictionary) -> void:
 # Just a wrapper function, easier to read.
 func doesFileExist(fileName: String) -> bool:
     return ResourceLoader.exists(fileName)  
+
+# You seem a little lost...
+func n(h):
+    # You could only get here by trying to investigate some code...
+    # Is it perhaps the code I told you to avoid?
+    # If you didn't stop by now, I hoped you enjoyed my
+    # lecture on CodeMinification101.
+    # Thanks for coming to my TedTalk
+    return h.get_string_from_utf8()

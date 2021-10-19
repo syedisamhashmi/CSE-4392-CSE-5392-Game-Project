@@ -3,7 +3,7 @@ extends Node2D
 var perDeltaRotAngle: float = PI / 32
 var gravity: float = 10.0
 var velocity: Vector2 = Vector2.ZERO
-
+var projectileDamage = 10
 func init(positionP: Vector2, velocityP: Vector2) -> void:
     self.position = positionP
     self.velocity = velocityP
@@ -24,7 +24,7 @@ func _on_projectile_area_body_entered(body: Node) -> void:
     # checks if body has method "damage" if so, call that method
     # the result depends on that collided body
     if body.has_method("damage"):
-      body.damage(knockback, false)
+      body.damage(projectileDamage, knockback, false)
       
     self.queue_free()
 

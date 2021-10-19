@@ -79,10 +79,35 @@ const DIFFICULTIES = {
     I_AM_BANANA_INCARNATE = "I Am Banana Incarnate!",  # Nightmare   
 }
 const DIFFICULTIES_DESCRIPTIONS = [
-    "Gameplay for babies. (i.e. Dr. Dalio)",
-    "If you heard the saying 'If you can't handle the heat, get out of the kitchen'. You probably left the kitchen.", # Medium
-    "So, you think you are worthy...",
-    "This is a literal nightmare."   
+    """Gameplay for babies. (i.e. Dr. Dalio)
+    - Forgiving gameplay
+    - Slow and methodical, 
+      large damage cooldown after being hit.
+    - Lots of health pickups
+    - Lots of ammo pickups 
+    """,
+    """
+    If you heard the saying "If you can't handle the heat, get out of the kitchen". 
+    You probably left the kitchen...
+    - Enemies are not so kind.
+    - Smaller damage cooldowns.
+    - Lots of health pickups
+    - Lots of ammo pickups
+    """, # Medium
+    
+    """So, you think you are worthy... This is a challenge.
+    - Enemies are aggresive
+    - No rushing, but you might want to be in a hurry.
+    - Fewer health pickups
+    - Fewer ammo pickups
+    """,
+    
+    """This is a literal nightmare.
+    - Enemies are potassium-thirsty and aggressive.
+    - Damage cooldown is practically non-existent.
+    - Health pickups are rare. Be wise.
+    - Ammo pickups are rare. Be wise.
+    """   
 ]
 
 const ExitMessages = [
@@ -98,6 +123,7 @@ const ExitMessages = [
 # Various keys that will be in save data
 var IS_MELEE_UNLOCKED:        String = "isMeleeUnlocked"
 var IS_BANANA_THROW_UNLOCKED: String = "isBananaThrowUnlocked"
+var BANANA_THROW_AMMO:        int    = 0
 var IS_BFG9000_UNLOCKED:      String = "isBFG9000Unlocked"
 var DIFFICULTY:               String = "difficulty"
 var PLAYER_HEALTH:            String = "playerHealth"
@@ -114,6 +140,7 @@ func getDefaultSaveGame(difficulty: int) -> Dictionary:
         CURRENT_WEAPON          : PlayerDefaults.DEFAULT_WEAPON,   # Melee
         IS_MELEE_UNLOCKED       : PlayerDefaults.IS_MELEE_UNLOCKED,
         IS_BANANA_THROW_UNLOCKED: PlayerDefaults.IS_BANANA_THROW_UNLOCKED,
+        BANANA_THROW_AMMO       : 0,
         # Banana Flinging Gun 9000 ;)
         IS_BFG9000_UNLOCKED     : PlayerDefaults.IS_BFG9000_UNLOCKED,
         DIFFICULTY              : difficulty,
@@ -129,7 +156,6 @@ func getDifficulty() -> int:
 func setDifficulty(a) -> void:
     savedGame[DIFFICULTY] = a
 #endregion
-
 #region PlayerHealth
 func getPlayerHealth() -> int:
     if !savedGame.has(PLAYER_HEALTH):
@@ -175,6 +201,17 @@ func getIsBananaThrowUnlocked() -> bool:
 func setIsBananaThrowUnlocked(a) -> void:
     savedGame[IS_BANANA_THROW_UNLOCKED] = a
 #endregion
+
+#region BananaThrowAmmo
+func getBananaThrowAmmo() -> int:
+    if !savedGame.has(BANANA_THROW_AMMO):
+        setBananaThrowAmmo(PlayerDefaults.BANANA_THROW_AMMO)
+        return PlayerDefaults.BANANA_THROW_AMMO
+    return savedGame[BANANA_THROW_AMMO]
+func setBananaThrowAmmo(a) -> void:
+    savedGame[BANANA_THROW_AMMO] = a
+#endregion
+
 #region PlayerMoveSpeed
 func getPlayerMoveSpeed() -> float:
     if !savedGame.has(PLAYER_MOVE_SPEED):

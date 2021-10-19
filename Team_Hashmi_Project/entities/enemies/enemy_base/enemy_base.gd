@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
-func damage(knockback, isPunch : bool  = false):
+func damage(_damage: float, knockback, isPunch : bool  = false):
     # Stops one punch from hitting multiple times.
     # If current punch # is the same as the one we were hit on
     if isPunch && PlayerData.getPunchesThrown() == hitOnPunchNum:

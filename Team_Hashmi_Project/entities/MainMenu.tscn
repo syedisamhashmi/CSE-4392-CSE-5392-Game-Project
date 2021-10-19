@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=2]
@@ -20,6 +20,13 @@ font_data = ExtResource( 2 )
 [sub_resource type="Theme" id=4]
 default_font = SubResource( 3 )
 
+[sub_resource type="DynamicFont" id=5]
+size = 40
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=6]
+default_font = SubResource( 5 )
+
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,7 +37,6 @@ __meta__ = {
 }
 
 [node name="NewGameCreation" type="ColorRect" parent="."]
-visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 color = Color( 0, 0, 0, 1 )
@@ -89,10 +95,10 @@ __meta__ = {
 }
 
 [node name="DifficultyDescription" type="RichTextLabel" parent="NewGameCreation"]
-margin_left = 560.0
+margin_left = 480.0
 margin_top = 320.0
-margin_right = 880.0
-margin_bottom = 480.0
+margin_right = 970.0
+margin_bottom = 510.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -104,6 +110,9 @@ margin_top = 252.0
 margin_right = 403.0
 margin_bottom = 309.8
 text = "Save Slot"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Start" type="Button" parent="NewGameCreation"]
 margin_left = 723.0
@@ -128,7 +137,52 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="LoadGame" type="ColorRect" parent="."]
+visible = false
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadSlots" type="OptionButton" parent="LoadGame"]
+margin_left = 23.0
+margin_top = 120.0
+margin_right = 403.0
+margin_bottom = 188.0
+text = "Load Slot"
+
+[node name="Label" type="Label" parent="LoadGame"]
+margin_left = 23.0
+margin_top = 22.0
+margin_right = 323.0
+margin_bottom = 82.0
+theme = SubResource( 6 )
+text = "Load Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="LoadGame"]
+margin_left = 23.0
+margin_top = 522.0
+margin_right = 268.0
+margin_bottom = 569.0
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Start" type="Button" parent="LoadGame"]
+margin_left = 724.0
+margin_top = 522.0
+margin_right = 968.0
+margin_bottom = 569.0
+text = "Start"
+
 [node name="MainMenuSelection" type="ColorRect" parent="."]
+visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 color = Color( 0, 0, 0, 1 )
@@ -187,10 +241,14 @@ __meta__ = {
 [connection signal="pressed" from="NewGameCreation/BackToMainMenu" to="." method="_on_BackToMainMenu_pressed"]
 [connection signal="item_selected" from="NewGameCreation/Difficulties" to="." method="_on_Difficulties_item_selected"]
 [connection signal="item_selected" from="NewGameCreation/SaveSlots" to="." method="_on_SaveSlots_item_selected"]
-[connection signal="pressed" from="NewGameCreation/Start" to="." method="_on_Start_pressed"]
-[connection signal="confirmed" from="NewGameCreation/OverwriteGame" to="." method="_on_OverwriteGame_confirmed"]
+[connection signal="pressed" from="NewGameCreation/Start" to="." method="_on_Start_pressed" binds= [ true ]]
+[connection signal="confirmed" from="NewGameCreation/OverwriteGame" to="." method="_on_OverwriteGame_confirmed" binds= [ true ]]
 [connection signal="hide" from="NewGameCreation/OverwriteGame" to="." method="_on_OverwriteGame_hide"]
+[connection signal="item_selected" from="LoadGame/LoadSlots" to="." method="_on_LoadSlots_item_selected"]
+[connection signal="pressed" from="LoadGame/Back" to="." method="_on_BackToMainMenu_pressed"]
+[connection signal="pressed" from="LoadGame/Start" to="." method="_on_Start_pressed" binds= [ false ]]
 [connection signal="pressed" from="MainMenuSelection/NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="pressed" from="MainMenuSelection/LoadGame" to="." method="_on_LoadGame_pressed"]
 [connection signal="pressed" from="MainMenuSelection/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="confirmed" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_confirmed"]
 [connection signal="hide" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_hide"]
