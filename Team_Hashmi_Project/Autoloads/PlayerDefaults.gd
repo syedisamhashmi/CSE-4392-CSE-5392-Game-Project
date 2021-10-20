@@ -1,4 +1,7 @@
 extends Node
+
+# Default player save state values, all in one place, nice and tidy. 
+
 # warning-ignore:unused_class_variable
 var DEFAULT_DIFFICULTY:       int   = 1
 # warning-ignore:unused_class_variable

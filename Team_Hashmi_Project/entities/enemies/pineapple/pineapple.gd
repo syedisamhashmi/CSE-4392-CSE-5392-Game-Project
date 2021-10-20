@@ -46,16 +46,18 @@ var throwStart = 0
 var MAX_PROJECTILE = 1
 var MAX_PROJECTILE_HANDICAP = 10
 
+var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
-    health += (HEALTH_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    maxHealth += (HEALTH_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    CHEST_BUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    JUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY] * 2)
-    JUMP_ACCURACY_REDUCER -= (JUMP_ACCURACY_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
-    MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * PlayerData.getSavedGame()[PlayerData.DIFFICULTY])
+    difficulty = PlayerData.savedGame.difficulty
+    health += (HEALTH_HANDICAP * difficulty)
+    maxHealth += (HEALTH_HANDICAP * difficulty)
+    CHEST_BUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty)
+    JUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty * 2)
+    JUMP_ACCURACY_REDUCER -= (JUMP_ACCURACY_HANDICAP * difficulty)
+    JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * difficulty)
+    THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * difficulty)
+    MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * difficulty)
 
 func _physics_process(delta: float) -> void:
     ._physics_process(delta)
@@ -103,7 +105,7 @@ func player_location_changed(_position: Vector2):
                 $Image.set_animation(CHEST_BUMP)
                 var projectile_instance = PROJECTILE.instance()
                 dir.x *= dist / rng.randf_range(
-                    10 * PlayerData.getSavedGame()[PlayerData.DIFFICULTY], 
+                    10 * difficulty, 
                     100)
                 dir.y = -5
                 projectile_instance.init(
@@ -165,9 +167,16 @@ func _on_Image_animation_finished() -> void:
         handleAnimationState()
 
 
-func damage(damage: float, knockback, isPunch : bool  = false):
-    .damage(damage, knockback * 2, isPunch)
-    health -= abs(damage) / PlayerData.getSavedGame()[PlayerData.DIFFICULTY]
+func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    #? Call parent function to ensure it was hit
+    var hit = .damage(_damage, knockback * 2, isPunch, punchNum)
+    # If parent deemed enemy not hit, return.
+    if !hit:
+        return
+    var calculatedDamage = abs(_damage) / difficulty
+    health -= calculatedDamage
+    # Signal out we are dealing damage to the player for stat-tracking.
+    Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(TAKE_DAMAGE)
     canChestBump = false
     if (health <= 0):

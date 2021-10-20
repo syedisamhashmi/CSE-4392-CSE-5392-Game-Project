@@ -4,8 +4,8 @@ extends Node
 # Requires
 # -- fileName - string representing the file that will be accessed 
 # Optional
-# -- default  - A default dictionary (JSON) object that will be written the file 
-func loadDataFromFile(fileName: String, default: Dictionary = {}) -> Dictionary:
+# -- default  - A default object that will be written the file 
+func loadDataFromFile(fileName: String, default):
     # Check if file exists
     if doesFileExist(fileName):
         # Default location is hard to find,
@@ -17,8 +17,14 @@ func loadDataFromFile(fileName: String, default: Dictionary = {}) -> Dictionary:
         var fileData = file.get_as_text() 
         print(fileData)
         file.close()
-        # Return data as a dictionary
-        return parse_json(fileData)
+        # Return data as instance from the dictionary
+        return dict2inst(
+            # of the json
+            JSON.parse(
+                # decoded from the file data
+                Marshalls.base64_to_variant(fileData)
+            ).result
+        )
     else:
         print("Could not find file \"" + fileName + "\" creating it now.")
         var file = File.new()
@@ -27,7 +33,16 @@ func loadDataFromFile(fileName: String, default: Dictionary = {}) -> Dictionary:
         file.open(fileName, File.WRITE)
         print("Writing data to \"" + fileName + "\":")
         print(default)
-        file.store_string(to_json(default))
+        file.store_string(
+            # Store data as base64
+            Marshalls.variant_to_base64(
+                # of the json
+                to_json(
+                    # of the class instance as a dictionary 
+                    inst2dict(default)
+                )
+            )
+        )
         file.close()
         return default
 
@@ -36,22 +51,55 @@ func loadDataFromFile(fileName: String, default: Dictionary = {}) -> Dictionary:
 # Requires:
 # -- fileName - the file that will be opened
 # -- data     - the data that will be written into the file
-func saveDataToFile(fileName: String, data: Dictionary) -> void:
+func saveDataToFile(fileName: String, data) -> void:
     var file = File.new()
     # Try to open the file, to create it if it doesn't exist.
-    var _oldData = loadDataFromFile(fileName)
+    var _oldData = loadDataFromFile(fileName, null)
     # Open the file
     file.open(fileName, File.WRITE)
     print("Writing data to \"" + fileName + "\":")
     # Print what we are about to write
-    print(to_json(data))    
+    print(Marshalls.variant_to_base64(to_json(inst2dict(data))))
     # Write the data
-    file.store_string(to_json(data))
+    file.store_string(
+        # As base64 encoded
+        Marshalls.variant_to_base64(
+            #JSON
+            to_json(
+                # of the class instance as a dictionary 
+                inst2dict(data)
+            )
+        )
+    )
     file.close()
 
 # Just a wrapper function, easier to read.
 func doesFileExist(fileName: String) -> bool:
     return ResourceLoader.exists(fileName)  
+
+var current_scene = null
+#Retrieved from: https://docs.godotengine.org/en/3.1/getting_started/step_by_step/singletons_autoload.html#custom-scene-switcher
+func goto_scene(path):
+    # This function will usually be called from a signal callback,
+    # or some other function in the current scene.
+    # Deleting the current scene at this point is
+    # a bad idea, because it may still be executing code.
+    # This will result in a crash or unexpected behavior.
+    # The solution is to defer the load to a later time, when
+    # we can be sure that no code from the current scene is running:
+    call_deferred("_deferred_goto_scene", path)
+
+func _deferred_goto_scene(path):
+    # It is now safe to remove the current scene
+    current_scene.free()
+    # Load the new scene.
+    var s = ResourceLoader.load(path)
+    # Instance the new scene.
+    current_scene = s.instance()
+    # Add it to the active scene, as child of root.
+    get_tree().get_root().add_child(current_scene)
+    # Optionally, to make it compatible with the SceneTree.change_scene() API.
+    get_tree().set_current_scene(current_scene)
 
 # You seem a little lost...
 func n(h):

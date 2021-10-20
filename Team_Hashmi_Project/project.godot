@@ -16,10 +16,13 @@ config/icon="res://assets/images/icon.png"
 
 [autoload]
 
-Utils="*res://Autoloads/Utils.gd"
+Strings="*res://Autoloads/Strings.gd"
 PlayerDefaults="*res://Autoloads/PlayerDefaults.gd"
-Globals="*res://Autoloads/Globals.gd"
+PlayerStats="*res://Autoloads/PlayerStats.gd"
+PlayerSave="*res://Autoloads/PlayerSave.gd"
 PlayerData="*res://Autoloads/PlayerData.gd"
+Utils="*res://Autoloads/Utils.gd"
+Globals="*res://Autoloads/Globals.gd"
 Signals="*res://Autoloads/Signals.gd"
 
 [debug]
