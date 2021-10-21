@@ -6,14 +6,12 @@ meeting_dir = os.path.join(scriptDir, 'Meetings_And_Attendance')
 print(meeting_dir)
 
 groupMembers = {
-    'Hashmi, Syed Isam': 0,
-    'Kressler, Edward': 0,
-    'Hullikunte, Natraj': 0,
-    'Balusamy Siva, Balamurale': 0,
-    'Gurrapusala, Sundeep Kumar': 0,
-    
+    'Hashmi, Syed Isam': {"count": 0, "dot": ''},
+    'Kressler, Edward': {"count": 0, "dot": ''},
+    'Hullikunte, Natraj': {"count": 0, "dot": ''},
+    'Balusamy Siva, Balamurale': {"count": 0, "dot": ''},
+    'Gurrapusala, Sundeep Kumar': {"count": 0, "dot": ''},
 }
-
 meetingCount = 0
 for filename in os.listdir(meeting_dir):
     if filename.endswith(".csv"):
@@ -25,11 +23,23 @@ for filename in os.listdir(meeting_dir):
 
         for member in groupMembers:
             if member in text:
-                groupMembers[member] += 1
-    #     print(os.path.join(directory, filename))
-    # else:
-    #     continue
+                groupMembers[member]["count"] += 1
+                groupMembers[member]["dot"] += '█'
+            else:
+                groupMembers[member]["dot"] += ' '
 
-print("Total Meetings: " + str(meetingCount))
+print()
+
+formatted = "%-{count}s".format(count = meetingCount)
+header = "|%-30s| {formatted} | %s|".format(formatted=formatted) % (" Name", "Attendance", "Percentage")
+print("-" * len(header))
+print(header)
+print("-" * len(header))
 for member in groupMembers:
-    print(member + ": " + str(groupMembers[member]))
+    print("|%-30s| %s |  %6s%%  |" % 
+                (member, 
+                 str(groupMembers[member]["dot"]), 
+                 "%3.2f" % ((groupMembers[member]["count"] / meetingCount) * 100)
+            )
+        )
+    print("-" * len(header))
