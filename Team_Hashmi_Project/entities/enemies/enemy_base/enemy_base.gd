@@ -22,15 +22,15 @@ func _physics_process(delta: float) -> void:
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
     
-func damage(_damage: float, knockback, isPunch : bool  = false):
+func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0) -> bool:
     # Stops one punch from hitting multiple times.
     # If current punch # is the same as the one we were hit on
-    if isPunch && PlayerData.getPunchesThrown() == hitOnPunchNum:
+    if isPunch && punchNum == hitOnPunchNum:
         # Don't take damage.
-        return
+        return false
     else:
         # This is a new punch, store current punch num
-        hitOnPunchNum = PlayerData.getPunchesThrown()
+        hitOnPunchNum = punchNum
         
     # Determined that it is a new punch, so take damage 
     damage_flash_effect()
@@ -39,6 +39,7 @@ func damage(_damage: float, knockback, isPunch : bool  = false):
     # also knocks the enemy slightly up into the air
     velocity.x += knockback
     velocity.y += -abs(knockback)
+    return true
 
 func damage_flash_effect():
     $damage_sound.play()

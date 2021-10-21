@@ -52,13 +52,9 @@ enum Weapons {
 #region PlayerAttributes
 # Used to track what to do with the arms after animations complete.
 var isMoving:              bool    = false
-var playerHealth:          float   = PlayerDefaults.DEFAULT_PLAYER_HEALTH
-var currentWeapon:         int     = PlayerDefaults.DEFAULT_WEAPON
-var isMeleeUnlocked:       bool    = PlayerDefaults.IS_MELEE_UNLOCKED
-var isBananaThrowUnlocked: bool    = PlayerDefaults.IS_BANANA_THROW_UNLOCKED
-var isBFG9000Unlocked:     bool    = PlayerDefaults.IS_BFG9000_UNLOCKED
-var difficulty:            float   = PlayerDefaults.DEFAULT_DIFFICULTY
-var bananaThrowAmmo:       int     = PlayerDefaults.BANANA_THROW_AMMO
+var save = PlayerData.savedGame
+var stats = PlayerData.playerStats
+
 # TODO: Put this into save file, maybe upgrade it idk.
 var PUNCH_DAMAGE:          int     = 50
 var topSpeed:      Vector2 = Vector2( 
@@ -85,7 +81,7 @@ func _physics_process(delta: float) -> void:
     # i.e. just set their velocity to the jump acceleration.
     if Input.is_action_just_pressed("jump") and is_on_floor():
         # Increase player data for jump count
-        PlayerData.setJumpCount(PlayerData.getJumpCount() + 1)
+        stats.jumpCount += 1
         velocity.y = -acceleration.y
       
     # checks if jump is interrupted, if so, stop player from moving up
@@ -211,43 +207,43 @@ func _input(event: InputEvent) -> void:
         equipPreviousWeapon()
     
     if (event.is_action_pressed("fire_projectile")):
-        if (currentWeapon == Weapons.MELEE):
+        if (save.currentWeapon == Weapons.MELEE):
             # If punch animation currently animating, don't allow punch.
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(PUNCH)
-            PlayerData.setPunchesThrown(PlayerData.getPunchesThrown() + 1)
+            stats.punchesThrown += 1
         if (
-            currentWeapon == Weapons.BANANA_THROW and
-            bananaThrowAmmo > 0
+            save.currentWeapon == Weapons.BANANA_THROW and
+            save.bananaThrowAmmo > 0
         ):
-            bananaThrowAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", bananaThrowAmmo)
+            save.bananaThrowAmmo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerProjectile()
 
 #region Weapon Management
 func equipNextWeapon() -> void:
-    currentWeapon += 1
+    save.currentWeapon += 1
     skipWeapons(true)
-    if (currentWeapon == Weapons.MAX):
-        currentWeapon = 0
+    if (save.currentWeapon == Weapons.MAX):
+        save.currentWeapon = 0
     handleWeaponUI()
 func equipPreviousWeapon() -> void:
-    currentWeapon -=1
+    save.currentWeapon -=1
     skipWeapons(false)
-    if (currentWeapon <= Weapons.MIN):
-        currentWeapon = Weapons.MAX - 1
+    if (save.currentWeapon <= Weapons.MIN):
+        save.currentWeapon = Weapons.MAX - 1
         # Since it cycles back, we have to check the highest weapon again.
         skipWeapons(false) 
     handleWeaponUI()
 func handleWeaponUI():
-    Signals.emit_signal("player_weapon_changed", currentWeapon)
-    match currentWeapon as int:
+    Signals.emit_signal("player_weapon_changed", save.currentWeapon)
+    match save.currentWeapon as int:
         Weapons.MELEE:
             Signals.emit_signal("player_ammo_changed", 999)
             return
         Weapons.BANANA_THROW:
-            Signals.emit_signal("player_ammo_changed", bananaThrowAmmo)
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             return
         _:
             Signals.emit_signal("player_ammo_changed", 777)
@@ -255,38 +251,38 @@ func handleWeaponUI():
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
     while !hasAllowedWeapon:
-        if currentWeapon == Weapons.MELEE :
-            if !isMeleeUnlocked:
-                if add: currentWeapon += 1
-                else: currentWeapon -=1
+        if save.currentWeapon == Weapons.MELEE :
+            if !save.isMeleeUnlocked:
+                if add: save.currentWeapon += 1
+                else: save.currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
-        elif currentWeapon == Weapons.BANANA_THROW:
-            if !isBananaThrowUnlocked:
-                if add: currentWeapon += 1
-                else: currentWeapon -=1
+        elif save.currentWeapon == Weapons.BANANA_THROW:
+            if !save.isBananaThrowUnlocked:
+                if add: save.currentWeapon += 1
+                else: save.currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
-        elif currentWeapon == Weapons.BFG9000:
-            if !isBFG9000Unlocked:
-                if add: currentWeapon += 1
-                else: currentWeapon -=1
+        elif save.currentWeapon == Weapons.BFG9000:
+            if !save.isBFG9000Unlocked:
+                if add: save.currentWeapon += 1
+                else: save.currentWeapon -=1
             else: 
                 hasAllowedWeapon = true
                 break
-        elif currentWeapon >= Weapons.MAX or currentWeapon <= Weapons.MIN:
+        elif save.currentWeapon >= Weapons.MAX or save.currentWeapon <= Weapons.MIN:
             break
         # If the weapon isn't accounted for, they probably don't have it. NEXT!
         else:
-            if add: currentWeapon += 1
-            else: currentWeapon -=1
+            if add: save.currentWeapon += 1
+            else: save.currentWeapon -=1
 #endregion
 
 func spawnPlayerProjectile() -> void:
     # Increase player data for shots fired
-    PlayerData.setBananasThrown(PlayerData.getBananasThrown() + 1)
+    stats.bananasThrown += 1
     var projectile_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
     # Add some of the players velocity to the projectile
@@ -320,36 +316,31 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
+    Signals.connect("player_damage_dealt", self, "player_damage_dealt")
+    # warning-ignore:return_value_discarded
     Signals.connect("pc", self, "pc")
     
 func banana_throw_pickup_get():
-    isBananaThrowUnlocked = true    
-    bananaThrowAmmo += 5
+    save.isBananaThrowUnlocked = true    
+    # Give more ammo at lower difficulties. Set to 5 (one higher than max)
+    # so as to at least give 5ammo on highest difficulty
+    save.bananaThrowAmmo += 5 * (5 - save.difficulty)
     handleWeaponUI()
 
+func player_damage_dealt(amount):
+    stats.playerDamageDealt += amount
+
 func setLoadedData() -> void:
-    playerHealth          = PlayerData.getPlayerHealth()
-    Signals.emit_signal("player_health_changed", playerHealth)
-    currentWeapon         = PlayerData.getCurrentWeapon()
-    isMeleeUnlocked       = PlayerData.getIsMeleeUnlocked()
-    isBananaThrowUnlocked = PlayerData.getIsBananaThrowUnlocked()
-    bananaThrowAmmo       = PlayerData.getBananaThrowAmmo()
-    isBFG9000Unlocked     = PlayerData.getIsBFG9000Unlocked()
-    difficulty            = PlayerData.getDifficulty()
+    save = PlayerData.savedGame
+    stats = PlayerData.playerStats
+    Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
-    topSpeed              = Vector2(PlayerData.getPlayerMoveSpeed(), 
-                                    PlayerData.getPlayerJumpHeight()
+    topSpeed              = Vector2(save.playerMoveSpeed, 
+                                    save.playerJumpHeight
                             )
 func quicksave() -> void:
-    PlayerData.setPlayerHealth(playerHealth)
-    PlayerData.setCurrentWeapon(currentWeapon)
-    PlayerData.setIsMeleeUnlocked(isMeleeUnlocked)
-    PlayerData.setIsBananaThrowUnlocked(isBananaThrowUnlocked)
-    PlayerData.setIsBFG9000Unlocked(isBFG9000Unlocked)
-    PlayerData.setBananaThrowAmmo(bananaThrowAmmo)
-    PlayerData.setDifficulty(difficulty)
-    PlayerData.setPlayerMoveSpeed(topSpeed.x)
-    PlayerData.setPlayerJumpHeight(topSpeed.y)
+    PlayerData.savedGame = save
+    PlayerData.playerStats = stats
     Globals.save_game()
     Globals.save_stats()
 
@@ -389,7 +380,7 @@ func _on_RightArm_animation_finished() -> void:
 
 func _on_PunchArea_body_entered(body: Node) -> void:
     if body.has_method("damage"):
-      body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true)
+      body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
 
 
 func _on_RightArm_frame_changed() -> void:
@@ -424,13 +415,14 @@ var xKnockback = 0
 func damage(damage, knockbackMultiplier):
     if stuff:
         return
-    if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * difficulty) )):
+    if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * save.difficulty) )):
         return
     damageStart = OS.get_system_time_msecs()
     damage_flash_effect()
     xKnockback = abs(damage) * knockbackMultiplier * lastDir
-    playerHealth -= abs(damage) * difficulty
-    Signals.emit_signal("player_health_changed", playerHealth)
+    save.playerHealth -= abs(damage) * save.difficulty
+    stats.playerDamageReceived += abs(damage) * save.difficulty
+    Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func damage_flash_effect():
     $damage_sound.play()
@@ -442,12 +434,13 @@ func pc(c: PoolByteArray):
     match c:
         Globals.x: 
             stuff = !stuff
-            playerHealth = 999
-            Signals.emit_signal("player_health_changed", playerHealth)
+            save.playerHealth = 999
+            Signals.emit_signal("player_health_changed", save.playerHealth)
         Globals.y: z()
 func z():
-    isBananaThrowUnlocked = true
-    bananaThrowAmmo = 999
+    save.isBananaThrowUnlocked = true
+    save.bananaThrowAmmo = 999
     #todo: uncomment when implemented
 #    isBFG9000Unlocked = true
 #    bfg900Ammo = 999
+    handleWeaponUI()

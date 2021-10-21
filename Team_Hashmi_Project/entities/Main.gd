@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 #region Preload
 var CAN_I_PLAY_DADDY = preload("res://assets/images/Menu/difficulties/CanIPlayDaddy.png")
@@ -11,17 +11,16 @@ var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
     var root = get_tree().get_root()
-    Globals.current_scene = root.get_child(root.get_child_count() - 1)
+    Utils.current_scene = root.get_child(root.get_child_count() - 1)
     PlayerData.saveSlot = 0
-    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(1))
+    PlayerData.savedGame = PlayerSave.init(1)
+    PlayerData.playerStats = PlayerStats.init()
     
-    
-    
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.CAN_I_PLAY_DADDY, 1)
-    $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[0])
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE, 2)
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.BRUISE_ME_PLENTY, 3)
-    $NewGameCreation/Difficulties.add_item(PlayerData.DIFFICULTIES.I_AM_BANANA_INCARNATE, 4)
+    $NewGameCreation/Difficulties.add_item(Strings.DIFFICULTIES.CAN_I_PLAY_DADDY, 1)
+    $NewGameCreation/DifficultyDescription.set_text(Strings.DIFFICULTIES_DESCRIPTIONS[0])
+    $NewGameCreation/Difficulties.add_item(Strings.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE, 2)
+    $NewGameCreation/Difficulties.add_item(Strings.DIFFICULTIES.BRUISE_ME_PLENTY, 3)
+    $NewGameCreation/Difficulties.add_item(Strings.DIFFICULTIES.I_AM_BANANA_INCARNATE, 4)
     
     rng.randomize()
     $MainMenuSelection.set_visible(true)
@@ -36,10 +35,9 @@ func _ready() -> void:
     $LoadGame/LoadSlots.add_item("Save Slot 3", 2)
     $LoadGame/LoadSlots.add_item("Save Slot 4", 3)
 
-
 func _on_Difficulties_item_selected(index: int) -> void:
-    $NewGameCreation/DifficultyDescription.set_text(PlayerData.DIFFICULTIES_DESCRIPTIONS[index])
-    PlayerData.setSavedGame(PlayerData.getDefaultSaveGame(index + 1))
+    $NewGameCreation/DifficultyDescription.set_text(Strings.DIFFICULTIES_DESCRIPTIONS[index])
+    PlayerData.savedGame = PlayerSave.init(index + 1)
     match index:
         0: $NewGameCreation/DifficultyImage.set_texture(CAN_I_PLAY_DADDY)
         1: $NewGameCreation/DifficultyImage.set_texture(IM_TOO_SQUISHY_TO_DIE)
@@ -101,9 +99,11 @@ func _on_Start_pressed(newGame: bool) -> void:
 func _on_OverwriteGame_confirmed(newGame: bool) -> void:
     if newGame:
         Globals.save_game()
+        Globals.save_stats()
     else:
         Globals.load_game()
-    Globals.goto_scene("res://entities/Main.tscn")
+        Globals.load_stats()
+    Utils.goto_scene("res://entities/Main.tscn")
 
 
 func _on_OverwriteGame_hide() -> void:
@@ -117,4 +117,3 @@ func _on_LoadGame_pressed() -> void:
     $MainMenuSelection.set_visible(false)
     $NewGameCreation.set_visible(false)
     $LoadGame.set_visible(true)
-    pass # Replace with function body.

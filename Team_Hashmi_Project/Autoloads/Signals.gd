@@ -19,4 +19,7 @@ signal player_weapon_changed(weaponId)
 signal player_ammo_changed(ammoCount)
 
 # warning-ignore:unused_signal
+signal player_damage_dealt(amount)
+
+# warning-ignore:unused_signal
 signal pc(c)
