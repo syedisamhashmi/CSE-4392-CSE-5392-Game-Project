@@ -1,3 +1,5 @@
+*.pyc
+
 Project_Proposal/project_proposal.pdf
 
 # Godot-specific ignores
