@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          lfs: true
+          persist-credentials: false
           
       - name: setup python
         uses: actions/setup-python@v2
