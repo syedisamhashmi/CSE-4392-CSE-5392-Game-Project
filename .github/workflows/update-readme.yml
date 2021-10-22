@@ -21,12 +21,13 @@ jobs:
         with:
           lfs: true
           
-      - name: Run Python Script
-        uses: jannekem/run-python-script-action@v1.2
+      - name: setup python
+        uses: actions/setup-python@v2
         with:
-          # Python script
-          script: "./replace.py"
-
+          python-version: 3.8 #install the python needed
+      - name: execute py script # run the run.py to get the latest data
+        run: |
+          python ./replace.py
     
     
       - name: Github commit and push
