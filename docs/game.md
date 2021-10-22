@@ -8,7 +8,7 @@ Yes, I am aware. Keeping things easy to find in a distributed workspace is alway
 
 - Layer 1: World
 - Layer 2: Player
-- Layer 3:
-- Layer 4:
+- Layer 3: Enemy
+- Layer 4: Projectiles
 - Layer 5:
 - Layer 6:
