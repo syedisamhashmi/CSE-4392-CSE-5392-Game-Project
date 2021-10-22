@@ -75,8 +75,10 @@ func _physics_process(delta: float) -> void:
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
     
     if (OS.get_system_time_msecs() - damageStart < KNOCKBACK_TIME):
-        position.x += xKnockback
-    
+        if (lastDir == PlayerDirection.LEFT):
+            position.x -= xKnockback
+        else:
+            position.x += xKnockback
     # want to feel instant and responsive, so don't bother with acceleration
     # i.e. just set their velocity to the jump acceleration.
     if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -419,7 +421,7 @@ func damage(damage, knockbackMultiplier):
         return
     damageStart = OS.get_system_time_msecs()
     damage_flash_effect()
-    xKnockback = abs(damage) * knockbackMultiplier * lastDir
+    xKnockback = damage * knockbackMultiplier * lastDir
     save.playerHealth -= abs(damage) * save.difficulty
     stats.playerDamageReceived += abs(damage) * save.difficulty
     Signals.emit_signal("player_health_changed", save.playerHealth)
