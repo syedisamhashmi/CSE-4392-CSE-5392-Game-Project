@@ -39,5 +39,6 @@ jobs:
           github_token: ${{ secrets.UPDATE_README_TOKEN }}
           # Email used to configure user.email in `git config`.
           message: "README.md update"
+          force: true
           branch: "develop"
     
