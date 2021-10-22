@@ -27,9 +27,9 @@ def printStats():
             for member in groupMembers:
                 if member in text:
                     groupMembers[member]["count"] += 1
-                    groupMembers[member]["dot"] += '⬛'
+                    groupMembers[member]["dot"] += '✅'
                 else:
-                    groupMembers[member]["dot"] += '⬜'
+                    groupMembers[member]["dot"] += '❌'
 
     print()
 
