@@ -6,11 +6,8 @@
 
 Team Members
 
-- Syed Isam Hashmi
-- Edward Kressler
-- Natraj Hullikunte
-- Sundeep Kumar Gurrapusala
-- Balamurale Balusamy Siva
+<div>
+</div>
 
 Technologies Used
 
@@ -26,11 +23,11 @@ Read more on
 <br/>
 
 ---
-# [___GAME DOCUMENTATION___](docs/game.md)
+
+# [**_GAME DOCUMENTATION_**](docs/game.md)
 
 <br/>
 <br/>
-
 
 ---
 

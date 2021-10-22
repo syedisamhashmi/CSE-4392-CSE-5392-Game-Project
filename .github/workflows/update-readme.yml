@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Team-Hashmi README
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the develop branch
+  push:
+    branches: [develop]
+    paths:
+      - "Meetings_And_Attendance/**"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  Godot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: setup python
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8 #install the python needed
+          - name: execute py script
+            run: |
+              python replace.py
+      - name: Commit & Push changes
+        uses: actions-js/push@develop
+        with:
+          github_token: ${{ secrets.UPDATE_README_TOKEN }}
