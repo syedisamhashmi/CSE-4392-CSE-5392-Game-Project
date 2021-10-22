@@ -40,7 +40,8 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.UPDATE_README_TOKEN }}
           branch: "develop"
-    
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_README_TOKEN }}
     
     
     
