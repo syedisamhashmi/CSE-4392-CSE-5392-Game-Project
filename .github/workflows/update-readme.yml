@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Godot:
+  UpdateReadme:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
         uses: jannekem/run-python-script-action@v1.2
         with:
           # Python script
-          script: "replace.py"
+          script: "./replace.py"
 
     
     
