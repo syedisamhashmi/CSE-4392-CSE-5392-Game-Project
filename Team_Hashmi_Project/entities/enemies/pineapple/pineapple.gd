@@ -3,11 +3,11 @@ extends "res://entities/enemies/enemy_base/enemy_base.gd"
 var PROJECTILE = preload("res://entities/enemy-projectile/enemy-projectile.tscn")
 
 #region AnimationNames
-var IDLE = "Idle"
-var WALK = "Walk"
-var CHEST_BUMP = "Chest_Bump"
-var TAKE_DAMAGE = "Take_Damage"
-var JUMP_ATTACK = "Jump_Attack"
+const IDLE = "Idle"
+const WALK = "Walk" # - Pantera
+const CHEST_BUMP = "Chest_Bump"
+const TAKE_DAMAGE = "Take_Damage"
+const JUMP_ATTACK = "Jump_Attack"
 #endregion
 
 var canChestBump = true
@@ -127,9 +127,9 @@ func player_location_changed(_position: Vector2):
     # If within walking distance
     elif (abs(dist) < WALKING_DISTANCE 
     # and not trying inside the player on the left side
-        and ((dir.x > 0 and abs(dist) > 100) 
+        and ((dir.x < 0 and abs(dist) > 70) 
     # or the right side, numbers are different due to the sprite and bounding boxes
-            or (dir.x < 0 and abs(dist) > 70)
+            or (dir.x > 0 and abs(dist) > 80)
         )
     ):
         if dir.x <= 0:
@@ -140,9 +140,9 @@ func player_location_changed(_position: Vector2):
     
     
 func handle_enemy_direction(dir: float) -> void:
-    $Image.flip_h = dir > 0
-    $LeftChestBox/LeftChestBoxCollision.set_disabled(dir > 0)
-    $RightChestBox/RightChestBoxCollision.set_disabled(dir < 0)
+    $Image.flip_h = dir < 0
+    $LeftChestBox/LeftChestBoxCollision.set_disabled(dir < 0)
+    $RightChestBox/RightChestBoxCollision.set_disabled(dir > 0)
 
 func _on_ChestBox_body_entered(_body: Node) -> void:
     var bodies = $LeftChestBox.get_overlapping_bodies() + $RightChestBox.get_overlapping_bodies()
@@ -154,7 +154,7 @@ func _on_ChestBox_body_entered(_body: Node) -> void:
             $Image.set_frame(0)
             $Image.set_animation(CHEST_BUMP)
             if body.has_method("damage"):
-                body.damage(CHEST_BUMP_DAMAGE, 1)
+                body.damage(CHEST_BUMP_DAMAGE * -1 if $Image.flip_h else 1, 1)
 
 func _on_Image_animation_finished() -> void:
     if ($Image.get_animation() == JUMP_ATTACK):
@@ -183,7 +183,6 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
         queue_free()
 
 func handleAnimationState() -> void:
-    
     $LeftChestBox/LeftChestBoxCollision.set_disabled(isJumping)
     $RightChestBox/RightChestBoxCollision.set_disabled(isJumping)
     if abs(velocity.x) <= 5:
@@ -201,4 +200,4 @@ func _on_JumpAttackBox_body_entered(body: Node) -> void:
         $JumpAttackBox/JumpParticles.set_emitting(false)
         return
     if body.has_method("damage"):
-      body.damage(JUMP_ATTACK_DAMAGE, 2)
+      body.damage(JUMP_ATTACK_DAMAGE * -1 if $Image.flip_h else 1, 2)
