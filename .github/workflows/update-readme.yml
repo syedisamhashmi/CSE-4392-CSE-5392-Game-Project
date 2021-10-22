@@ -21,12 +21,12 @@ jobs:
         with:
           lfs: true
       - name: setup python
-            uses: actions/setup-python@v2
-            with:
-              python-version: 3.8 #install the python needed
-          - name: execute py script
-            run: |
-              python replace.py
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.8 #install the python needed
+      - name: execute py script
+        run: |
+          python replace.py
       - name: Commit & Push changes
         uses: actions-js/push@develop
         with:
