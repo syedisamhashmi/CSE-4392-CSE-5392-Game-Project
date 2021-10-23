@@ -16,8 +16,11 @@ def printStats():
         'Gurrapusala, Sundeep Kumar': {"count": 0, "dot": ''},
     }
     meetingCount = 0
-    for filename in os.listdir(meeting_dir):
+    files = os.listdir(meeting_dir)
+    files.sort()
+    for filename in files:
         if filename.endswith(".csv"):
+            print(filename)
             meetingCount += 1
             filename = os.path.join(meeting_dir, filename)
             filehandle = open(filename, 'r')
