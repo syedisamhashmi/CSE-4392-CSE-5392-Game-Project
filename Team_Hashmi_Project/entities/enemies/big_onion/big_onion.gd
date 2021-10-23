@@ -1,13 +1,12 @@
 extends "res://entities/enemies/enemy_base/enemy_base.gd"
 
+var POISON = preload("res://entities/enemies/big_onion/poison.tscn")
+
 #region Animations
+const ATTACK = "attack"
 const DAMAGE = "damage"
 const DEATH = "death"
-const IDLE = "idle" 
-const ROLLING = "rolling"
-const ROLLING_HIT = "rolling_hit"  
-const ROLLING_STOP = "rolling_stop"  
-const START_ROLL = "start_roll"  
+const IDLE = "idle"
 const WALK = "walk" # - Pantera
 #endregion
 
@@ -18,24 +17,26 @@ var HEALTH_HANDICAP = 5
 var ROLL_ATTACK_DAMAGE = 1
 var ROLL_ATTACK_DAMAGE_HANDICAP = 2
 
-var ROLLING_DISTANCE = 300 
-var ROLLING_DISTANCE_HANDICAP = 50
+var WALKING_DISTANCE = 300 
+var WALKING_DISTANCE_HANDICAP = 50
 
-var MOVEMENT_SPEED = 10
-var MOVEMENT_SPEED_HANDICAP = 5
+var MOVEMENT_SPEED = 6
+var MOVEMENT_SPEED_HANDICAP = 2
 
-var ROLL_TIMEOUT = 6000
-var rollStart = 0
+var ATTACK_TIMEOUT = 2000
+var attackStart = 0
 
 var damageStart = 0
 var DAMAGE_TIMEOUT = 2000
 var DAMAGE_TIMEOUT_HANDICAP = 400
-var DIFFICULTY_HANDICAP = 1400
+var DIFFICULTY_HANDICAP = 300
 #endregion
 
 var rng = RandomNumberGenerator.new()
 
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
+var dir = Vector2.ZERO
+
 func _ready() -> void:
     rng.randomize()
     difficulty = PlayerData.savedGame.difficulty
@@ -43,30 +44,30 @@ func _ready() -> void:
     maxHealth += (HEALTH_HANDICAP * difficulty)
     MOVEMENT_SPEED += MOVEMENT_SPEED_HANDICAP * (difficulty - 1)
     $Image.set_speed_scale(1 + (.2 * difficulty))
+    $Image.get_sprite_frames().set_animation_speed(DAMAGE, 5 + difficulty)
+    $Image.get_sprite_frames().set_animation_speed(ATTACK, 5 + (2 * difficulty))
     ROLL_ATTACK_DAMAGE += ROLL_ATTACK_DAMAGE_HANDICAP * (difficulty - 1) 
-    ROLLING_DISTANCE += ROLLING_DISTANCE_HANDICAP * difficulty
-    ROLL_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
+    WALKING_DISTANCE += WALKING_DISTANCE_HANDICAP * difficulty
+    ATTACK_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty
 
 func _physics_process(delta: float) -> void:
     ._physics_process(delta)
     if (
-        $Image.get_animation() != ROLLING_STOP and
-        $Image.get_animation() != ROLLING_HIT
+        $Image.get_animation() != ATTACK
     ):
         handleAnimationState()
 
 func player_location_changed(_position: Vector2):
     if( $Image.get_animation() == DAMAGE or 
-        $Image.get_animation() == ROLLING_STOP or
-        $Image.get_animation() == ROLLING_HIT
+        $Image.get_animation() == ATTACK
     ):
         return
     var dist = self.position.distance_to(_position)
-    var dir = self.position.direction_to(_position)
+    dir = self.position.direction_to(_position)
     
     # If within walking distance
-    if (abs(dist) < ROLLING_DISTANCE 
+    if (abs(dist) < WALKING_DISTANCE 
     # and not trying inside the player on the left side
         and ((dir.x > 0 and abs(dist) > 32) 
     # or the right side, numbers are different due to the sprite and bounding boxes
@@ -74,42 +75,36 @@ func player_location_changed(_position: Vector2):
         )
         and OS.get_system_time_msecs() - damageStart > DAMAGE_TIMEOUT
     ):
-        if ($Image.get_animation() != ROLLING and
-            $Image.get_animation() != ROLLING_STOP and
-            $Image.get_animation() != ROLLING_HIT and
-            OS.get_system_time_msecs() - rollStart > ROLL_TIMEOUT
+        if (
+            $Image.get_animation() != ATTACK and
+            OS.get_system_time_msecs() - attackStart > ATTACK_TIMEOUT
         ):
-            $Image.set_animation(START_ROLL)
-            rollStart = OS.get_system_time_msecs()
-        elif ($Image.get_animation() == ROLLING_HIT or
-            $Image.get_animation() == ROLLING_STOP
-        ):
-            return
+            $Image.set_animation(ATTACK)
         else:
-            if ($Image.get_animation() == ROLLING):
-                $Roll/RollBox.disabled = false
+            if $Image.get_animation() == IDLE:
+                $Image.set_animation(WALK)
+            if ($Image.get_animation() == WALK):
                 if dir.x <= 0:
                     velocity.x -= MOVEMENT_SPEED
                 else:
                     velocity.x += MOVEMENT_SPEED
-        handle_enemy_direction(dir.x )
-        handleAnimationState()
+            handle_enemy_direction(dir.x)
+            handleAnimationState()
     
-func handle_enemy_direction(dir: float) -> void:
-    var before = $Image.flip_h
-    $Image.flip_h = dir < 0
-    if before != $Image.flip_h:
-        if $Image.get_animation() == ROLLING:
-            $Image.set_animation(ROLLING_STOP)
+func handle_enemy_direction(_dir: float) -> void:
+    
+    $Image.flip_h = _dir < 0
 
 func _on_Image_animation_finished() -> void:
     var anim = $Image.get_animation()
-    if (anim == ROLLING_STOP or 
-        anim == ROLLING_HIT
-    ):
-          $Image.set_animation(IDLE)
-    if anim == START_ROLL:
-        $Image.set_animation(ROLLING)
+    if anim == ATTACK:
+        attackStart = OS.get_system_time_msecs()
+        var poison = POISON.instance()
+        var toShootDir = Vector2.UP
+        toShootDir.x = dir.x
+        poison.init(self.position, toShootDir)
+        $OnionGas.add_child(poison)
+        $Image.set_animation(IDLE)
     if anim == DAMAGE:
         handleAnimationState()
 
@@ -119,7 +114,6 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     # If parent deemed enemy not hit, return.
     if !hit:
         return
-    $Roll/RollBox.disabled = true
     damageStart = OS.get_system_time_msecs()
     var calculatedDamage = abs(_damage) / difficulty
     health -= calculatedDamage
@@ -131,25 +125,10 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
 
 func handleAnimationState() -> void:
     var anim = $Image.get_animation()
-    if (anim == START_ROLL or
-        anim == ROLLING_HIT
-    ):
-        return
-        
+            
     if abs(velocity.x) <= 5:
         if anim == DAMAGE and OS.get_system_time_msecs() - damageStart > DAMAGE_TIMEOUT :
-          $Image.set_animation(IDLE)
-        if anim == ROLLING:
-          $Image.set_animation(ROLLING_STOP)
+            $Image.set_animation(IDLE)
+        if anim == WALK:
+            $Image.set_animation(IDLE)
     return
-
-func _on_Roll_body_entered(body: Node) -> void:
-    if $Image.get_animation() != ROLLING:
-        return
-    
-    $Roll/RollBox.disabled = true
-    if body.has_method("damage"):
-        body.damage(ROLL_ATTACK_DAMAGE * velocity.sign().x, 1.5)
-        $Image.set_animation(ROLLING_HIT)
-        velocity.x -= 100
-        velocity.y -= 200
