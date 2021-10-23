@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
@@ -8,6 +8,11 @@
 [ext_resource path="res://entities/Level.gd" type="Script" id=6]
 [ext_resource path="res://entities/enemies/raddish/raddish.tscn" type="PackedScene" id=7]
 [ext_resource path="res://entities/enemies/big_onion/big_onion.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-tomato-stand.png" type="Texture" id=9]
+[ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-pineapple-stand.png" type="Texture" id=10]
+[ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-background.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-banana-stand.png" type="Texture" id=12]
+[ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-shelf.png" type="Texture" id=13]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 6 )
@@ -17,7 +22,7 @@ position = Vector2( 25, 93 )
 
 [node name="TileMap" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
-tile_data = PoolIntArray( -393234, 0, 0, -458745, 0, 0, -327698, 0, 0, -327692, 0, 0, -393209, 0, 0, -262162, 0, 0, -262156, 0, 0, -327673, 0, 0, -196626, 0, 0, -196620, 0, 0, -262137, 0, 0, -131090, 0, 0, -131084, 0, 0, -196601, 0, 0, -65554, 0, 0, -65548, 0, 0, -131065, 0, 0, -18, 0, 0, -12, 0, 0, -65529, 0, 0, 65518, 0, 0, 65519, 0, 0, 65520, 0, 0, 65521, 0, 0, 65522, 0, 0, 65523, 0, 0, 65524, 0, 0, 65525, 0, 0, 65526, 0, 0, 65527, 0, 0, 65528, 0, 0, 65529, 0, 0, 65530, 0, 0, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 19, 0, 0, 20, 0, 0, 21, 0, 0, 22, 0, 0, 23, 0, 0 )
+tile_data = PoolIntArray( -393235, 1, 65537, -393234, 1, 65538, -458745, 1, 65537, -458744, 1, 65538, -327699, 1, 65537, -327698, 1, 65538, -327692, 1, 65537, -327691, 1, 65538, -393209, 1, 65537, -393208, 1, 65538, -262163, 1, 65537, -262162, 1, 65538, -262156, 1, 65537, -262155, 1, 65538, -327673, 1, 65537, -327672, 1, 65538, -196627, 1, 65537, -196626, 1, 65538, -196620, 1, 65537, -196619, 1, 65538, -262137, 1, 65537, -262136, 1, 65538, -131091, 1, 65537, -131090, 1, 65538, -131084, 1, 65537, -131083, 1, 65538, -196601, 1, 65537, -196600, 1, 65538, -65555, 1, 65537, -65554, 1, 65538, -65548, 1, 65537, -65547, 1, 65538, -131065, 1, 65537, -131064, 1, 65538, -19, 1, 65537, -18, 1, 65538, -12, 1, 65537, -11, 1, 65538, -65529, 1, 65537, -65528, 1, 65538, 65517, 1, 65537, 65518, 1, 65538, 65519, 1, 65536, 65520, 1, 65536, 65521, 1, 65536, 65522, 1, 65536, 65523, 1, 65536, 65524, 1, 65537, 65525, 1, 65538, 65526, 1, 65536, 65527, 1, 65536, 65528, 1, 65536, 65529, 1, 65536, 65530, 1, 65536, 65531, 1, 65536, 65532, 1, 65536, 65533, 1, 65536, 65534, 1, 65536, 65535, 1, 65536, 0, 1, 65536, 1, 1, 65536, 2, 1, 65536, 3, 1, 65536, 4, 1, 65536, 5, 1, 65536, 6, 1, 65536, 7, 1, 65537, 8, 1, 65538, 9, 1, 65536, 10, 1, 65536, 11, 1, 65536, 12, 1, 65536, 13, 1, 65536, 14, 1, 65536, 15, 1, 65536, 16, 1, 65536, 17, 1, 65536, 18, 1, 65536, 19, 1, 65536, 20, 1, 65536, 21, 1, 65536, 22, 1, 65536, 23, 1, 65536, 131053, 1, 65537, 131054, 1, 65538, 131055, 1, 131072, 131056, 1, 131072, 131057, 1, 131072, 131058, 1, 131072, 131059, 1, 131072, 131060, 1, 65537, 131061, 1, 65538, 131062, 1, 131072, 131063, 1, 131072, 131064, 1, 131072, 131065, 1, 131072, 131066, 1, 131072, 131067, 1, 131072, 131068, 1, 131072, 131069, 1, 131072, 131070, 1, 131072, 131071, 1, 131072, 65536, 1, 131072, 65537, 1, 131072, 65538, 1, 131072, 65539, 1, 131072, 65540, 1, 131072, 65541, 1, 131072, 65542, 1, 131072, 65543, 1, 65537, 65544, 1, 65538, 65545, 1, 131072, 65546, 1, 131072, 65547, 1, 131072, 65548, 1, 131072, 65549, 1, 131072, 65550, 1, 131072, 65551, 1, 131072, 65552, 1, 131072, 65553, 1, 131072, 65554, 1, 131072, 65555, 1, 131072, 65556, 1, 131072, 65557, 1, 131072, 65558, 1, 131072, 65559, 1, 131072 )
 
 [node name="Enemy_Base" parent="." instance=ExtResource( 3 )]
 position = Vector2( 873, 222 )
@@ -101,3 +106,69 @@ position = Vector2( -619, 363 )
 
 [node name="big_onion" parent="." instance=ExtResource( 8 )]
 position = Vector2( 441, 314 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.15, 0.15 )
+
+[node name="background" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = -1044.83
+margin_top = -580.848
+margin_right = 1456.17
+margin_bottom = 654.152
+texture = ExtResource( 11 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.4, 0.4 )
+
+[node name="shelf" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+margin_left = 209.172
+margin_top = 76.2132
+margin_right = 533.172
+margin_bottom = 472.213
+texture = ExtResource( 13 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.8, 0.8 )
+
+[node name="banana_crate" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = -973.042
+margin_top = 253.0
+margin_right = -547.042
+margin_bottom = 679.0
+texture = ExtResource( 12 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tomato_crate" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = 734.313
+margin_top = 297.636
+margin_right = 1166.31
+margin_bottom = 689.636
+texture = ExtResource( 9 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pineapple_crate" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = -193.0
+margin_top = 287.0
+margin_right = 205.0
+margin_bottom = 685.0
+texture = ExtResource( 10 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
