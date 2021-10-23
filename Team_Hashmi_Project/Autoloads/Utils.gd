@@ -5,7 +5,9 @@ extends Node
 # -- fileName - string representing the file that will be accessed 
 # Optional
 # -- default  - A default object that will be written the file 
-func loadDataFromFile(fileName: String, default):
+# -- isInst   - To allow for raw JSON, false
+# -- encode   - whether the data is encoded and must be decoded 
+func loadDataFromFile(fileName: String, default = null, isInst = true, encode = true):
     # Check if file exists
     if doesFileExist(fileName):
         # Default location is hard to find,
@@ -17,14 +19,13 @@ func loadDataFromFile(fileName: String, default):
         var fileData = file.get_as_text() 
         print(fileData)
         file.close()
+        if encode:
+            fileData = Marshalls.base64_to_variant(fileData)
+        fileData = JSON.parse(fileData).result
+        if isInst:
+            fileData = dict2inst(fileData)
         # Return data as instance from the dictionary
-        return dict2inst(
-            # of the json
-            JSON.parse(
-                # decoded from the file data
-                Marshalls.base64_to_variant(fileData)
-            ).result
-        )
+        return fileData
     else:
         print("Could not find file \"" + fileName + "\" creating it now.")
         var file = File.new()
@@ -33,16 +34,13 @@ func loadDataFromFile(fileName: String, default):
         file.open(fileName, File.WRITE)
         print("Writing data to \"" + fileName + "\":")
         print(default)
-        file.store_string(
-            # Store data as base64
-            Marshalls.variant_to_base64(
-                # of the json
-                to_json(
-                    # of the class instance as a dictionary 
-                    inst2dict(default)
-                )
-            )
-        )
+        var toStore = null
+        if isInst:
+            toStore = inst2dict(default)
+        toStore = to_json(toStore)
+        if encode:
+            toStore = Marshalls.variant_to_base64(default)
+        file.store_string(toStore)
         file.close()
         return default
 
@@ -51,31 +49,33 @@ func loadDataFromFile(fileName: String, default):
 # Requires:
 # -- fileName - the file that will be opened
 # -- data     - the data that will be written into the file
-func saveDataToFile(fileName: String, data) -> void:
+# -- isInst   - if the stored data is an instance of a class
+# -- encode   - whether to encode the data when saving
+func saveDataToFile(fileName: String, data, var isInst=true, encode = true) -> void:
     var file = File.new()
     # Try to open the file, to create it if it doesn't exist.
-    var _oldData = loadDataFromFile(fileName, null)
+    var _oldData = loadDataFromFile(fileName, null, isInst, encode)
     # Open the file
     file.open(fileName, File.WRITE)
     print("Writing data to \"" + fileName + "\":")
     # Print what we are about to write
-    print(Marshalls.variant_to_base64(to_json(inst2dict(data))))
+    var toStore = data
+    if isInst:
+        toStore = inst2dict(data)
+    toStore = to_json(toStore)
+    print(toStore)
+    
+    if encode:
+        toStore = Marshalls.variant_to_base64(toStore)
     # Write the data
     file.store_string(
-        # As base64 encoded
-        Marshalls.variant_to_base64(
-            #JSON
-            to_json(
-                # of the class instance as a dictionary 
-                inst2dict(data)
-            )
-        )
+        str(toStore)
     )
     file.close()
 
 # Just a wrapper function, easier to read.
 func doesFileExist(fileName: String) -> bool:
-    return ResourceLoader.exists(fileName)  
+    return File.new().file_exists(fileName)  
 
 var current_scene = null
 #Retrieved from: https://docs.godotengine.org/en/3.1/getting_started/step_by_step/singletons_autoload.html#custom-scene-switcher
