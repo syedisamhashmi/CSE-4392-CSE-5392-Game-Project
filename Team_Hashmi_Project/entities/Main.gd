@@ -50,7 +50,7 @@ func _on_Exit_pressed() -> void:
     $MainMenuSelection/Exit.set_disabled(true)
     $MainMenuSelection/ExitConfirmation.get_cancel().set_text("Take me back to the carnage!")
     $MainMenuSelection/ExitConfirmation.get_ok().set_text("Yeah, I'm a wimp!")
-    $MainMenuSelection/ExitConfirmation.set_text(PlayerData.ExitMessages[rng.randi_range(0, PlayerData.ExitMessages.size() - 1)])
+    $MainMenuSelection/ExitConfirmation.set_text(Strings.ExitMessages[rng.randi_range(0, Strings.ExitMessages.size() - 1)])
     $MainMenuSelection/ExitConfirmation.set_visible(true)
 
 func _on_NewGame_pressed() -> void:

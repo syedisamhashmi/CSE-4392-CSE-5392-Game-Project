@@ -1,5 +1,6 @@
 extends Node2D
 
+export var levelNum = 0
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
@@ -7,6 +8,42 @@ func _enter_tree() -> void:
     Signals.connect("player_weapon_changed", self, "playerWeaponChanged")
     # warning-ignore:return_value_discarded
     Signals.connect("player_ammo_changed", self, "playerAmmoChanged")
+
+func _process(_delta: float) -> void:
+    if Input.is_action_just_pressed("ui_cancel"):
+        writeMapData()
+
+func _ready() -> void:
+    readMapData()
+
+func writeMapData():
+    var tm = $TileMap
+    var tileInfo = []    
+    for position in tm.get_used_cells():
+        var tile = getNewTile()
+        print(position)
+        tile.posX = position.x
+        tile.posY = position.y
+        tile.index = tm.get_cell(position.x, position.y)
+        tileInfo.append(tile)
+    LevelData.tiles = tileInfo
+    Utils.saveDataToFile("user://level" + str(levelNum) + ".dat", LevelData, true, false)
+
+
+func readMapData():
+    var levelData: LevelData = Utils.loadDataFromFile("user://level" + str(levelNum) + ".dat", LevelData, true, false)
+    var tm = $TileMap
+    if levelData != null:
+        for tile in levelData.tiles:
+            
+            tile.index = tm.set_cellv(Vector2(tile.posX, tile.posY), tile.index)
+
+func getNewTile():
+    return {
+        posX = null,
+        posY = null,
+        index = null
+    } 
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
