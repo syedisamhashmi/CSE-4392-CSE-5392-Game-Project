@@ -1,5 +1,7 @@
 extends Node2D
 
+var TYPE_PICKUP_BANANA_THROW = "banana-throw-pickup"
+var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
 
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
@@ -42,7 +44,37 @@ func readMapData():
             )
     #Set player start from saved level information
     $Banana.position = Vector2(levelData.playerStartX, levelData.playerStartY)
-
+    # If the position in the save file isn't default, use that.
+    if (
+        PlayerData.savedGame.playerPosX != -9999 and
+        PlayerData.savedGame.playerPosY != -9999
+    ):
+        $Banana.position.x = PlayerData.savedGame.playerPosX
+        $Banana.position.y = PlayerData.savedGame.playerPosY
+    
+    # Add pickups. Excluding pickups player has already retrieved.
+    if levelData != null and levelData.pickups.size() != 0:
+        # Clear current editor pickups to use level data
+        for child in $Pickups.get_children():
+            child.queue_free()
+            
+        for pickup in levelData.pickups:
+            # If player picked it up already
+            if PlayerData.savedGame.retrievedPickups.has(pickup.id):
+                # Go to next pickup
+                continue
+            # I would use a match case, but it has proved annoying
+            # So if if if it is.
+            # If a banana throw pickup.
+            if pickup.type == TYPE_PICKUP_BANANA_THROW:
+                # Create a new banana throw pickup instance
+                var newPickup = BANANA_THROW_PICKUP.instance()
+                newPickup.id = pickup.id #Set the id saved from the editor
+                # Set the position
+                newPickup.position = Vector2(pickup.posX, pickup.posY)
+                # And off it goes, new pickup in the level.
+                $Pickups.add_child(newPickup)
+        
 
 func writeMapData():
     var tm = $World
@@ -61,12 +93,30 @@ func writeMapData():
     LevelData.playerStartX = $Banana.position.x
     LevelData.playerStartY = $Banana.position.y
     
+    var pickups = $Pickups.get_children()
+    for pickup in pickups:
+        var toAdd = getNewPickup()
+        toAdd.posX = pickup.position.x
+        toAdd.posY = pickup.position.y
+        toAdd.type = pickup.type
+        toAdd.id   = pickup.id
+        LevelData.pickups.append(toAdd)
+    
     Utils.saveDataToFile(
         "user://level" + str(PlayerData.savedGame.levelNum) + ".dat",
         LevelData, 
         true, 
         false
     )
+
+func getNewPickup():
+    return {
+        posX = null,
+        posY = null,
+        type = "",
+        id   = 0
+    } 
+
 
 func getNewTile():
     return {
