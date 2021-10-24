@@ -153,9 +153,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TileMap" parent="." instance=ExtResource( 1 )]
+[node name="World" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
-tile_data = PoolIntArray(  )
 
 [node name="Enemy_Base" parent="." instance=ExtResource( 3 )]
 position = Vector2( 873, 222 )

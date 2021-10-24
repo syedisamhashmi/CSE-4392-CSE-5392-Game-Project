@@ -25,6 +25,9 @@ var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 # warning-ignore:unused_class_variable
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 
+# warning-ignore:unused_class_variable
+var levelNum                : int   = 0
+
 func init(_difficulty: int):
     self.difficulty = _difficulty
     return self
