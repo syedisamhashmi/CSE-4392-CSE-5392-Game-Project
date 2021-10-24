@@ -10,6 +10,8 @@ var playerStartY: float = 0
 #region Map
 # warning-ignore:unused_class_variable
 var tiles:              = []
+# warning-ignore:unused_class_variable
+var pickups:            = []
 #endregion
 
 
