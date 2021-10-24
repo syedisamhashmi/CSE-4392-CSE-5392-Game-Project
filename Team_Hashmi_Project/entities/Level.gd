@@ -1,6 +1,6 @@
 extends Node2D
 
-export var levelNum = 0
+
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
@@ -9,34 +9,38 @@ func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_ammo_changed", self, "playerAmmoChanged")
 
-func _process(_delta: float) -> void:
-    if Input.is_action_just_pressed("ui_cancel"):
-        writeMapData()
-
 func _ready() -> void:
     readMapData()
 
-func writeMapData():
-    var tm = $TileMap
-    var tileInfo = []    
-    for position in tm.get_used_cells():
-        var tile = getNewTile()
-        print(position)
-        tile.posX = position.x
-        tile.posY = position.y
-        tile.index = tm.get_cell(position.x, position.y)
-        tileInfo.append(tile)
-    LevelData.tiles = tileInfo
-    Utils.saveDataToFile("user://level" + str(levelNum) + ".dat", LevelData, true, false)
-
 
 func readMapData():
-    var levelData: LevelData = Utils.loadDataFromFile("user://level" + str(levelNum) + ".dat", LevelData, true, false)
-    var tm = $TileMap
-    if levelData != null:
+    var levelData: LevelData = Utils.loadDataFromFile(
+        "res://levels/level" + str(PlayerData.savedGame.levelNum) + ".dat", 
+        LevelData, 
+        true, # As instance object
+        false # Unencrypted
+    )
+    var tm = $World 
+    # If we have level data.
+    if levelData != null and levelData.tiles.size() != 0:
+        # Empty out tile map so we can load level date into it
+        tm.clear()
+        # Loop over all the tiles in our save data
         for tile in levelData.tiles:
-            
-            tile.index = tm.set_cellv(Vector2(tile.posX, tile.posY), tile.index)
+            # Set the appropriate cell from level data
+            tm.set_cell(
+                # X coord in tilemap
+                tile.posX,
+                # Y coord in tilemap
+                tile.posY,
+                # Which TileSet to use
+                tile.index,
+                # Some transform options
+                false, false, false,
+                # Which Tile in the tileset to use
+                Vector2(tile.tileCoordX, tile.tileCoordY)
+            )
+
 
 func getNewTile():
     return {
