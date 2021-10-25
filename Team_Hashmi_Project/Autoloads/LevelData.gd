@@ -12,6 +12,8 @@ var playerStartY: float = 0
 var tiles:              = []
 # warning-ignore:unused_class_variable
 var pickups:            = []
+# warning-ignore:unused_class_variable
+var enemies:            = []
 #endregion
 
 

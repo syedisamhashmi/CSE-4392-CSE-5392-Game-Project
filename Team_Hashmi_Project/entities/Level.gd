@@ -1,7 +1,16 @@
 extends Node2D
 
-var TYPE_PICKUP_BANANA_THROW = "banana-throw-pickup"
+var TYPE_PICKUP_BANANA_THROW: String = "banana-throw-pickup"
+
+var TYPE_ENEMY_BIG_ONION    : String = "big-onion"
+var TYPE_ENEMY_PINEAPPLE    : String = "pineapple"
+var TYPE_ENEMY_RADDISH      : String = "raddish"
+
+
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
+var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
+var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
+var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
 
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
@@ -74,8 +83,31 @@ func readMapData():
                 newPickup.position = Vector2(pickup.posX, pickup.posY)
                 # And off it goes, new pickup in the level.
                 $Pickups.add_child(newPickup)
+     
+    if (
+        levelData.enemies != null and
+        !levelData.enemies.empty()
+    ):
+        # Clear current editor enemies to use level data
+        for child in $Enemies.get_children():
+            $Enemies.remove_child(child)
+            
+        for enemyData in levelData.enemies:
+            var newEnemy = null
+            if enemyData.type == TYPE_ENEMY_BIG_ONION:
+                newEnemy = ENEMY_BIG_ONION.instance()
+            if enemyData.type == TYPE_ENEMY_PINEAPPLE:
+                newEnemy = ENEMY_PINEAPPLE.instance()
+            if enemyData.type == TYPE_ENEMY_RADDISH:
+                newEnemy = ENEMY_RADDISH.instance()
+                
+            newEnemy.health = enemyData.type
+            newEnemy.id = enemyData.id
+            newEnemy.position.x = enemyData.posX
+            newEnemy.position.y = enemyData.posY
+            $Enemies.add_child(newEnemy)
+                
         
-
 func writeMapData():
     var tm = $World
     var tileInfo = []    
@@ -102,6 +134,16 @@ func writeMapData():
         toAdd.id   = pickup.id
         LevelData.pickups.append(toAdd)
     
+    var enemies = $Enemies.get_children()
+    for enemy in enemies:
+        var toAdd = getNewEnemy()
+        toAdd.posX   = enemy.position.x
+        toAdd.posY   = enemy.position.y
+        toAdd.type   = enemy.type
+        toAdd.id     = enemy.id
+        toAdd.health = enemy.baseHealth
+        LevelData.enemies.append(toAdd)
+    
     Utils.saveDataToFile(
         "user://level" + str(PlayerData.savedGame.levelNum) + ".dat",
         LevelData, 
@@ -109,15 +151,21 @@ func writeMapData():
         false
     )
 
+func getNewEnemy():
+    return {
+        posX = null,
+        posY = null,
+        type = "",
+        health = 0,
+        id   = 0
+    } 
 func getNewPickup():
     return {
         posX = null,
         posY = null,
         type = "",
         id   = 0
-    } 
-
-
+    }
 func getNewTile():
     return {
         posX = null,

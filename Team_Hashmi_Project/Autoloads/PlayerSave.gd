@@ -29,6 +29,8 @@ var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 var levelNum                : int   = 0
 var retrievedPickups        : Array = []
 # warning-ignore:unused_class_variable
+var enemiesData             : Dictionary = {}
+# warning-ignore:unused_class_variable
 var playerPosX              : float = -9999
 # warning-ignore:unused_class_variable
 var playerPosY              : float = -9999
