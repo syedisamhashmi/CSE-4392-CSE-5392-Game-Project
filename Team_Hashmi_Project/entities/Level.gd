@@ -26,7 +26,7 @@ func _ready() -> void:
 
 func readMapData():
     var levelData: LevelData = Utils.loadDataFromFile(
-        "res://levels/level" + str(PlayerData.savedGame.levelNum) + ".dat", 
+        "res://levels/level" + str(PlayerData.savedGame.levelNum) + ".tres", 
         LevelData, 
         true, # As instance object
         false # Unencrypted
@@ -145,7 +145,7 @@ func writeMapData():
         LevelData.enemies.append(toAdd)
     
     Utils.saveDataToFile(
-        "user://level" + str(PlayerData.savedGame.levelNum) + ".dat",
+        "user://level" + str(PlayerData.savedGame.levelNum) + ".tres",
         LevelData, 
         true, 
         false

@@ -26,7 +26,7 @@ var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 
 # warning-ignore:unused_class_variable
-var levelNum                : int   = 0
+var levelNum                : int   = 1
 var retrievedPickups        : Array = []
 # warning-ignore:unused_class_variable
 var enemiesData             : Dictionary = {}
