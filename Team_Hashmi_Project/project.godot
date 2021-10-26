@@ -20,6 +20,7 @@ Strings="*res://Autoloads/Strings.gd"
 PlayerDefaults="*res://Autoloads/PlayerDefaults.gd"
 PlayerStats="*res://Autoloads/PlayerStats.gd"
 PlayerSave="*res://Autoloads/PlayerSave.gd"
+LevelData="*res://Autoloads/LevelData.gd"
 PlayerData="*res://Autoloads/PlayerData.gd"
 Utils="*res://Autoloads/Utils.gd"
 Globals="*res://Autoloads/Globals.gd"
@@ -89,6 +90,7 @@ quicksave={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="Projectiles"
+2d_physics/layer_10="DeadEnemies"
 
 [physics]
 

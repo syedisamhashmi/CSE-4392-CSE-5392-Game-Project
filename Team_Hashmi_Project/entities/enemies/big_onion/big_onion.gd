@@ -5,14 +5,12 @@ var POISON = preload("res://entities/enemies/big_onion/poison.tscn")
 #region Animations
 const ATTACK = "attack"
 const DAMAGE = "damage"
-const DEATH = "death"
 const IDLE = "idle"
 const WALK = "walk" # - Pantera
 #endregion
 
 #region Attributes
 var maxHealth = 50
-var health = 50
 var HEALTH_HANDICAP = 5
 var ROLL_ATTACK_DAMAGE = 1
 var ROLL_ATTACK_DAMAGE_HANDICAP = 2
@@ -39,6 +37,8 @@ var dir = Vector2.ZERO
 
 func _ready() -> void:
     rng.randomize()
+    health = 50
+    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
     maxHealth += (HEALTH_HANDICAP * difficulty)
@@ -50,17 +50,26 @@ func _ready() -> void:
     WALKING_DISTANCE += WALKING_DISTANCE_HANDICAP * difficulty
     ATTACK_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty
+    setupEnemyDetails()
+    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
+    checkAlive()
+    if $Image.get_animation() == DEATH:
+        return
     ._physics_process(delta)
     if (
         $Image.get_animation() != ATTACK
     ):
         handleAnimationState()
-
+    enemyDetails.posX = self.position.x
+    enemyDetails.posY = self.position.y
+    updateEnemyDetails(id)
 func player_location_changed(_position: Vector2):
-    if( $Image.get_animation() == DAMAGE or 
-        $Image.get_animation() == ATTACK
+    if( 
+        $Image.get_animation() == DEATH or 
+        $Image.get_animation() == DAMAGE or 
+        $Image.get_animation() == ATTACK 
     ):
         return
     var dist = self.position.distance_to(_position)
@@ -92,7 +101,6 @@ func player_location_changed(_position: Vector2):
             handleAnimationState()
     
 func handle_enemy_direction(_dir: float) -> void:
-    
     $Image.flip_h = _dir < 0
 
 func _on_Image_animation_finished() -> void:
@@ -109,6 +117,8 @@ func _on_Image_animation_finished() -> void:
         handleAnimationState()
 
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    if ($Image.get_animation() == DEATH):
+        return
     #? Call parent function to ensure it was hit
     var hit = .damage(_damage, knockback * 2, isPunch, punchNum)
     # If parent deemed enemy not hit, return.
@@ -117,11 +127,12 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     damageStart = OS.get_system_time_msecs()
     var calculatedDamage = abs(_damage) / difficulty
     health -= calculatedDamage
+    enemyDetails.health = health
+    updateEnemyDetails(id)
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(DAMAGE)
-    if (health <= 0):
-        queue_free()
+    checkAlive()
 
 func handleAnimationState() -> void:
     var anim = $Image.get_animation()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/images/pickup_items/banana-item.png" type="Texture" id=1]
-[ext_resource path="res://entities/pickup_items/banana_item.gd" type="Script" id=2]
+[ext_resource path="res://entities/pickup_items/pickup_base.gd" type="Script" id=2]
 [ext_resource path="res://assets/audio/253172__suntemple__retro-bonus-pickup-sfx.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -11,6 +11,8 @@ extents = Vector2( 8.81056, 11.0604 )
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 2 )
+signalName = "banana_throw_pickup_get"
+type = "banana-throw-pickup"
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -22,4 +24,4 @@ shape = SubResource( 1 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
-[connection signal="body_entered" from="." to="." method="_on_banana_item_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_pickup_body_entered"]

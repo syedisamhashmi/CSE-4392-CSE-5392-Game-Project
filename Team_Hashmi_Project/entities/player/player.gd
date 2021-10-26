@@ -194,10 +194,13 @@ func _physics_process(delta: float) -> void:
     $RightArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
     $LeftArm.frames.set_animation_speed(RUN, (2 + (abs(velocity.x) / 50)))
 
-    Signals.emit_signal("player_location_changed", position)
 
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
+    Signals.emit_signal("player_location_changed", position)
+    
+    save.playerPosX  = position.x
+    save.playerPosY = position.y
     
 func _input(event: InputEvent) -> void:
     if (event.is_action_pressed("quicksave")):
@@ -322,8 +325,12 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("pc", self, "pc")
     
-func banana_throw_pickup_get():
-    save.isBananaThrowUnlocked = true    
+func banana_throw_pickup_get(pickupId):
+    save.isBananaThrowUnlocked = true
+    # Add pickup id to list of retrieved pickups,
+    # so that next time the player loads the game, 
+    # they can't get it again
+    save.retrievedPickups.append(pickupId)
     # Give more ammo at lower difficulties. Set to 5 (one higher than max)
     # so as to at least give 5ammo on highest difficulty
     save.bananaThrowAmmo += 5 * (5 - save.difficulty)

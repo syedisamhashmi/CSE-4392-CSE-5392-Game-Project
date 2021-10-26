@@ -2,7 +2,6 @@ extends "res://entities/enemies/enemy_base/enemy_base.gd"
 
 #region Animations
 const DAMAGE = "damage"
-const DEATH = "death"
 const IDLE = "idle" 
 const ROLLING = "rolling"
 const ROLLING_HIT = "rolling_hit"  
@@ -13,7 +12,6 @@ const WALK = "walk" # - Pantera
 
 #region Attributes
 var maxHealth = 50
-var health = 50
 var HEALTH_HANDICAP = 5
 var ROLL_ATTACK_DAMAGE = 1
 var ROLL_ATTACK_DAMAGE_HANDICAP = 2
@@ -38,6 +36,8 @@ var rng = RandomNumberGenerator.new()
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
+    health = 50
+    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
     maxHealth += (HEALTH_HANDICAP * difficulty)
@@ -47,17 +47,27 @@ func _ready() -> void:
     ROLLING_DISTANCE += ROLLING_DISTANCE_HANDICAP * difficulty
     ROLL_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty
+    setupEnemyDetails()
+    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
+    checkAlive()
+    if $Image.get_animation() == DEATH:
+        return
     ._physics_process(delta)
     if (
         $Image.get_animation() != ROLLING_STOP and
         $Image.get_animation() != ROLLING_HIT
     ):
         handleAnimationState()
+    enemyDetails.posX = self.position.x
+    enemyDetails.posY = self.position.y
+    updateEnemyDetails(id)
 
 func player_location_changed(_position: Vector2):
-    if( $Image.get_animation() == DAMAGE or 
+    if( 
+        $Image.get_animation() == DEATH or 
+        $Image.get_animation() == DAMAGE or 
         $Image.get_animation() == ROLLING_STOP or
         $Image.get_animation() == ROLLING_HIT
     ):
@@ -86,12 +96,13 @@ func player_location_changed(_position: Vector2):
         ):
             return
         else:
-            if ($Image.get_animation() == ROLLING):
+            var anim = $Image.get_animation()
+            if (anim == ROLLING or anim == START_ROLL):
                 $Roll/RollBox.disabled = false
                 if dir.x <= 0:
-                    velocity.x -= MOVEMENT_SPEED
+                    self.velocity.x -= MOVEMENT_SPEED
                 else:
-                    velocity.x += MOVEMENT_SPEED
+                    self.velocity.x += MOVEMENT_SPEED
         handle_enemy_direction(dir.x )
         handleAnimationState()
     
@@ -114,6 +125,8 @@ func _on_Image_animation_finished() -> void:
         handleAnimationState()
 
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    if ($Image.get_animation() == DEATH):
+        return
     #? Call parent function to ensure it was hit
     var hit = .damage(_damage, knockback * 2, isPunch, punchNum)
     # If parent deemed enemy not hit, return.
@@ -123,15 +136,18 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     damageStart = OS.get_system_time_msecs()
     var calculatedDamage = abs(_damage) / difficulty
     health -= calculatedDamage
+    enemyDetails.health = health
+    updateEnemyDetails(id)
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(DAMAGE)
-    if (health <= 0):
-        queue_free()
+    checkAlive()
 
 func handleAnimationState() -> void:
     var anim = $Image.get_animation()
-    if (anim == START_ROLL or
+    if (
+        anim == DEATH       or
+        anim == START_ROLL  or
         anim == ROLLING_HIT
     ):
         return
