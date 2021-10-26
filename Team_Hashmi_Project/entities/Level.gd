@@ -1,5 +1,7 @@
 extends Node2D
 
+export var IS_BUILDING = false
+
 var TYPE_PICKUP_BANANA_THROW: String = "banana-throw-pickup"
 
 var TYPE_ENEMY_BIG_ONION    : String = "big-onion"
@@ -25,6 +27,8 @@ func _ready() -> void:
 
 
 func readMapData():
+    if IS_BUILDING:
+        return
     var levelData: LevelData = Utils.loadDataFromFile(
         "res://levels/level" + str(PlayerData.savedGame.levelNum) + ".tres", 
         LevelData, 
