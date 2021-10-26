@@ -20,7 +20,6 @@ var startJump = OS.get_system_time_msecs()
 
 var hitFloorStart = 0
 var maxHealth = 100
-var health = 100
 var HEALTH_HANDICAP = 100
 
 var CHEST_BUMP_DAMAGE = 5
@@ -49,6 +48,8 @@ var MAX_PROJECTILE_HANDICAP = 10
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
+    health = 100
+    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
     maxHealth += (HEALTH_HANDICAP * difficulty)
@@ -58,8 +59,13 @@ func _ready() -> void:
     JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * difficulty)
     THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * difficulty)
     MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * difficulty)
+    setupEnemyDetails()
+    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
+    checkAlive()
+    if $Image.get_animation() == DEATH:
+        return
     ._physics_process(delta)
     if ($LeftChestBox.get_overlapping_bodies().size() != 0 or
         $RightChestBox.get_overlapping_bodies().size() != 0):
@@ -84,9 +90,15 @@ func _physics_process(delta: float) -> void:
         $Image.get_animation() != TAKE_DAMAGE and
         !isJumping):
         handleAnimationState()
+    enemyDetails.posX = self.position.x
+    enemyDetails.posY = self.position.y
+    updateEnemyDetails(id)
     
 func player_location_changed(_position: Vector2):
-    if($Image.get_animation() == TAKE_DAMAGE):
+    if(
+        $Image.get_animation() == TAKE_DAMAGE or
+        $Image.get_animation() == DEATH
+    ):
         return
     var dist = self.position.distance_to(_position)
     var dir = self.position.direction_to(_position)
@@ -145,6 +157,8 @@ func handle_enemy_direction(dir: float) -> void:
     $RightChestBox/RightChestBoxCollision.set_disabled(dir > 0)
 
 func _on_ChestBox_body_entered(_body: Node) -> void:
+    if $Image.get_animation() == DEATH:
+        return
     var bodies = $LeftChestBox.get_overlapping_bodies() + $RightChestBox.get_overlapping_bodies()
     if (canChestBump and 
         (OS.get_system_time_msecs() - startChestBump) >= CHEST_BUMP_TIMEOUT):
@@ -157,6 +171,8 @@ func _on_ChestBox_body_entered(_body: Node) -> void:
                 body.damage(CHEST_BUMP_DAMAGE * -1 if $Image.flip_h else 1, 1)
 
 func _on_Image_animation_finished() -> void:
+    if $Image.get_animation() == DEATH:
+        return
     if ($Image.get_animation() == JUMP_ATTACK):
         handleAnimationState()
     if (OS.get_system_time_msecs() - startChestBump >= CHEST_BUMP_TIMEOUT):
@@ -168,6 +184,8 @@ func _on_Image_animation_finished() -> void:
 
 
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    if $Image.get_animation() == DEATH:
+        return
     #? Call parent function to ensure it was hit
     var hit = .damage(_damage, knockback * 2, isPunch, punchNum)
     # If parent deemed enemy not hit, return.
@@ -179,8 +197,9 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(TAKE_DAMAGE)
     canChestBump = false
-    if (health <= 0):
-        queue_free()
+    enemyDetails.health = health
+    updateEnemyDetails(id)
+    checkAlive()
 
 func handleAnimationState() -> void:
     $LeftChestBox/LeftChestBoxCollision.set_disabled(isJumping)

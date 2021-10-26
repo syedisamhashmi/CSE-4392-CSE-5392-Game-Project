@@ -25,6 +25,16 @@ var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 # warning-ignore:unused_class_variable
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 
+# warning-ignore:unused_class_variable
+var levelNum                : int   = 1
+var retrievedPickups        : Array = []
+# warning-ignore:unused_class_variable
+var enemiesData             : Dictionary = {}
+# warning-ignore:unused_class_variable
+var playerPosX              : float = -9999
+# warning-ignore:unused_class_variable
+var playerPosY              : float = -9999
+
 func init(_difficulty: int):
     self.difficulty = _difficulty
     return self
