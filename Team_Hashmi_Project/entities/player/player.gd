@@ -149,10 +149,6 @@ func _physics_process(delta: float) -> void:
     # If player is in the air, make it slower for them to move horizontally.
     if (velocity.y != 0):
         velocity.x *= airControlModifier.x
-        
-    
-    velocity.y += gravity * delta
-  
     # clamp velocity
     # Nice call Edward! - Isam
     velocity.x = clamp(velocity.x, -topSpeed.x, topSpeed.x)
@@ -197,6 +193,8 @@ func _physics_process(delta: float) -> void:
 
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
+    if !is_on_floor():
+        velocity.y += gravity * delta
     Signals.emit_signal("player_location_changed", position)
     
     save.playerPosX  = position.x
