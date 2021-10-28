@@ -93,32 +93,32 @@ atlas = ExtResource( 7 )
 region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=17]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 64, 64 )
+region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 64, 64 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 1 )
-region = Rect2( 192, 0, 64, 64 )
+region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 1 )
-region = Rect2( 256, 0, 64, 64 )
+region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
-region = Rect2( 320, 0, 64, 64 )
+region = Rect2( 256, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 64, 64 )
+atlas = ExtResource( 1 )
+region = Rect2( 320, 0, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=24]
 animations = [ {
@@ -127,14 +127,14 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
-"loop": true,
-"name": "Run",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 23 ) ],
+"frames": [ SubResource( 17 ) ],
 "loop": true,
 "name": "Slide",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ) ],
+"loop": true,
+"name": "Run",
 "speed": 5.0
 } ]
 
@@ -156,39 +156,39 @@ anim_speed = 0.64
 anim_speed_random = 0.75
 
 [sub_resource type="AtlasTexture" id=27]
-flags = 4
-atlas = ExtResource( 10 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=28]
-flags = 4
-atlas = ExtResource( 10 )
+atlas = ExtResource( 8 )
 region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=29]
-flags = 4
-atlas = ExtResource( 10 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=30]
-flags = 4
-atlas = ExtResource( 10 )
+atlas = ExtResource( 8 )
 region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 8 )
+flags = 4
+atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 8 )
+flags = 4
+atlas = ExtResource( 10 )
 region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 8 )
+flags = 4
+atlas = ExtResource( 10 )
 region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 8 )
+flags = 4
+atlas = ExtResource( 10 )
 region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=35]
@@ -225,12 +225,12 @@ region = Rect2( 320, 0, 64, 64 )
 animations = [ {
 "frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
 "loop": true,
-"name": "Punch",
+"name": "Idle",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ) ],
 "loop": true,
-"name": "Idle",
+"name": "Punch",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
@@ -251,12 +251,12 @@ script = ExtResource( 2 )
 [node name="BananaBoundingBoxLeft" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0, -18 )
 scale = Vector2( 2.51122, 1.90243 )
-polygon = PoolVector2Array( 16.7249, -7.35901, 16.3267, -17.3462, 13.9374, -21.0257, 8.36247, -25.2309, 1.59285, -23.654, 7.96426, -17.3462, 9.15889, -13.6667, 9.95532, -8.4103, 9.95532, -5.25644, 5.17677, 3.6795, 19.5124, 3.6795 )
+polygon = PoolVector2Array( 16.7249, -26.8078, 3.98213, -26.8078, 3.98213, 3.6795, 16.7249, 3.6795 )
 
 [node name="BananaBoundingBoxRight" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0, -18 )
 scale = Vector2( 2.511, 1.902 )
-polygon = PoolVector2Array( 3.1857, -8.4103, 3.1857, -16.8206, 6.37141, -21.0257, 11.5482, -24.7052, 17.1232, -23.654, 11.9464, -18.9232, 10.3535, -13.1411, 9.55711, -8.41032, 11.5492, 3.68034, 6.37141, 3.6795, 1.99124, 3.68034 )
+polygon = PoolVector2Array( 3.18598, -25.7624, 15.9299, -25.7624, 15.9299, 3.68034, 3.18598, 3.68034 )
 
 [node name="LeftArm" type="AnimatedSprite" parent="."]
 position = Vector2( 24, -40 )
