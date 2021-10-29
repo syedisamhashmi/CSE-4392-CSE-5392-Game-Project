@@ -81,7 +81,11 @@ func _physics_process(delta: float) -> void:
             position.x += xKnockback
     # want to feel instant and responsive, so don't bother with acceleration
     # i.e. just set their velocity to the jump acceleration.
-    if Input.is_action_just_pressed("jump") and is_on_floor():
+    if (
+        (Input.is_action_just_pressed("jump") and is_on_floor()) or
+        # I know... weird... just go with it. It works.
+        (Input.is_action_just_pressed("jump") and !is_on_floor() and velocity.y < 16)
+    ):
         # Increase player data for jump count
         stats.jumpCount += 1
         velocity.y = -acceleration.y
@@ -175,6 +179,7 @@ func _physics_process(delta: float) -> void:
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
     if !is_on_floor():
+        velocity.y += gravity * delta
         # If they are in the air, don't emit the slide particles anymore
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
@@ -193,8 +198,6 @@ func _physics_process(delta: float) -> void:
 
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
-    if !is_on_floor():
-        velocity.y += gravity * delta
     Signals.emit_signal("player_location_changed", position)
     
     save.playerPosX  = position.x
