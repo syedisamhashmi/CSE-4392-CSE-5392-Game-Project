@@ -1,6 +1,6 @@
 extends Node2D
 
-export var IS_BUILDING = false
+export var IS_BUILDING = true
 
 var TYPE_PICKUP_BANANA_THROW: String = "banana-throw-pickup"
 
