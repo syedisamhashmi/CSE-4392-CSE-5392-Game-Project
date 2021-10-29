@@ -35,6 +35,51 @@ func readMapData():
         true, # As instance object
         false # Unencrypted
     )
+    var backgroundLayer = $ParallaxBackground/ParallaxLayer
+    backgroundLayer.motion_scale.x = levelData.backgroundMotionScaleX
+    backgroundLayer.motion_scale.y = levelData.backgroundMotionScaleY
+    var background = $ParallaxBackground/ParallaxLayer/background
+    var bgStream = load(levelData.backgroundPath)
+    var bgImgToUse = bgStream.get_data()
+    var bgTextToUse = ImageTexture.new()
+    bgImgToUse.lock()
+    bgTextToUse.create_from_image(bgImgToUse, 0)
+    bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
+    background.texture = bgTextToUse
+    background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
+    
+    var layer2 = $ParallaxBackground/ParallaxLayer2
+    layer2.motion_scale.x = levelData.layer2MotionScaleX
+    layer2.motion_scale.y = levelData.layer2MotionScaleY
+    for obj in levelData.layer2:
+        var stream = load(obj.imagePath)
+        var imgToUse = stream.get_data()
+        var textureToUse = ImageTexture.new()
+        imgToUse.lock()
+        textureToUse.create_from_image(imgToUse, 0)
+        textureToUse.set_size_override(Vector2(obj.sizeX, obj.sizeY))
+        var newText = TextureRect.new()
+        newText.texture = textureToUse
+        newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
+        newText.set_position(Vector2(obj.positionX, obj.positionY))
+        layer2.add_child(newText)
+        
+    var layer3 = $ParallaxBackground/ParallaxLayer3
+    layer3.motion_scale.x = levelData.layer3MotionScaleX
+    layer3.motion_scale.y = levelData.layer3MotionScaleY
+    for obj in levelData.layer3:
+        var stream = load(obj.imagePath)
+        var imgToUse = stream.get_data()
+        var textureToUse = ImageTexture.new()
+        imgToUse.lock()
+        textureToUse.create_from_image(imgToUse, 0)
+        textureToUse.set_size_override(Vector2(obj.sizeX, obj.sizeY))
+        var newText = TextureRect.new()
+        newText.texture = textureToUse
+        newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
+        newText.set_position(Vector2(obj.positionX, obj.positionY))
+        layer3.add_child(newText)
+    
     var tm = $World 
     # If we have level data.
     if levelData != null and levelData.tiles.size() != 0:
@@ -113,6 +158,64 @@ func readMapData():
                 
         
 func writeMapData():
+    var backgroundLayer = $ParallaxBackground/ParallaxLayer
+    LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
+    LevelData.backgroundMotionScaleY = backgroundLayer.motion_scale.y
+    var background = $ParallaxBackground/ParallaxLayer/background
+    LevelData.backgroundPath = background.texture.get_path()
+    LevelData.backgroundPosX = background.get_position().x
+    LevelData.backgroundPosY = background.get_position().y
+    LevelData.backgroundSizeX = background.get_size().x
+    LevelData.backgroundSizeY = background.get_size().y
+    
+    var layer2 = []
+    var layerTwo = $ParallaxBackground/ParallaxLayer2
+    LevelData.layer2MotionScaleX = layerTwo.motion_scale.x
+    LevelData.layer2MotionScaleY = layerTwo.motion_scale.y
+    for image in layerTwo.get_children():
+        var img = image as TextureRect
+        var newLayerTwoImg = {
+            "positionX": 0,
+            "positionY": 0,
+            "imagePath": "",
+            "sizeX": 0,
+            "sizeY": 0,
+            "scaleX": 0,
+            "scaleY": 0,
+        }
+        newLayerTwoImg.imagePath = img.texture.get_path()
+        newLayerTwoImg.positionX = img.get_position().x
+        newLayerTwoImg.positionY = img.get_position().y
+        newLayerTwoImg.sizeX = img.get_size().x
+        newLayerTwoImg.sizeY = img.get_size().y
+        newLayerTwoImg.scaleX = img.get_scale().x
+        newLayerTwoImg.scaleY = img.get_scale().y
+        layer2.append(newLayerTwoImg)
+    LevelData.layer2 = layer2
+    
+    var layer3 = []
+    var layerThree = $ParallaxBackground/ParallaxLayer3
+    LevelData.layer3MotionScaleX = layerThree.motion_scale.x
+    LevelData.layer3MotionScaleY = layerThree.motion_scale.y
+    for image in layerThree.get_children():
+        var img = image as TextureRect
+        var newLayerThreeImg = {
+            "positionX": 0,
+            "positionY": 0,
+            "imagePath": 0,
+            "sizeX": 0,
+            "sizeY": 0
+        }
+        newLayerThreeImg.imagePath = img.texture.get_path()
+        newLayerThreeImg.positionX = img.get_position().x
+        newLayerThreeImg.positionY = img.get_position().y
+        newLayerThreeImg.sizeX = img.get_size().x
+        newLayerThreeImg.sizeY = img.get_size().y
+        newLayerThreeImg.scaleX = img.get_scale().x
+        newLayerThreeImg.scaleY = img.get_scale().y
+        layer3.append(newLayerThreeImg)
+    LevelData.layer3 = layer3
+
     var tm = $World
     var tileInfo = []    
     for position in tm.get_used_cells():
