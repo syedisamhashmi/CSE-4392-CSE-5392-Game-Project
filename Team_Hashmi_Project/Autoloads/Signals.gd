@@ -22,4 +22,7 @@ signal player_ammo_changed(ammoCount)
 signal player_damage_dealt(amount)
 
 # warning-ignore:unused_signal
+signal displayDialog(dialogText, id)
+
+# warning-ignore:unused_signal
 signal pc(c)

@@ -43,6 +43,8 @@ var tiles:              = []
 var pickups:            = []
 # warning-ignore:unused_class_variable
 var enemies:            = []
+# warning-ignore:unused_class_variable
+var triggers:           = []
 #endregion
 
 
