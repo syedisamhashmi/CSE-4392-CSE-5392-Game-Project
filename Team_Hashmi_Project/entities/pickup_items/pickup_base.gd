@@ -6,6 +6,8 @@ export var id: String = ""
 export var type: String = "insert-pickup-type-here"
 
 func _on_pickup_body_entered(_body: Node) -> void:
+    if !Globals.inGame:
+        return
     $Sprite.visible = false
     # play pickup sound
     $AudioStreamPlayer.play()

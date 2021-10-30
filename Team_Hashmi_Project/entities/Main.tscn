@@ -123,6 +123,7 @@ position = Vector2( -666, 295 )
 [node name="banana_item" parent="Pickups" instance=ExtResource( 7 )]
 position = Vector2( -404, 518 )
 id = "20"
+[node name="Triggers" type="Node2D" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -191,3 +192,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Dialog" type="AcceptDialog" parent="HUD"]
+margin_left = 340.0
+margin_top = 268.0
+margin_right = 689.0
+margin_bottom = 512.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
