@@ -25,6 +25,8 @@ func player_location_changed(_position: Vector2):
     pass
 
 func _physics_process(delta: float) -> void:
+    if !Globals.inGame:
+        return
     velocity.y += gravity * delta
     velocity.x *= friction;
     
@@ -34,6 +36,8 @@ func _physics_process(delta: float) -> void:
     velocity = move_and_slide(velocity, Vector2.UP)
     
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0) -> bool:
+    if !Globals.inGame:
+        return false
     # Stops one punch from hitting multiple times.
     # If current punch # is the same as the one we were hit on
     if isPunch && punchNum == hitOnPunchNum:
@@ -53,6 +57,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0) ->
     return true
 
 func damage_flash_effect():
+    if !Globals.inGame:
+        return
     $damage_sound.play()
     $Image.material.set_shader_param("intensity", 0.75)
     yield(get_tree().create_timer(0.1), "timeout")
