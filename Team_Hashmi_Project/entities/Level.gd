@@ -14,6 +14,8 @@ var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.ts
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
 
+var DIALOG_TRIGGER      = preload("res://entities/dialog-trigger/dialog-trigger.tscn")
+
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
@@ -21,6 +23,8 @@ func _enter_tree() -> void:
     Signals.connect("player_weapon_changed", self, "playerWeaponChanged")
     # warning-ignore:return_value_discarded
     Signals.connect("player_ammo_changed", self, "playerAmmoChanged")
+    # warning-ignore:return_value_discarded
+    Signals.connect("displayDialog", self, "displayDialog")
 
 func _ready() -> void:
     readMapData()
@@ -156,13 +160,28 @@ func readMapData():
             newEnemy.position.y = enemyData.posY
             $Enemies.add_child(newEnemy)
                 
-        
+    if levelData != null and levelData.triggers:
+        for child in $Triggers.get_children():
+            child.queue_free()
+        for trigger in levelData.triggers:
+            if PlayerData.savedGame.completedTriggers.has(trigger.triggerId):
+                continue
+            var newDialogTrigger = DIALOG_TRIGGER.instance()
+            newDialogTrigger.id = trigger.triggerId
+            newDialogTrigger.dialogText = trigger.text
+            newDialogTrigger.position.x = trigger.posX
+            newDialogTrigger.position.y = trigger.posY
+            newDialogTrigger.scale.x = trigger.scaleX
+            newDialogTrigger.scale.y = trigger.scaleY
+            $Triggers.add_child(newDialogTrigger)
+            
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
     LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
     LevelData.backgroundMotionScaleY = backgroundLayer.motion_scale.y
     var background = $ParallaxBackground/ParallaxLayer/background
-    LevelData.backgroundPath = background.texture.get_path()
+    if background.texture != null:
+        LevelData.backgroundPath = background.texture.get_path()
     LevelData.backgroundPosX = background.get_position().x
     LevelData.backgroundPosY = background.get_position().y
     LevelData.backgroundSizeX = background.get_size().x
@@ -251,13 +270,32 @@ func writeMapData():
         toAdd.health = enemy.baseHealth
         LevelData.enemies.append(toAdd)
     
+    var triggers = $Triggers.get_children()
+    for trigger in triggers:
+        var toAdd = getNewTrigger()
+        toAdd.triggerId = trigger.id
+        toAdd.text = trigger.dialogText
+        toAdd.scaleX = trigger.scale.x
+        toAdd.scaleY = trigger.scale.y
+        toAdd.posX = trigger.position.x
+        toAdd.posY = trigger.position.y
+        LevelData.triggers.append(toAdd)
+    
     Utils.saveDataToFile(
         "user://level" + str(PlayerData.savedGame.levelNum) + ".tres",
         LevelData, 
         true, 
         false
     )
-
+func getNewTrigger():
+    return {
+        "triggerId": "",
+        "text": "",
+        "scaleX": 0,
+        "scaleY": 0,
+        "posX": 0,
+        "posY": 0
+    }
 func getNewEnemy():
     return {
         posX = null,
@@ -279,6 +317,12 @@ func getNewTile():
         posY = null,
         index = null
     } 
+
+func displayDialog(dialogText, _id):
+    $HUD/Dialog.set_text(dialogText)
+    $HUD/Dialog.popup_centered()
+    Globals.inGame = false
+    pass
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
@@ -329,3 +373,8 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     # If you are still reading this. It has to be in ALL classes
     return j
 #endregion
+
+
+func _on_Dialog_confirmed() -> void:
+    Globals.inGame = true
+    pass # Replace with function body.

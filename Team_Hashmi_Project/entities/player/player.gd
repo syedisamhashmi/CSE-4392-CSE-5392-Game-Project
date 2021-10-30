@@ -70,6 +70,15 @@ var damageSafety = 1000
 var KNOCKBACK_TIME = 200
 
 func _physics_process(delta: float) -> void:
+    if !Globals.inGame:
+        $LeftArm.playing = false
+        $BananaImage.playing = false
+        $RightArm.playing = false
+        return
+    else:
+        $LeftArm.playing = true
+        $BananaImage.playing = true
+        $RightArm.playing = true
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
     # used to allow shorter jumps if jump button is released quickly
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
@@ -204,6 +213,8 @@ func _physics_process(delta: float) -> void:
     save.playerPosY = position.y
     
 func _input(event: InputEvent) -> void:
+    if !Globals.inGame:
+        return
     if (event.is_action_pressed("quicksave")):
         quicksave()
     
@@ -243,6 +254,8 @@ func equipPreviousWeapon() -> void:
         skipWeapons(false) 
     handleWeaponUI()
 func handleWeaponUI():
+    if !Globals.inGame:
+        return
     Signals.emit_signal("player_weapon_changed", save.currentWeapon)
     match save.currentWeapon as int:
         Weapons.MELEE:
@@ -287,6 +300,8 @@ func skipWeapons(add: bool) -> void:
 #endregion
 
 func spawnPlayerProjectile() -> void:
+    if !Globals.inGame:
+        return
     # Increase player data for shots fired
     stats.bananasThrown += 1
     var projectile_instance = PLAYER_PROJECTILE.instance()
@@ -325,7 +340,12 @@ func _ready() -> void:
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
     # warning-ignore:return_value_discarded
     Signals.connect("pc", self, "pc")
-    
+    # warning-ignore:return_value_discarded
+    Signals.connect("displayDialog", self, "displayDialog")
+
+func displayDialog(_dialogText, id):
+    self.save.completedTriggers.append(id)
+
 func banana_throw_pickup_get(pickupId):
     save.isBananaThrowUnlocked = true
     # Add pickup id to list of retrieved pickups,
@@ -355,6 +375,8 @@ func quicksave() -> void:
     Globals.save_stats()
 
 func handleArmAnimation() -> void:
+    if !Globals.inGame:
+        return
     # If they are punching, don't impact right hand.
     # Animation finished call back will handle that
     if ($RightArm.get_animation() != PUNCH):
@@ -363,11 +385,15 @@ func handleArmAnimation() -> void:
     $LeftArm.set_animation(RUN)
 
 func applyAllImageFlips(shouldFlip: bool) -> void:
+    if !Globals.inGame:
+        return
     $BananaImage.flip_h = shouldFlip
     $RightArm.flip_h = shouldFlip
     $LeftArm.flip_h = shouldFlip
 
 func updatePlayerBoundingBox() -> void:
+    if !Globals.inGame:
+        return
     if (lastDir == PlayerDirection.RIGHT):
         $BananaBoundingBoxLeft.set_disabled(true)
         $BananaBoundingBoxRight.set_disabled(false)
@@ -376,6 +402,8 @@ func updatePlayerBoundingBox() -> void:
         $BananaBoundingBoxRight.set_disabled(true)
 
 func _on_RightArm_animation_finished() -> void:
+    if !Globals.inGame:
+        return
     # Disable ability to deal punch damage.
     $RightPunchArea/Collider.set_disabled(true)
     $LeftPunchArea/Collider.set_disabled(true)
@@ -389,11 +417,15 @@ func _on_RightArm_animation_finished() -> void:
             $RightArm.set_animation(IDLE)
 
 func _on_PunchArea_body_entered(body: Node) -> void:
+    if !Globals.inGame:
+        return
     if body.has_method("damage"):
       body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
 
 
 func _on_RightArm_frame_changed() -> void:
+    if !Globals.inGame:
+        return
     var currFrame: int = $RightArm.get_frame()
     match lastDir:
         PlayerDirection.RIGHT:
@@ -423,6 +455,8 @@ func _on_RightArm_frame_changed() -> void:
 
 var xKnockback = 0
 func damage(damage, knockbackMultiplier):
+    if !Globals.inGame:
+        return
     if stuff:
         return
     if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * save.difficulty) )):
@@ -435,6 +469,8 @@ func damage(damage, knockbackMultiplier):
     Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func damage_flash_effect():
+    if !Globals.inGame:
+        return
     $damage_sound.play()
     $BananaImage.material.set_shader_param("intensity", 0.75)
     yield(get_tree().create_timer(0.1), "timeout")

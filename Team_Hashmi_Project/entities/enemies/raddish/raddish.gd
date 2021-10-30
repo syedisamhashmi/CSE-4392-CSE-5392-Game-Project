@@ -51,6 +51,11 @@ func _ready() -> void:
     updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
+    if !Globals.inGame:
+        $Image.playing = false
+        return
+    else:
+        $Image.playing = true
     checkAlive()
     if $Image.get_animation() == DEATH:
         return
@@ -65,6 +70,8 @@ func _physics_process(delta: float) -> void:
     updateEnemyDetails(id)
 
 func player_location_changed(_position: Vector2):
+    if !Globals.inGame:
+        return
     if( 
         $Image.get_animation() == DEATH or 
         $Image.get_animation() == DAMAGE or 
@@ -107,6 +114,8 @@ func player_location_changed(_position: Vector2):
         handleAnimationState()
     
 func handle_enemy_direction(dir: float) -> void:
+    if !Globals.inGame:
+        return
     var before = $Image.flip_h
     $Image.flip_h = dir < 0
     if before != $Image.flip_h:
@@ -114,6 +123,8 @@ func handle_enemy_direction(dir: float) -> void:
             $Image.set_animation(ROLLING_STOP)
 
 func _on_Image_animation_finished() -> void:
+    if !Globals.inGame:
+        return
     var anim = $Image.get_animation()
     if (anim == ROLLING_STOP or 
         anim == ROLLING_HIT
@@ -125,6 +136,8 @@ func _on_Image_animation_finished() -> void:
         handleAnimationState()
 
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    if !Globals.inGame:
+        return
     if ($Image.get_animation() == DEATH):
         return
     #? Call parent function to ensure it was hit
@@ -144,6 +157,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     checkAlive()
 
 func handleAnimationState() -> void:
+    if !Globals.inGame:
+        return
     var anim = $Image.get_animation()
     if (
         anim == DEATH       or
@@ -160,6 +175,8 @@ func handleAnimationState() -> void:
     return
 
 func _on_Roll_body_entered(body: Node) -> void:
+    if !Globals.inGame:
+        return
     if $Image.get_animation() != ROLLING:
         return
     
