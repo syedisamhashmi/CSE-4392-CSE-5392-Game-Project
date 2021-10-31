@@ -63,6 +63,11 @@ func _ready() -> void:
     updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
+    if !Globals.inGame:
+        $Image.playing = false
+        return
+    else:
+        $Image.playing = true
     checkAlive()
     if $Image.get_animation() == DEATH:
         return
@@ -95,6 +100,8 @@ func _physics_process(delta: float) -> void:
     updateEnemyDetails(id)
     
 func player_location_changed(_position: Vector2):
+    if !Globals.inGame:
+        return
     if(
         $Image.get_animation() == TAKE_DAMAGE or
         $Image.get_animation() == DEATH
@@ -152,11 +159,15 @@ func player_location_changed(_position: Vector2):
     
     
 func handle_enemy_direction(dir: float) -> void:
+    if !Globals.inGame:
+        return
     $Image.flip_h = dir < 0
     $LeftChestBox/LeftChestBoxCollision.set_disabled(dir < 0)
     $RightChestBox/RightChestBoxCollision.set_disabled(dir > 0)
 
 func _on_ChestBox_body_entered(_body: Node) -> void:
+    if !Globals.inGame:
+        return
     if $Image.get_animation() == DEATH:
         return
     var bodies = $LeftChestBox.get_overlapping_bodies() + $RightChestBox.get_overlapping_bodies()
@@ -171,6 +182,8 @@ func _on_ChestBox_body_entered(_body: Node) -> void:
                 body.damage(CHEST_BUMP_DAMAGE * -1 if $Image.flip_h else 1, 1)
 
 func _on_Image_animation_finished() -> void:
+    if !Globals.inGame:
+        return
     if $Image.get_animation() == DEATH:
         return
     if ($Image.get_animation() == JUMP_ATTACK):
@@ -184,6 +197,8 @@ func _on_Image_animation_finished() -> void:
 
 
 func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
+    if !Globals.inGame:
+        return
     if $Image.get_animation() == DEATH:
         return
     #? Call parent function to ensure it was hit
@@ -202,6 +217,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     checkAlive()
 
 func handleAnimationState() -> void:
+    if !Globals.inGame:
+        return
     $LeftChestBox/LeftChestBoxCollision.set_disabled(isJumping)
     $RightChestBox/RightChestBoxCollision.set_disabled(isJumping)
     if abs(velocity.x) <= 5:
@@ -214,6 +231,8 @@ func handleAnimationState() -> void:
 
 
 func _on_JumpAttackBox_body_entered(body: Node) -> void:
+    if !Globals.inGame:
+        return
     if (OS.get_system_time_msecs() - hitFloorStart > 100):
         $JumpAttackBox/JumpAttackBoxCollision.disabled = true
         $JumpAttackBox/JumpParticles.set_emitting(false)
