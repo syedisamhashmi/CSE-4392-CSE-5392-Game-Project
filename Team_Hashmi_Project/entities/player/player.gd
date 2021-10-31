@@ -181,7 +181,7 @@ func _physics_process(delta: float) -> void:
     # ? If the player is (appearing) to not move
     # ? The speed is small enough that the eye can't see it move
     # ? stops the animation from looking horrible
-    if (abs(velocity.x) < SPEED_DEADZONE * 25):
+    if (abs(velocity.x) < SPEED_DEADZONE * 5):
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
@@ -209,7 +209,7 @@ func _physics_process(delta: float) -> void:
 
 
     # Godot's built in function to determine final velocity
-    velocity = move_and_slide(velocity, Vector2.UP)
+    velocity = move_and_slide(velocity, Vector2.UP, true)
     Signals.emit_signal("player_location_changed", position)
     
     save.playerPosX  = position.x
