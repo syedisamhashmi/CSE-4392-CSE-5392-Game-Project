@@ -21,6 +21,11 @@ func _ready() -> void:
     $Image.playing = true
     
 func _physics_process(_delta: float) -> void:
+    if !Globals.inGame:
+        $Image.playing = false
+        return
+    else:
+        $Image.playing = true
     if currBody != null:
         _on_PoisonArea_body_entered(currBody)
     position += velocity
