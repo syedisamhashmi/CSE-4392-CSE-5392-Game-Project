@@ -160,7 +160,7 @@ func _physics_process(delta: float) -> void:
 
     
     # If player is in the air, make it slower for them to move horizontally.
-    if (velocity.y != 0):
+    if (velocity.y != 0 && !is_on_floor()):
         velocity.x *= airControlModifier.x
     # clamp velocity
     # Nice call Edward! - Isam
