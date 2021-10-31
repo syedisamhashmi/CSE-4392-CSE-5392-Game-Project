@@ -210,7 +210,6 @@ func _physics_process(delta: float) -> void:
 
     # Godot's built in function to determine final velocity
     velocity = move_and_slide(velocity, Vector2.UP)
-    print(is_on_floor())
     Signals.emit_signal("player_location_changed", position)
     
     save.playerPosX  = position.x
