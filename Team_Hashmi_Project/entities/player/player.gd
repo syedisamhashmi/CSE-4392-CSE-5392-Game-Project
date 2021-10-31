@@ -160,8 +160,12 @@ func _physics_process(delta: float) -> void:
 
     
     # If player is in the air, make it slower for them to move horizontally.
-    if (velocity.y != 0):
+    if (velocity.y != 0 && !is_on_floor()):
         velocity.x *= airControlModifier.x
+    
+    
+    velocity.y += gravity * delta
+    
     # clamp velocity
     # Nice call Edward! - Isam
     velocity.x = clamp(velocity.x, -topSpeed.x, topSpeed.x)
@@ -177,7 +181,7 @@ func _physics_process(delta: float) -> void:
     # ? If the player is (appearing) to not move
     # ? The speed is small enough that the eye can't see it move
     # ? stops the animation from looking horrible
-    if (abs(velocity.x) < SPEED_DEADZONE * 25):
+    if (abs(velocity.x) < SPEED_DEADZONE * 5):
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
@@ -188,7 +192,6 @@ func _physics_process(delta: float) -> void:
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
     if !is_on_floor():
-        velocity.y += gravity * delta
         # If they are in the air, don't emit the slide particles anymore
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
@@ -206,7 +209,7 @@ func _physics_process(delta: float) -> void:
 
 
     # Godot's built in function to determine final velocity
-    velocity = move_and_slide(velocity, Vector2.UP)
+    velocity = move_and_slide(velocity, Vector2.UP, true)
     Signals.emit_signal("player_location_changed", position)
     
     save.playerPosX  = position.x
