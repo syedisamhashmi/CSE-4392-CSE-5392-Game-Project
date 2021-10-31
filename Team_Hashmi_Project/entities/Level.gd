@@ -252,15 +252,18 @@ func writeMapData():
     LevelData.playerStartY = $Banana.position.y
     
     var pickups = $Pickups.get_children()
+    var pickupsToUse = []
     for pickup in pickups:
         var toAdd = getNewPickup()
         toAdd.posX = pickup.position.x
         toAdd.posY = pickup.position.y
         toAdd.type = pickup.type
         toAdd.id   = pickup.id
-        LevelData.pickups.append(toAdd)
+        pickupsToUse.append(toAdd)
+    LevelData.pickups = pickupsToUse
     
     var enemies = $Enemies.get_children()
+    var enemiesToUse = []
     for enemy in enemies:
         var toAdd = getNewEnemy()
         toAdd.posX   = enemy.position.x
@@ -268,9 +271,11 @@ func writeMapData():
         toAdd.type   = enemy.type
         toAdd.id     = enemy.id
         toAdd.health = enemy.baseHealth
-        LevelData.enemies.append(toAdd)
+        enemiesToUse.append(toAdd)
+    LevelData.enemies = enemiesToUse
     
     var triggers = $Triggers.get_children()
+    var triggersToUse = []
     for trigger in triggers:
         var toAdd = getNewTrigger()
         toAdd.triggerId = trigger.id
@@ -279,7 +284,8 @@ func writeMapData():
         toAdd.scaleY = trigger.scale.y
         toAdd.posX = trigger.position.x
         toAdd.posY = trigger.position.y
-        LevelData.triggers.append(toAdd)
+        triggersToUse.append(toAdd)
+    LevelData.triggers = triggersToUse
     
     Utils.saveDataToFile(
         "user://level" + str(PlayerData.savedGame.levelNum) + ".tres",
