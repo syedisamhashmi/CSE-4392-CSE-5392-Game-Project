@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/enemies/potato/potato.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/Level.gd" type="Script" id=6]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-tomato-stand.png" type="Texture" id=9]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-pineapple-stand.png" type="Texture" id=10]
@@ -155,3 +156,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Potato" parent="." instance=ExtResource( 3 )]
+position = Vector2( -148.631, -51.3017 )
