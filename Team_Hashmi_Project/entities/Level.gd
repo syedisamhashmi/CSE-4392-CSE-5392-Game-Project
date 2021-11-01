@@ -352,6 +352,8 @@ var xt = [2,9,3,14,12,6,21,16,4,15,17,24,7,11,25,19,13,10,20,18,8,5,0,22,1,23]
 var kc = PoolByteArray([])
 # Don't debug for the answer.
 func _input(event: InputEvent) -> void:
+    if Input.is_action_just_pressed("write_map_data"):
+        writeMapData()
     if Input.is_action_just_released("ui_cancel"):
         showPauseMenu()
     
