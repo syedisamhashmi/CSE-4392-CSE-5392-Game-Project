@@ -38,7 +38,6 @@ motion_scale = Vector2( 0.8, 0.8 )
 
 [node name="World" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
-tile_data = PoolIntArray(  )
 
 [node name="Enemies" type="Node2D" parent="."]
 z_index = -1

@@ -333,10 +333,6 @@ func _ready() -> void:
     $BananaImage._set_playing(true)
     $RightArm._set_playing(true)
     $LeftArm._set_playing(true)
-    # ? Connect the exit_game signal to save the game
-    # ? This way, before the game exits, the game state is saved.
-    # warning-ignore:return_value_discarded
-    Signals.connect("exit_game", self, "quicksave")
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
@@ -345,6 +341,18 @@ func _ready() -> void:
     Signals.connect("pc", self, "pc")
     # warning-ignore:return_value_discarded
     Signals.connect("displayDialog", self, "displayDialog")
+    # warning-ignore:return_value_discarded
+    Signals.connect("checkpoint", self, "quicksave")
+    # warning-ignore:return_value_discarded
+    Signals.connect("next_level_trigger", self, "next_level_trigger")
+
+func next_level_trigger(levelId):
+    save.levelNum = levelId
+    save.playerPosX = -9999
+    save.playerPosY = -9999
+    quicksave()
+    Signals.emit_signal("next_level_trigger_complete", true)
+    
 
 func displayDialog(_dialogText, id):
     self.save.completedTriggers.append(id)
@@ -371,7 +379,9 @@ func setLoadedData() -> void:
     topSpeed              = Vector2(save.playerMoveSpeed, 
                                     save.playerJumpHeight
                             )
-func quicksave() -> void:
+func quicksave(id = null) -> void:
+    if id != null:
+        save.completedTriggers.append(id)
     PlayerData.savedGame = save
     PlayerData.playerStats = stats
     Globals.save_game()

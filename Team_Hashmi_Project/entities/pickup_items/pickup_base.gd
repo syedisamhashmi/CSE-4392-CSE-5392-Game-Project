@@ -3,7 +3,7 @@ extends Node
 export var signalName: String = "insert-signal-name-here"
 export var id: String = ""
 # warning-ignore:unused_class_variable
-export var type: String = "insert-pickup-type-here"
+export(EntityTypeEnums.PICKUP_TYPE) var type = EntityTypeEnums.PICKUP_TYPE.NONE
 
 func _on_pickup_body_entered(_body: Node) -> void:
     if !Globals.inGame:
