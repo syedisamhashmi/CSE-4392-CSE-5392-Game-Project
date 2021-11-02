@@ -2,19 +2,15 @@ extends Node2D
 
 export var IS_BUILDING = false
 
-var TYPE_PICKUP_BANANA_THROW: String = "banana-throw-pickup"
-
-var TYPE_ENEMY_BIG_ONION    : String = "big-onion"
-var TYPE_ENEMY_PINEAPPLE    : String = "pineapple"
-var TYPE_ENEMY_RADDISH      : String = "raddish"
-
-
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
 
-var DIALOG_TRIGGER      = preload("res://entities/dialog-trigger/dialog-trigger.tscn")
+var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
+var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
+var NEXT_LEVEL_TRIGGER  = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+
 
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
@@ -25,6 +21,8 @@ func _enter_tree() -> void:
     Signals.connect("player_ammo_changed", self, "playerAmmoChanged")
     # warning-ignore:return_value_discarded
     Signals.connect("displayDialog", self, "displayDialog")
+    # warning-ignore:return_value_discarded
+    Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
 
 func _ready() -> void:
     readMapData()
@@ -44,13 +42,14 @@ func readMapData():
     backgroundLayer.motion_scale.y = levelData.backgroundMotionScaleY
     var background = $ParallaxBackground/ParallaxLayer/background
     var bgStream = load(levelData.backgroundPath)
-    var bgImgToUse = bgStream.get_data()
-    var bgTextToUse = ImageTexture.new()
-    bgImgToUse.lock()
-    bgTextToUse.create_from_image(bgImgToUse, 0)
-    bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
-    background.texture = bgTextToUse
-    background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
+    if (bgStream != null):
+        var bgImgToUse = bgStream.get_data()
+        var bgTextToUse = ImageTexture.new()
+        bgImgToUse.lock()
+        bgTextToUse.create_from_image(bgImgToUse, 0)
+        bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
+        background.texture = bgTextToUse
+        background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
     
     var layer2 = $ParallaxBackground/ParallaxLayer2
     layer2.motion_scale.x = levelData.layer2MotionScaleX
@@ -128,14 +127,19 @@ func readMapData():
             # I would use a match case, but it has proved annoying
             # So if if if it is.
             # If a banana throw pickup.
-            if pickup.type == TYPE_PICKUP_BANANA_THROW:
+            var newPickup
+            if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
                 # Create a new banana throw pickup instance
-                var newPickup = BANANA_THROW_PICKUP.instance()
-                newPickup.id = pickup.id #Set the id saved from the editor
-                # Set the position
-                newPickup.position = Vector2(pickup.posX, pickup.posY)
-                # And off it goes, new pickup in the level.
-                $Pickups.add_child(newPickup)
+                newPickup = BANANA_THROW_PICKUP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+            else:
+                continue
+            # Set the id saved from the editor
+            newPickup.id = pickup.id 
+            # Set the position
+            newPickup.position = Vector2(pickup.posX, pickup.posY)
+            # And off it goes, new pickup in the level.
+            $Pickups.add_child(newPickup)
      
     if (
         levelData.enemies != null and
@@ -147,13 +151,17 @@ func readMapData():
             
         for enemyData in levelData.enemies:
             var newEnemy = null
-            if enemyData.type == TYPE_ENEMY_BIG_ONION:
+            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
-            if enemyData.type == TYPE_ENEMY_PINEAPPLE:
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.PINEAPPLE:
                 newEnemy = ENEMY_PINEAPPLE.instance()
-            if enemyData.type == TYPE_ENEMY_RADDISH:
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.RADDISH:
                 newEnemy = ENEMY_RADDISH.instance()
-                
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+            else:
+                continue
             newEnemy.health = enemyData.type
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
@@ -166,14 +174,26 @@ func readMapData():
         for trigger in levelData.triggers:
             if PlayerData.savedGame.completedTriggers.has(trigger.triggerId):
                 continue
-            var newDialogTrigger = DIALOG_TRIGGER.instance()
-            newDialogTrigger.id = trigger.triggerId
-            newDialogTrigger.dialogText = trigger.text
-            newDialogTrigger.position.x = trigger.posX
-            newDialogTrigger.position.y = trigger.posY
-            newDialogTrigger.scale.x = trigger.scaleX
-            newDialogTrigger.scale.y = trigger.scaleY
-            $Triggers.add_child(newDialogTrigger)
+            var newTrigger
+            if trigger.type == EntityTypeEnums.TRIGGER_TYPE.DIALOG:
+                newTrigger            = DIALOG_TRIGGER.instance()
+                newTrigger.type       = EntityTypeEnums.TRIGGER_TYPE.DIALOG
+                newTrigger.dialogText = trigger.text
+            elif trigger.type == EntityTypeEnums.TRIGGER_TYPE.CHECKPOINT:
+                newTrigger        = CHECKPOINT_TRIGGER.instance()
+                newTrigger.type   = EntityTypeEnums.TRIGGER_TYPE.CHECKPOINT
+            elif trigger.type == EntityTypeEnums.TRIGGER_TYPE.NEXT_LEVEL:
+                newTrigger           = NEXT_LEVEL_TRIGGER.instance()
+                newTrigger.type      = EntityTypeEnums.TRIGGER_TYPE.NEXT_LEVEL
+                newTrigger.goToLevel = trigger.levelId
+            else:
+                continue
+            newTrigger.id         = trigger.triggerId
+            newTrigger.position.x = trigger.posX
+            newTrigger.position.y = trigger.posY
+            newTrigger.scale.x    = trigger.scaleX
+            newTrigger.scale.y    = trigger.scaleY
+            $Triggers.add_child(newTrigger)
             
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
@@ -182,8 +202,8 @@ func writeMapData():
     var background = $ParallaxBackground/ParallaxLayer/background
     if background.texture != null:
         LevelData.backgroundPath = background.texture.get_path()
-    LevelData.backgroundPosX = background.get_position().x
-    LevelData.backgroundPosY = background.get_position().y
+    LevelData.backgroundPosX  = background.get_position().x
+    LevelData.backgroundPosY  = background.get_position().y
     LevelData.backgroundSizeX = background.get_size().x
     LevelData.backgroundSizeY = background.get_size().y
     
@@ -205,10 +225,10 @@ func writeMapData():
         newLayerTwoImg.imagePath = img.texture.get_path()
         newLayerTwoImg.positionX = img.get_position().x
         newLayerTwoImg.positionY = img.get_position().y
-        newLayerTwoImg.sizeX = img.get_size().x
-        newLayerTwoImg.sizeY = img.get_size().y
-        newLayerTwoImg.scaleX = img.get_scale().x
-        newLayerTwoImg.scaleY = img.get_scale().y
+        newLayerTwoImg.sizeX     = img.get_size().x
+        newLayerTwoImg.sizeY     = img.get_size().y
+        newLayerTwoImg.scaleX    = img.get_scale().x
+        newLayerTwoImg.scaleY    = img.get_scale().y
         layer2.append(newLayerTwoImg)
     LevelData.layer2 = layer2
     
@@ -279,11 +299,15 @@ func writeMapData():
     for trigger in triggers:
         var toAdd = getNewTrigger()
         toAdd.triggerId = trigger.id
-        toAdd.text = trigger.dialogText
-        toAdd.scaleX = trigger.scale.x
-        toAdd.scaleY = trigger.scale.y
-        toAdd.posX = trigger.position.x
-        toAdd.posY = trigger.position.y
+        toAdd.type      = trigger.type
+        if "goToLevel" in trigger:
+            toAdd.levelId = trigger.goToLevel
+        if "dialogText" in trigger:
+            toAdd.text    = trigger.dialogText
+        toAdd.scaleX    = trigger.scale.x
+        toAdd.scaleY    = trigger.scale.y
+        toAdd.posX      = trigger.position.x
+        toAdd.posY      = trigger.position.y
         triggersToUse.append(toAdd)
     LevelData.triggers = triggersToUse
     
@@ -297,6 +321,8 @@ func getNewTrigger():
     return {
         "triggerId": "",
         "text": "",
+        "levelId": -1,
+        "type": -1,
         "scaleX": 0,
         "scaleY": 0,
         "posX": 0,
@@ -306,7 +332,7 @@ func getNewEnemy():
     return {
         posX = null,
         posY = null,
-        type = "",
+        type = -1,
         health = 0,
         id   = 0
     } 
@@ -314,7 +340,7 @@ func getNewPickup():
     return {
         posX = null,
         posY = null,
-        type = "",
+        type = -1,
         id   = 0
     }
 func getNewTile():
@@ -407,14 +433,15 @@ func _on_SaveGame_button_up() -> void:
     $HUD/PauseMenu/ExitToMainMenu.disabled = true
     displayDialog("Game saved successfully!", null, true)
 
-func _on_LoadGame_button_up() -> void:
+func _on_LoadGame_button_up(fromTrigger = false) -> void:
     Globals.load_game()
     $Banana.setLoadedData()
     readMapData()
     $HUD/PauseMenu/SaveGame.disabled = true
     $HUD/PauseMenu/LoadGame.disabled = true
     $HUD/PauseMenu/ExitToMainMenu.disabled = true
-    displayDialog("Game loaded successfully!", null, true)
+    if !fromTrigger:
+        displayDialog("Game loaded successfully!", null, true)
 
 var rng = RandomNumberGenerator.new()
 func _on_ExitToMainMenu_button_up() -> void:

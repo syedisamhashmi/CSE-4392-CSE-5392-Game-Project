@@ -48,6 +48,7 @@ var MAX_PROJECTILE_HANDICAP = 10
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
+    type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
     health = 100
     baseHealth = health
     difficulty = PlayerData.savedGame.difficulty

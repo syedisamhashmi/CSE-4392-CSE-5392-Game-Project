@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/triggers/next-level-trigger/next-level-trigger.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 97, 468 )
+
+[node name="nextLevelTrigger" type="Node2D"]
+script = ExtResource( 1 )
+type = 100
+
+[node name="nextLevelTriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="nextLevelTriggerCollider" type="CollisionShape2D" parent="nextLevelTriggerArea"]
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -93.0
+margin_top = -461.0
+margin_right = 92.0
+margin_bottom = 451.0
+color = Color( 1, 0, 0, 0.419608 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="body_entered" from="nextLevelTriggerArea" to="." method="_on_nextLevelTriggerArea_body_entered"]

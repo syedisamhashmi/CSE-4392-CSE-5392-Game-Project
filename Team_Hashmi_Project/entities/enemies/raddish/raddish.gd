@@ -37,6 +37,7 @@ var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
     health = 50
+    type = EntityTypeEnums.ENEMY_TYPE.RADDISH
     baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
