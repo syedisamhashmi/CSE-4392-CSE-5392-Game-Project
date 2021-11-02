@@ -2,19 +2,15 @@ extends Node2D
 
 export var IS_BUILDING = true
 
-var TYPE_PICKUP_BANANA_THROW: String = "banana-throw-pickup"
-
-var TYPE_ENEMY_BIG_ONION    : String = "big-onion"
-var TYPE_ENEMY_PINEAPPLE    : String = "pineapple"
-var TYPE_ENEMY_RADDISH      : String = "raddish"
-
-
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
 
-var DIALOG_TRIGGER      = preload("res://entities/dialog-trigger/dialog-trigger.tscn")
+var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
+var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
+var NEXT_LEVEL_TRIGGER  = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+
 
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
@@ -25,6 +21,8 @@ func _enter_tree() -> void:
     Signals.connect("player_ammo_changed", self, "playerAmmoChanged")
     # warning-ignore:return_value_discarded
     Signals.connect("displayDialog", self, "displayDialog")
+    # warning-ignore:return_value_discarded
+    Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
 
 func _ready() -> void:
     readMapData()
@@ -43,14 +41,20 @@ func readMapData():
     backgroundLayer.motion_scale.x = levelData.backgroundMotionScaleX
     backgroundLayer.motion_scale.y = levelData.backgroundMotionScaleY
     var background = $ParallaxBackground/ParallaxLayer/background
-    var bgStream = load(levelData.backgroundPath)
-    var bgImgToUse = bgStream.get_data()
-    var bgTextToUse = ImageTexture.new()
-    bgImgToUse.lock()
-    bgTextToUse.create_from_image(bgImgToUse, 0)
-    bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
-    background.texture = bgTextToUse
-    background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
+    var bgStream
+    if ( levelData != null and 
+         levelData.backgroundPath != null and
+         levelData.backgroundPath != ""
+    ):
+        bgStream = load(levelData.backgroundPath)
+    if (bgStream != null):
+        var bgImgToUse = bgStream.get_data()
+        var bgTextToUse = ImageTexture.new()
+        bgImgToUse.lock()
+        bgTextToUse.create_from_image(bgImgToUse, 0)
+        bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
+        background.texture = bgTextToUse
+        background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
     
     var layer2 = $ParallaxBackground/ParallaxLayer2
     layer2.motion_scale.x = levelData.layer2MotionScaleX
@@ -66,7 +70,7 @@ func readMapData():
         newText.texture = textureToUse
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
-        layer2.add_child(newText)
+        layer2.call_deferred("add_child", newText)
         
     var layer3 = $ParallaxBackground/ParallaxLayer3
     layer3.motion_scale.x = levelData.layer3MotionScaleX
@@ -82,7 +86,7 @@ func readMapData():
         newText.texture = textureToUse
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
-        layer3.add_child(newText)
+        layer3.call_deferred("add_child", newText)
     
     var tm = $World 
     # If we have level data.
@@ -128,14 +132,19 @@ func readMapData():
             # I would use a match case, but it has proved annoying
             # So if if if it is.
             # If a banana throw pickup.
-            if pickup.type == TYPE_PICKUP_BANANA_THROW:
+            var newPickup
+            if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
                 # Create a new banana throw pickup instance
-                var newPickup = BANANA_THROW_PICKUP.instance()
-                newPickup.id = pickup.id #Set the id saved from the editor
-                # Set the position
-                newPickup.position = Vector2(pickup.posX, pickup.posY)
-                # And off it goes, new pickup in the level.
-                $Pickups.add_child(newPickup)
+                newPickup = BANANA_THROW_PICKUP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+            else:
+                continue
+            # Set the id saved from the editor
+            newPickup.id = pickup.id 
+            # Set the position
+            newPickup.position = Vector2(pickup.posX, pickup.posY)
+            # And off it goes, new pickup in the level.
+            $Pickups.call_deferred("add_child", newPickup)
      
     if (
         levelData.enemies != null and
@@ -147,33 +156,49 @@ func readMapData():
             
         for enemyData in levelData.enemies:
             var newEnemy = null
-            if enemyData.type == TYPE_ENEMY_BIG_ONION:
+            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
-            if enemyData.type == TYPE_ENEMY_PINEAPPLE:
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.PINEAPPLE:
                 newEnemy = ENEMY_PINEAPPLE.instance()
-            if enemyData.type == TYPE_ENEMY_RADDISH:
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.RADDISH:
                 newEnemy = ENEMY_RADDISH.instance()
-                
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+            else:
+                continue
             newEnemy.health = enemyData.type
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
-            $Enemies.add_child(newEnemy)
+            $Enemies.call_deferred("add_child", newEnemy)
                 
-    if levelData != null and levelData.triggers:
+    if levelData != null and levelData.triggers != null:
         for child in $Triggers.get_children():
             child.queue_free()
         for trigger in levelData.triggers:
             if PlayerData.savedGame.completedTriggers.has(trigger.triggerId):
                 continue
-            var newDialogTrigger = DIALOG_TRIGGER.instance()
-            newDialogTrigger.id = trigger.triggerId
-            newDialogTrigger.dialogText = trigger.text
-            newDialogTrigger.position.x = trigger.posX
-            newDialogTrigger.position.y = trigger.posY
-            newDialogTrigger.scale.x = trigger.scaleX
-            newDialogTrigger.scale.y = trigger.scaleY
-            $Triggers.add_child(newDialogTrigger)
+            var newTrigger
+            if trigger.type == EntityTypeEnums.TRIGGER_TYPE.DIALOG:
+                newTrigger            = DIALOG_TRIGGER.instance()
+                newTrigger.type       = EntityTypeEnums.TRIGGER_TYPE.DIALOG
+                newTrigger.dialogText = trigger.text
+            elif trigger.type == EntityTypeEnums.TRIGGER_TYPE.CHECKPOINT:
+                newTrigger        = CHECKPOINT_TRIGGER.instance()
+                newTrigger.type   = EntityTypeEnums.TRIGGER_TYPE.CHECKPOINT
+            elif trigger.type == EntityTypeEnums.TRIGGER_TYPE.NEXT_LEVEL:
+                newTrigger           = NEXT_LEVEL_TRIGGER.instance()
+                newTrigger.type      = EntityTypeEnums.TRIGGER_TYPE.NEXT_LEVEL
+                newTrigger.goToLevel = trigger.levelId
+            else:
+                continue
+            newTrigger.id         = trigger.triggerId
+            newTrigger.position.x = trigger.posX
+            newTrigger.position.y = trigger.posY
+            newTrigger.scale.x    = trigger.scaleX
+            newTrigger.scale.y    = trigger.scaleY
+            $Triggers.call_deferred("add_child", newTrigger)
             
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
@@ -182,8 +207,8 @@ func writeMapData():
     var background = $ParallaxBackground/ParallaxLayer/background
     if background.texture != null:
         LevelData.backgroundPath = background.texture.get_path()
-    LevelData.backgroundPosX = background.get_position().x
-    LevelData.backgroundPosY = background.get_position().y
+    LevelData.backgroundPosX  = background.get_position().x
+    LevelData.backgroundPosY  = background.get_position().y
     LevelData.backgroundSizeX = background.get_size().x
     LevelData.backgroundSizeY = background.get_size().y
     
@@ -205,10 +230,10 @@ func writeMapData():
         newLayerTwoImg.imagePath = img.texture.get_path()
         newLayerTwoImg.positionX = img.get_position().x
         newLayerTwoImg.positionY = img.get_position().y
-        newLayerTwoImg.sizeX = img.get_size().x
-        newLayerTwoImg.sizeY = img.get_size().y
-        newLayerTwoImg.scaleX = img.get_scale().x
-        newLayerTwoImg.scaleY = img.get_scale().y
+        newLayerTwoImg.sizeX     = img.get_size().x
+        newLayerTwoImg.sizeY     = img.get_size().y
+        newLayerTwoImg.scaleX    = img.get_scale().x
+        newLayerTwoImg.scaleY    = img.get_scale().y
         layer2.append(newLayerTwoImg)
     LevelData.layer2 = layer2
     
@@ -279,11 +304,15 @@ func writeMapData():
     for trigger in triggers:
         var toAdd = getNewTrigger()
         toAdd.triggerId = trigger.id
-        toAdd.text = trigger.dialogText
-        toAdd.scaleX = trigger.scale.x
-        toAdd.scaleY = trigger.scale.y
-        toAdd.posX = trigger.position.x
-        toAdd.posY = trigger.position.y
+        toAdd.type      = trigger.type
+        if "goToLevel" in trigger:
+            toAdd.levelId = trigger.goToLevel
+        if "dialogText" in trigger:
+            toAdd.text    = trigger.dialogText
+        toAdd.scaleX    = trigger.scale.x
+        toAdd.scaleY    = trigger.scale.y
+        toAdd.posX      = trigger.position.x
+        toAdd.posY      = trigger.position.y
         triggersToUse.append(toAdd)
     LevelData.triggers = triggersToUse
     
@@ -297,6 +326,8 @@ func getNewTrigger():
     return {
         "triggerId": "",
         "text": "",
+        "levelId": -1,
+        "type": -1,
         "scaleX": 0,
         "scaleY": 0,
         "posX": 0,
@@ -306,7 +337,7 @@ func getNewEnemy():
     return {
         posX = null,
         posY = null,
-        type = "",
+        type = -1,
         health = 0,
         id   = 0
     } 
@@ -314,7 +345,7 @@ func getNewPickup():
     return {
         posX = null,
         posY = null,
-        type = "",
+        type = -1,
         id   = 0
     }
 func getNewTile():
@@ -324,11 +355,14 @@ func getNewTile():
         index = null
     } 
 
-func displayDialog(dialogText, _id):
+var isOverride = false
+func displayDialog(dialogText, _id, _isOverride = false):
     $HUD/Dialog.set_text(dialogText)
     $HUD/Dialog.popup_centered()
-    Globals.inGame = false
-    pass
+    if _isOverride:
+        self.isOverride = true
+    if !_isOverride:
+        Globals.inGame = false
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
@@ -349,8 +383,10 @@ var xt = [2,9,3,14,12,6,21,16,4,15,17,24,7,11,25,19,13,10,20,18,8,5,0,22,1,23]
 var kc = PoolByteArray([])
 # Don't debug for the answer.
 func _input(event: InputEvent) -> void:
-    if Input.is_action_just_released("ui_cancel"):
+    if Input.is_action_just_pressed("write_map_data"):
         writeMapData()
+    if Input.is_action_just_released("ui_cancel"):
+        showPauseMenu()
     
     # You will be a horrible person.
     if !event is InputEventKey: return
@@ -380,7 +416,58 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     return j
 #endregion
 
+func showPauseMenu():
+    if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
+        Globals.inGame = !Globals.inGame
+        $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
+    if self.isOverride:
+        self.isOverride = false
+        $HUD/PauseMenu/SaveGame.disabled = false
+        $HUD/PauseMenu/LoadGame.disabled = false
+        $HUD/PauseMenu/ExitToMainMenu.disabled = false
+        return
     Globals.inGame = true
-    pass # Replace with function body.
+
+func _on_SaveGame_button_up() -> void:
+    PlayerData.savedGame = $Banana.save
+    PlayerData.playerStats = $Banana.stats
+    Globals.save_game()
+    $HUD/PauseMenu/SaveGame.disabled = true
+    $HUD/PauseMenu/LoadGame.disabled = true
+    $HUD/PauseMenu/ExitToMainMenu.disabled = true
+    displayDialog("Game saved successfully!", null, true)
+
+func _on_LoadGame_button_up(fromTrigger = false) -> void:
+    Globals.load_game()
+    $Banana.setLoadedData()
+    readMapData()
+    if !fromTrigger:
+        $HUD/PauseMenu/SaveGame.disabled = true
+        $HUD/PauseMenu/LoadGame.disabled = true
+        $HUD/PauseMenu/ExitToMainMenu.disabled = true
+        displayDialog("Game loaded successfully!", null, true)
+
+var rng = RandomNumberGenerator.new()
+func _on_ExitToMainMenu_button_up() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = true
+    $HUD/PauseMenu/LoadGame.disabled = true
+    $HUD/PauseMenu/ExitToMainMenu.disabled = true
+    $HUD/PauseMenu/ExitConfirmationDialog.get_cancel().set_text("Take me back to the carnage!")
+    $HUD/PauseMenu/ExitConfirmationDialog.get_ok().set_text("Yeah, I'm a wimp!")
+    $HUD/PauseMenu/ExitConfirmationDialog.set_text(Strings.ExitMessages[rng.randi_range(0, Strings.ExitMessages.size() - 1)])
+    $HUD/PauseMenu/ExitConfirmationDialog.set_visible(true)
+
+func _on_ExitConfirmationDialog_confirmed() -> void:
+    Utils.goto_scene("res://entities/MainMenu.tscn")
+
+func _on_ExitConfirmationDialog_hide() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = false
+    $HUD/PauseMenu/LoadGame.disabled = false
+    $HUD/PauseMenu/ExitToMainMenu.disabled = false
+
+func _on_Dialog_hide() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = false
+    $HUD/PauseMenu/LoadGame.disabled = false
+    $HUD/PauseMenu/ExitToMainMenu.disabled = false

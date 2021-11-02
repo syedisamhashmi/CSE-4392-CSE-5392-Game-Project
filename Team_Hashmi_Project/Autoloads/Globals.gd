@@ -1,4 +1,6 @@
 extends Node
+# warning-ignore:unused_class_variable
+var SHOW_TRIGGERS = true
 
 # warning-ignore:unused_class_variable
 var inGame = false
