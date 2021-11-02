@@ -33,6 +33,11 @@ gdscript/warnings/treat_warnings_as_errors=true
 gdscript/completion/autocomplete_setters_and_getters=true
 gdscript/warnings/unused_class_variable=true
 
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
 [input]
 
 move_left={
@@ -81,6 +86,11 @@ weapon_previous={
 quicksave={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777252,"unicode":0,"echo":false,"script":null)
+ ]
+}
+write_map_data={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777244,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -324,11 +324,14 @@ func getNewTile():
         index = null
     } 
 
-func displayDialog(dialogText, _id):
+var isOverride = false
+func displayDialog(dialogText, _id, _isOverride = false):
     $HUD/Dialog.set_text(dialogText)
     $HUD/Dialog.popup_centered()
-    Globals.inGame = false
-    pass
+    if _isOverride:
+        self.isOverride = true
+    if !_isOverride:
+        Globals.inGame = false
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
@@ -349,8 +352,10 @@ var xt = [2,9,3,14,12,6,21,16,4,15,17,24,7,11,25,19,13,10,20,18,8,5,0,22,1,23]
 var kc = PoolByteArray([])
 # Don't debug for the answer.
 func _input(event: InputEvent) -> void:
-    if Input.is_action_just_released("ui_cancel"):
+    if Input.is_action_just_pressed("write_map_data"):
         writeMapData()
+    if Input.is_action_just_released("ui_cancel"):
+        showPauseMenu()
     
     # You will be a horrible person.
     if !event is InputEventKey: return
@@ -380,7 +385,56 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     return j
 #endregion
 
+func showPauseMenu():
+    Globals.inGame = !Globals.inGame
+    $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
+    if self.isOverride:
+        self.isOverride = false
+        $HUD/PauseMenu/SaveGame.disabled = false
+        $HUD/PauseMenu/LoadGame.disabled = false
+        $HUD/PauseMenu/ExitToMainMenu.disabled = false
+        return
     Globals.inGame = true
-    pass # Replace with function body.
+
+func _on_SaveGame_button_up() -> void:
+    PlayerData.savedGame = $Banana.save
+    PlayerData.playerStats = $Banana.stats
+    Globals.save_game()
+    $HUD/PauseMenu/SaveGame.disabled = true
+    $HUD/PauseMenu/LoadGame.disabled = true
+    $HUD/PauseMenu/ExitToMainMenu.disabled = true
+    displayDialog("Game saved successfully!", null, true)
+
+func _on_LoadGame_button_up() -> void:
+    Globals.load_game()
+    $Banana.setLoadedData()
+    readMapData()
+    $HUD/PauseMenu/SaveGame.disabled = true
+    $HUD/PauseMenu/LoadGame.disabled = true
+    $HUD/PauseMenu/ExitToMainMenu.disabled = true
+    displayDialog("Game loaded successfully!", null, true)
+
+var rng = RandomNumberGenerator.new()
+func _on_ExitToMainMenu_button_up() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = true
+    $HUD/PauseMenu/LoadGame.disabled = true
+    $HUD/PauseMenu/ExitToMainMenu.disabled = true
+    $HUD/PauseMenu/ExitConfirmationDialog.get_cancel().set_text("Take me back to the carnage!")
+    $HUD/PauseMenu/ExitConfirmationDialog.get_ok().set_text("Yeah, I'm a wimp!")
+    $HUD/PauseMenu/ExitConfirmationDialog.set_text(Strings.ExitMessages[rng.randi_range(0, Strings.ExitMessages.size() - 1)])
+    $HUD/PauseMenu/ExitConfirmationDialog.set_visible(true)
+
+func _on_ExitConfirmationDialog_confirmed() -> void:
+    Utils.goto_scene("res://entities/MainMenu.tscn")
+
+func _on_ExitConfirmationDialog_hide() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = false
+    $HUD/PauseMenu/LoadGame.disabled = false
+    $HUD/PauseMenu/ExitToMainMenu.disabled = false
+
+func _on_Dialog_hide() -> void:
+    $HUD/PauseMenu/SaveGame.disabled = false
+    $HUD/PauseMenu/LoadGame.disabled = false
+    $HUD/PauseMenu/ExitToMainMenu.disabled = false
