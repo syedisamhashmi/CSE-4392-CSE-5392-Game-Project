@@ -8,13 +8,13 @@ Team Members
 
 <div>
 
-| Name                         | Attendance                             | Percentage|
-|------------------------------|---------------------|-----------|
-|Hashmi, Syed Isam             | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |  100.00%  |
-|Kressler, Edward              | ✅❌✅❌❌✅❌✅✅✅✅✅✅✅✅✅✅✅✅ |   78.95%  |
-|Hullikunte, Natraj            | ✅✅❌✅✅✅✅✅✅✅✅✅❌✅❌❌✅❌❌ |   68.42%  |
-|Balusamy Siva, Balamurale     | ❌✅❌✅✅✅✅❌✅✅✅❌✅❌✅✅❌✅✅ |   68.42%  |
-|Gurrapusala, Sundeep Kumar    | ❌❌❌❌✅❌✅✅✅✅✅❌✅❌❌❌❌❌❌ |   36.84%  |
+| Name                         | Attendance                               | Percentage|
+|------------------------------|----------------------|-----------|
+|Hashmi, Syed Isam             | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |  100.00%  |
+|Kressler, Edward              | ✅❌✅❌❌✅❌✅✅✅✅✅✅✅✅✅✅✅✅✅ |   80.00%  |
+|Hullikunte, Natraj            | ✅✅❌✅✅✅✅✅✅✅✅✅❌✅❌❌✅❌❌✅ |   70.00%  |
+|Balusamy Siva, Balamurale     | ❌✅❌✅✅✅✅❌✅✅✅❌✅❌✅✅❌✅✅✅ |   70.00%  |
+|Gurrapusala, Sundeep Kumar    | ❌❌❌❌✅❌✅✅✅✅✅❌✅❌❌❌❌❌❌❌ |   35.00%  |
 
 </div>
 
@@ -28,6 +28,15 @@ Read more on
 - [Tooling](docs/tooling.md)
 - [Contributing](docs/contributing.md)
 
+<br/>
+<br/>
+
+
+---
+# **Release Steps**
+- Set Autoloads/Globals.SHOW_TRIGGERS to `false`.
+- Empty Main.tscn (remove tilemaps, backgrounds, enemies, pickups, etc.).
+- Ensure level0.tres, level1.tres, etc. are generated properly and located within the levels folder.
 <br/>
 <br/>
 

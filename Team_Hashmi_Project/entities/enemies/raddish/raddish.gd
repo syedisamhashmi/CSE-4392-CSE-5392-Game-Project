@@ -37,6 +37,7 @@ var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
     health = 50
+    type = EntityTypeEnums.ENEMY_TYPE.RADDISH
     baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
@@ -145,7 +146,7 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     # If parent deemed enemy not hit, return.
     if !hit:
         return
-    $Roll/RollBox.disabled = true
+    $Roll/RollBox.set_deferred('disabled', true)
     damageStart = OS.get_system_time_msecs()
     var calculatedDamage = abs(_damage) / difficulty
     health -= calculatedDamage

@@ -11,35 +11,35 @@ shader_param/intensity = null
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 5 )
-region = Rect2( 0, 576, 32, 32 )
+region = Rect2( 0, 608, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 5 )
-region = Rect2( 32, 576, 32, 32 )
+region = Rect2( 32, 608, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 5 )
-region = Rect2( 64, 576, 32, 32 )
+region = Rect2( 64, 608, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 5 )
-region = Rect2( 96, 576, 32, 32 )
+region = Rect2( 96, 608, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 5 )
-region = Rect2( 0, 608, 32, 32 )
+region = Rect2( 0, 576, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 5 )
-region = Rect2( 32, 608, 32, 32 )
+region = Rect2( 32, 576, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 5 )
-region = Rect2( 64, 608, 32, 32 )
+region = Rect2( 64, 576, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 5 )
-region = Rect2( 96, 608, 32, 32 )
+region = Rect2( 96, 576, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 5 )
@@ -125,12 +125,12 @@ region = Rect2( 96, 448, 32, 32 )
 animations = [ {
 "frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
 "loop": false,
-"name": "damage",
+"name": "DEATH",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ) ],
 "loop": false,
-"name": "DEATH",
+"name": "damage",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
@@ -170,7 +170,6 @@ material = SubResource( 1 )
 position = Vector2( 0.465752, -9.74002 )
 frames = SubResource( 30 )
 animation = "idle"
-playing = true
 
 [node name="BoundingBox" type="CollisionShape2D" parent="."]
 position = Vector2( 0.529199, -1.18378 )
