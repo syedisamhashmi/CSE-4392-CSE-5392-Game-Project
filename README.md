@@ -31,6 +31,15 @@ Read more on
 <br/>
 <br/>
 
+
+---
+# **Release Steps**
+- Set Autoloads/Globals.SHOW_TRIGGERS to `false`.
+- Empty Main.tscn (remove tilemaps, backgrounds, enemies, pickups, etc.).
+- Ensure level0.tres, level1.tres, etc. are generated properly and located within the levels folder.
+<br/>
+<br/>
+
 ---
 
 # [**_GAME DOCUMENTATION_**](docs/game.md)
