@@ -5,7 +5,7 @@ const DEATH = "DEATH" # METAL
 # warning-ignore:unused_class_variable
 export var id: String = "-1"
 # warning-ignore:unused_class_variable
-export var type: String = "insert-enemy-type-here"
+export(EntityTypeEnums.ENEMY_TYPE) var type = EntityTypeEnums.ENEMY_TYPE.NONE
 # warning-ignore:unused_class_variable
 export var baseHealth = 0
 var hitOnPunchNum: int = 0
