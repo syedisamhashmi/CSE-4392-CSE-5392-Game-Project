@@ -41,7 +41,12 @@ func readMapData():
     backgroundLayer.motion_scale.x = levelData.backgroundMotionScaleX
     backgroundLayer.motion_scale.y = levelData.backgroundMotionScaleY
     var background = $ParallaxBackground/ParallaxLayer/background
-    var bgStream = load(levelData.backgroundPath)
+    var bgStream
+    if ( levelData != null and 
+         levelData.backgroundPath != null and
+         levelData.backgroundPath != ""
+    ):
+        bgStream = load(levelData.backgroundPath)
     if (bgStream != null):
         var bgImgToUse = bgStream.get_data()
         var bgTextToUse = ImageTexture.new()
