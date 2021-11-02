@@ -12,7 +12,7 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource( 2 )
 signalName = "banana_throw_pickup_get"
-type = "banana-throw-pickup"
+type = 10
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
