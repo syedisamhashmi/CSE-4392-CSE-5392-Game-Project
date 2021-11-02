@@ -168,7 +168,7 @@ func readMapData():
             newEnemy.position.y = enemyData.posY
             $Enemies.call_deferred("add_child", newEnemy)
                 
-    if levelData != null and levelData.triggers:
+    if levelData != null and levelData.triggers != null:
         for child in $Triggers.get_children():
             child.queue_free()
         for trigger in levelData.triggers:
@@ -412,8 +412,9 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
 #endregion
 
 func showPauseMenu():
-    Globals.inGame = !Globals.inGame
-    $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
+    if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
+        Globals.inGame = !Globals.inGame
+        $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
     if self.isOverride:
@@ -437,10 +438,10 @@ func _on_LoadGame_button_up(fromTrigger = false) -> void:
     Globals.load_game()
     $Banana.setLoadedData()
     readMapData()
-    $HUD/PauseMenu/SaveGame.disabled = true
-    $HUD/PauseMenu/LoadGame.disabled = true
-    $HUD/PauseMenu/ExitToMainMenu.disabled = true
     if !fromTrigger:
+        $HUD/PauseMenu/SaveGame.disabled = true
+        $HUD/PauseMenu/LoadGame.disabled = true
+        $HUD/PauseMenu/ExitToMainMenu.disabled = true
         displayDialog("Game loaded successfully!", null, true)
 
 var rng = RandomNumberGenerator.new()

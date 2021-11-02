@@ -16,4 +16,14 @@ collision_mask = 2
 [node name="checkpointTriggerCollider" type="CollisionShape2D" parent="checkpointTriggerArea"]
 shape = SubResource( 1 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -30.0
+margin_top = -263.0
+margin_right = 33.0
+margin_bottom = 264.0
+color = Color( 0.0313726, 1, 0, 0.415686 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="body_entered" from="checkpointTriggerArea" to="." method="_on_checkpointTriggerArea_body_entered"]

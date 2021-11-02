@@ -2,6 +2,9 @@ extends "res://entities/triggers/base-trigger/base-trigger.gd"
 
 export var dialogText: String = "Overwrite me!"
 
+func _process(_delta: float) -> void:
+    $ColorRect.visible = Globals.SHOW_TRIGGERS
+
 func _init() -> void:
     type = EntityTypeEnums.TRIGGER_TYPE.DIALOG
 
