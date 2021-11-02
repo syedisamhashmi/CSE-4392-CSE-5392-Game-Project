@@ -65,7 +65,7 @@ func readMapData():
         newText.texture = textureToUse
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
-        layer2.add_child(newText)
+        layer2.call_deferred("add_child", newText)
         
     var layer3 = $ParallaxBackground/ParallaxLayer3
     layer3.motion_scale.x = levelData.layer3MotionScaleX
@@ -81,7 +81,7 @@ func readMapData():
         newText.texture = textureToUse
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
-        layer3.add_child(newText)
+        layer3.call_deferred("add_child", newText)
     
     var tm = $World 
     # If we have level data.
@@ -139,7 +139,7 @@ func readMapData():
             # Set the position
             newPickup.position = Vector2(pickup.posX, pickup.posY)
             # And off it goes, new pickup in the level.
-            $Pickups.add_child(newPickup)
+            $Pickups.call_deferred("add_child", newPickup)
      
     if (
         levelData.enemies != null and
@@ -166,7 +166,7 @@ func readMapData():
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
-            $Enemies.add_child(newEnemy)
+            $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers:
         for child in $Triggers.get_children():
@@ -193,7 +193,7 @@ func readMapData():
             newTrigger.position.y = trigger.posY
             newTrigger.scale.x    = trigger.scaleX
             newTrigger.scale.y    = trigger.scaleY
-            $Triggers.add_child(newTrigger)
+            $Triggers.call_deferred("add_child", newTrigger)
             
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
