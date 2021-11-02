@@ -23,6 +23,12 @@ signal player_damage_dealt(amount)
 
 # warning-ignore:unused_signal
 signal displayDialog(dialogText, id)
+# warning-ignore:unused_signal
+signal checkpoint(id)
+# warning-ignore:unused_signal
+signal next_level_trigger(levelId)
+# warning-ignore:unused_signal
+signal next_level_trigger_complete(fromTrigger)
 
 # warning-ignore:unused_signal
 signal pc(c)

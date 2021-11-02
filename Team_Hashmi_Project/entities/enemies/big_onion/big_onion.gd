@@ -39,6 +39,7 @@ func _ready() -> void:
     rng.randomize()
     health = 50
     baseHealth = health
+    type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
     maxHealth += (HEALTH_HANDICAP * difficulty)
