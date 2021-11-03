@@ -74,7 +74,7 @@ func setupEnemyDetails():
         self.position.x = enemyDetails.posX
         self.position.y = enemyDetails.posY
         self.scale.x = enemyDetails.scaleX
-        self.scale.x = enemyDetails.scaleY
+        self.scale.y = enemyDetails.scaleY
     else:
         enemyDetails.id = id
         enemyDetails.health = health

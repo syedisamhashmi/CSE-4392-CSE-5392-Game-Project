@@ -1,6 +1,6 @@
 extends Node2D
 
-export var IS_BUILDING = true
+export var IS_BUILDING = false
 
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
@@ -171,6 +171,8 @@ func readMapData():
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
+            newEnemy.scale.x = enemyData.scaleX
+            newEnemy.scale.y = enemyData.scaleY
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
