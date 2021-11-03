@@ -432,8 +432,11 @@ func _on_RightArm_animation_finished() -> void:
 func _on_PunchArea_body_entered(body: Node) -> void:
     if !Globals.inGame:
         return
+    if body.has_method("on_tile_hit"):
+        var punchPos = Vector2(self.position.x + (50 * lastDir), self.position.y-40)
+        body.on_tile_hit(self, punchPos)
     if body.has_method("damage"):
-      body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
+        body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
 
 
 func _on_RightArm_frame_changed() -> void:
