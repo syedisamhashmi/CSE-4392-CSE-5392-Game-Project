@@ -20,6 +20,9 @@ script = ExtResource( 6 )
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.15, 0.15 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="background" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
 margin_left = -1044.83
@@ -27,14 +30,21 @@ margin_top = -580.848
 margin_right = 1456.17
 margin_bottom = 654.152
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.4, 0.4 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.8, 0.8 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="World" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
@@ -45,8 +55,14 @@ z_index = -1
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 
 [node name="Pickups" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Triggers" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
