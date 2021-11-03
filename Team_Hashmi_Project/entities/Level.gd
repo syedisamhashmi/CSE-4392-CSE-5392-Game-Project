@@ -1,6 +1,6 @@
 extends Node2D
 
-export var IS_BUILDING = false
+export var IS_BUILDING = true
 
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
@@ -296,6 +296,8 @@ func writeMapData():
         toAdd.type   = enemy.type
         toAdd.id     = enemy.id
         toAdd.health = enemy.baseHealth
+        toAdd.scaleX = enemy.scale.x
+        toAdd.scaleY = enemy.scale.y
         enemiesToUse.append(toAdd)
     LevelData.enemies = enemiesToUse
     
@@ -339,6 +341,8 @@ func getNewEnemy():
         posY = null,
         type = -1,
         health = 0,
+        scaleX = 1, # if something is weird, probably this is the cause
+        scaleY = 1,
         id   = 0
     } 
 func getNewPickup():
