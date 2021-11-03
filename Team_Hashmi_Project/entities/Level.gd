@@ -343,7 +343,7 @@ func getNewEnemy():
         posY = null,
         type = -1,
         health = 0,
-        scaleX = 1, # if something is weird, probably this is the cause
+        scaleX = 1,
         scaleY = 1,
         id   = 0
     } 
