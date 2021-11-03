@@ -21,6 +21,9 @@ func _on_projectile_area_body_entered(body: Node) -> void:
     
     # checks if body has method "damage" if so, call that method
     # the result depends on that collided body
+    if body.has_method("on_tile_hit"):
+        body.on_tile_hit(self, self.position)
+        
     if body.has_method("damage"):
         body.damage(projectileDamage, knockback)
       
