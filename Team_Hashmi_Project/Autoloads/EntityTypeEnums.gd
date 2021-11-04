@@ -10,6 +10,7 @@ enum TRIGGER_TYPE {
 
 enum ENEMY_TYPE {
     NONE       = -1
+    SPIKE      =  5,
     BIG_ONION  = 10,
     PINEAPPLE  = 20,
     RADDISH    = 30
