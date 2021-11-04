@@ -73,18 +73,24 @@ func setupEnemyDetails():
         self.health = enemyDetails.health
         self.position.x = enemyDetails.posX
         self.position.y = enemyDetails.posY
+        self.scale.x = enemyDetails.scaleX
+        self.scale.y = enemyDetails.scaleY
     else:
         enemyDetails.id = id
         enemyDetails.health = health
         enemyDetails.posX = self.position.x
         enemyDetails.posY = self.position.y
+        enemyDetails.scaleX = self.scale.x
+        enemyDetails.scaleY = self.scale.y
 
 func getNewEnemyDetails():
     return {
         "id": self.id,
         "health": 0,
         "posX": self.position.x,
-        "posY": self.position.y
+        "posY": self.position.y,
+        "scaleX": self.scale.x,
+        "scaleY": self.scale.y
     }
 func updateEnemyDetails(_id):
     if !PlayerData.savedGame.enemiesData.has(_id):
