@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/images/enemies/spikes.png" type="Texture" id=1]
+[ext_resource path="res://entities/enemies/spikes/spikes.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 22, 21 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 22, 0, 22, 21 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 44, 0, 22, 21 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 66, 0, 22, 21 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 88, 0, 22, 21 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 52.9185, 42.8031 )
+
+[node name="spikes" type="Node2D"]
+script = ExtResource( 2 )
+type = 5
+baseHealth = 9999
+
+[node name="Image" type="AnimatedSprite" parent="."]
+scale = Vector2( 5, 5 )
+frames = SubResource( 6 )
+frame = 4
+playing = true
+
+[node name="SpikeArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="SpikeAreaCollider" type="CollisionShape2D" parent="SpikeArea"]
+position = Vector2( 1.16022, 4.35088 )
+shape = SubResource( 7 )
+disabled = true
+
+[connection signal="animation_finished" from="Image" to="." method="_on_Image_animation_finished"]
+[connection signal="body_entered" from="SpikeArea" to="." method="_on_SpikeArea_body_entered"]
