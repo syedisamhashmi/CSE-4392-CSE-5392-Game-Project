@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/images/enemies/spikes.png" type="Texture" id=1]
 [ext_resource path="res://entities/enemies/spikes/spikes.gd" type="Script" id=2]
@@ -39,7 +39,11 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 52.9185, 42.8031 )
 
-[node name="spikes" type="Node2D"]
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 38.3015, 1.55033 )
+
+[node name="spikes" type="KinematicBody2D"]
+z_index = 1
 script = ExtResource( 2 )
 type = 5
 baseHealth = 9999
@@ -55,6 +59,11 @@ collision_mask = 2
 [node name="SpikeAreaCollider" type="CollisionShape2D" parent="SpikeArea"]
 position = Vector2( 1.16022, 4.35088 )
 shape = SubResource( 7 )
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.817154, -23.4262 )
+shape = SubResource( 8 )
 disabled = true
 
 [connection signal="animation_finished" from="Image" to="." method="_on_Image_animation_finished"]
