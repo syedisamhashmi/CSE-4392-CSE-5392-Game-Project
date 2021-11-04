@@ -8,13 +8,13 @@ Team Members
 
 <div>
 
-| Name                         | Attendance                               | Percentage|
-|------------------------------|----------------------|-----------|
-|Hashmi, Syed Isam             | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |  100.00%  |
-|Kressler, Edward              | ✅❌✅❌❌✅❌✅✅✅✅✅✅✅✅✅✅✅✅✅ |   80.00%  |
-|Hullikunte, Natraj            | ✅✅❌✅✅✅✅✅✅✅✅✅❌✅❌❌✅❌❌✅ |   70.00%  |
-|Balusamy Siva, Balamurale     | ❌✅❌✅✅✅✅❌✅✅✅❌✅❌✅✅❌✅✅✅ |   70.00%  |
-|Gurrapusala, Sundeep Kumar    | ❌❌❌❌✅❌✅✅✅✅✅❌✅❌❌❌❌❌❌❌ |   35.00%  |
+| Name                         | Attendance                                 | Percentage|
+|------------------------------|-----------------------|-----------|
+|Hashmi, Syed Isam             | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |  100.00%  |
+|Kressler, Edward              | ✅❌✅❌❌✅❌✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |   80.95%  |
+|Hullikunte, Natraj            | ✅✅❌✅✅✅✅✅✅✅✅✅❌✅❌❌✅❌❌✅✅ |   71.43%  |
+|Balusamy Siva, Balamurale     | ❌✅❌✅✅✅✅❌✅✅✅❌✅❌✅✅❌✅✅✅✅ |   71.43%  |
+|Gurrapusala, Sundeep Kumar    | ❌❌❌❌✅❌✅✅✅✅✅❌✅❌❌❌❌❌❌❌❌ |   33.33%  |
 
 </div>
 
