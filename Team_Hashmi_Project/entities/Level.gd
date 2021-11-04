@@ -171,6 +171,8 @@ func readMapData():
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
+            newEnemy.scale.x = enemyData.scaleX
+            newEnemy.scale.y = enemyData.scaleY
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -296,6 +298,8 @@ func writeMapData():
         toAdd.type   = enemy.type
         toAdd.id     = enemy.id
         toAdd.health = enemy.baseHealth
+        toAdd.scaleX = enemy.scale.x
+        toAdd.scaleY = enemy.scale.y
         enemiesToUse.append(toAdd)
     LevelData.enemies = enemiesToUse
     
@@ -339,6 +343,8 @@ func getNewEnemy():
         posY = null,
         type = -1,
         health = 0,
+        scaleX = 1,
+        scaleY = 1,
         id   = 0
     } 
 func getNewPickup():
