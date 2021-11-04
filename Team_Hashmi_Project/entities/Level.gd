@@ -6,6 +6,8 @@ var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn"
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_SPIKE         = preload("res://entities/enemies/spikes/spikes.tscn")
+
 
 var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
@@ -156,7 +158,10 @@ func readMapData():
             
         for enemyData in levelData.enemies:
             var newEnemy = null
-            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
+            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.SPIKE:
+                newEnemy = ENEMY_SPIKE.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.SPIKE
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.PINEAPPLE:
