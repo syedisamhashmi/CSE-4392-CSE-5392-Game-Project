@@ -15,7 +15,7 @@ var gravity: float = 900.0
 var friction: float = .95
 
 var enemyDetails = {}
-
+var usePhys = true
 func _ready() -> void: 
     # warning-ignore:return_value_discarded
     Signals.connect("player_location_changed", self, "player_location_changed")
@@ -26,6 +26,8 @@ func player_location_changed(_position: Vector2):
 
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
+        return
+    if !usePhys:
         return
     velocity.y += gravity * delta
     velocity.x *= friction;
