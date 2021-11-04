@@ -47,8 +47,6 @@ baseHealth = 9999
 [node name="Image" type="AnimatedSprite" parent="."]
 scale = Vector2( 5, 5 )
 frames = SubResource( 6 )
-frame = 4
-playing = true
 
 [node name="SpikeArea" type="Area2D" parent="."]
 collision_layer = 0
