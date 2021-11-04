@@ -7,6 +7,7 @@ var SPIKE_DAMAGE_HANDICAP = 2
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 
 func _ready() -> void:
+    usePhys = false
     difficulty = PlayerData.savedGame.difficulty
     SPIKE_DAMAGE += (SPIKE_DAMAGE_HANDICAP * difficulty)
 
