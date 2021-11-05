@@ -351,7 +351,10 @@ func next_level_trigger(levelId):
     save.playerPosX = -9999
     save.playerPosY = -9999
     quicksave()
-    Signals.emit_signal("next_level_trigger_complete", true)
+    if levelId == 9999: #Credits has 'levelId' 9999 (not really a level but idc)
+        Utils.goto_scene("res://entities/credits/credits.tscn")
+    else:
+        Signals.emit_signal("next_level_trigger_complete", true)
     
 
 func displayDialog(_dialogText, id):
