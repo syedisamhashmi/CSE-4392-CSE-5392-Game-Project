@@ -268,7 +268,7 @@ func handleWeaponUI():
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             return
         _:
-            Signals.emit_signal("player_ammo_changed", 777)
+            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             return
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
@@ -336,6 +336,8 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
+    Signals.connect("BFG_pickup_get", self, "BFG_pickup_get")
+    # warning-ignore:return_value_discarded
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
     # warning-ignore:return_value_discarded
     Signals.connect("pc", self, "pc")
@@ -369,6 +371,12 @@ func banana_throw_pickup_get(pickupId):
     # Give more ammo at lower difficulties. Set to 5 (one higher than max)
     # so as to at least give 5ammo on highest difficulty
     save.bananaThrowAmmo += 5 * (5 - save.difficulty)
+    handleWeaponUI()
+
+func BFG_pickup_get(pickupId):
+    save.isBFG9000Unlocked = true
+    save.retrievedPickups.append(pickupId)
+    save.BFG9000Ammo += 5 * (5 - save.difficulty)
     handleWeaponUI()
 
 func player_damage_dealt(amount):

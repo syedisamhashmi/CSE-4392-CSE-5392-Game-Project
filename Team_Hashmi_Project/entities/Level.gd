@@ -1,8 +1,9 @@
 extends Node2D
 
-export var IS_BUILDING = false
+export var IS_BUILDING = true
 
 var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
+var BFG_PICKUP          = preload("res://entities/pickup_items/BFG_item.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
@@ -139,6 +140,9 @@ func readMapData():
                 # Create a new banana throw pickup instance
                 newPickup = BANANA_THROW_PICKUP.instance()
                 newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BFG:
+                newPickup = BFG_PICKUP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.BFG
             else:
                 continue
             # Set the id saved from the editor
