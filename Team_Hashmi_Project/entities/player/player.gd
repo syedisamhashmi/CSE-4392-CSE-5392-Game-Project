@@ -69,11 +69,6 @@ var damageStart = 0
 var damageSafety = 1000
 var KNOCKBACK_TIME = 200
 
-# this doesn't need to be done on every frame, temporary
-func _process(_delta: float) -> void:
-    if save.currentWeapon == Weapons.BFG9000:
-        $RightArm.set_animation("BFG")
-
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
         $LeftArm.playing = false
@@ -190,9 +185,10 @@ func _physics_process(delta: float) -> void:
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
-        if ($RightArm.get_animation() != PUNCH):
-            $RightArm.set_animation(IDLE)
-        $LeftArm.set_animation(IDLE)
+        if (save.currentWeapon == Weapons.MELEE):
+            if ($RightArm.get_animation() != PUNCH):
+                $RightArm.set_animation(IDLE)
+            $LeftArm.set_animation(IDLE)
         # If they aren't moving, don't emit the slide particles anymore 
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
@@ -225,7 +221,6 @@ func _input(event: InputEvent) -> void:
         return
     if (event.is_action_pressed("quicksave")):
         quicksave()
-    
     if (event.is_action_pressed("weapon_next")):
         equipNextWeapon()
     if (event.is_action_pressed("weapon_previous")):
@@ -286,6 +281,14 @@ func handleWeaponUI():
         Weapons.BFG9000:
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             return
+            
+func player_weapon_changed(_weapon):
+    if save.currentWeapon == Weapons.MELEE:
+        $LeftArm.visible = true;
+    elif save.currentWeapon == Weapons.BFG9000:
+        $RightArm.set_animation("BFG")
+        $LeftArm.visible = false;
+
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
     while !hasAllowedWeapon:
@@ -363,6 +366,8 @@ func _ready() -> void:
     Signals.connect("checkpoint", self, "quicksave")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger", self, "next_level_trigger")
+    # warning-ignore:return_value_discarded
+    Signals.connect("player_weapon_changed", self, "player_weapon_changed")
 
 func next_level_trigger(levelId):
     save.levelNum = levelId
@@ -419,10 +424,11 @@ func handleArmAnimation() -> void:
         return
     # If they are punching, don't impact right hand.
     # Animation finished call back will handle that
-    if ($RightArm.get_animation() != PUNCH):
-        $RightArm.set_animation(RUN)
-    # Left arm isn't impacted by animations.
-    $LeftArm.set_animation(RUN)
+    if (save.currentWeapon == Weapons.MELEE):
+        if($RightArm.get_animation() != PUNCH):
+            $RightArm.set_animation(RUN)
+        # Left arm isn't impacted by animations.
+        $LeftArm.set_animation(RUN)
 
 func applyAllImageFlips(shouldFlip: bool) -> void:
     if !Globals.inGame:
