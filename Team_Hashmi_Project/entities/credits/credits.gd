@@ -149,6 +149,7 @@ func _process(delta):
         finish()
 
 func _ready():
+    Utils.current_scene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
     Globals.load_stats()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))
@@ -157,11 +158,15 @@ func _ready():
     $stats/jumpCount.set_text(str(stats.jumpCount))
     $stats/damageReceivedCount.set_text(str(stats.playerDamageReceived))
     $stats/damageDealtCount.set_text(str(stats.playerDamageDealt))
+    $stats/deathCount.set_text(str(stats.playerDeathCount))
 
 
 func finish():
     if not finished:
         finished = true
+        $exitToMenuButton.visible = true
+        $exitToMenuButton.disabled = false
+        
 
 func add_line():
     var new_line
@@ -177,7 +182,7 @@ func add_line():
         new_line.rect_position.y += 160
     elif lineToUse.type == "fin":
         new_line = storyLine.duplicate()
-        finished = true
+        finish()
     new_line.rect_position.x = 0
     new_line.text = lineToUse.txt
     lines.append(new_line)
@@ -211,3 +216,7 @@ func _unhandled_input(event):
     if event.is_action_pressed("ui_up") and !event.is_echo():
         speed_up = true
         speed_up_multiplier = -5
+
+
+func _on_exitToMenuButton_button_up() -> void:
+    Utils.goto_scene("res://entities/MainMenu.tscn")

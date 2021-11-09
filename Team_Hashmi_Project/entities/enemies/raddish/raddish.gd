@@ -85,11 +85,6 @@ func player_location_changed(_position: Vector2):
     
     # If within walking distance
     if (abs(dist) < ROLLING_DISTANCE 
-    # and not trying inside the player on the left side
-        and ((dir.x > 0 and abs(dist) > 32) 
-    # or the right side, numbers are different due to the sprite and bounding boxes
-            or (dir.x < 0 and abs(dist) > 70)
-        )
         and OS.get_system_time_msecs() - damageStart > DAMAGE_TIMEOUT
     ):
         if ($Image.get_animation() != ROLLING and
@@ -178,7 +173,7 @@ func handleAnimationState() -> void:
 func _on_Roll_body_entered(body: Node) -> void:
     if !Globals.inGame:
         return
-    if $Image.get_animation() != ROLLING:
+    if $Image.get_animation() != ROLLING and $Image.get_animation() != START_ROLL:
         return
     
     $Roll/RollBox.disabled = true

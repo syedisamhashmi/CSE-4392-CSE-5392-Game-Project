@@ -25,6 +25,8 @@ func _enter_tree() -> void:
     Signals.connect("displayDialog", self, "displayDialog")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
+    # warning-ignore:return_value_discarded
+    Signals.connect("player_death", self, "player_death")
 
 func _ready() -> void:
     readMapData()
@@ -396,7 +398,7 @@ var kc = PoolByteArray([])
 func _input(event: InputEvent) -> void:
     if Input.is_action_just_pressed("write_map_data"):
         writeMapData()
-    if Input.is_action_just_released("ui_cancel"):
+    if Input.is_action_just_released("ui_cancel") and !dead:
         showPauseMenu()
     
     # You will be a horrible person.
@@ -426,10 +428,26 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     # If you are still reading this. It has to be in ALL classes
     return j
 #endregion
-
-func showPauseMenu():
+var dead = false
+func player_death():
+    Globals.save_stats()
+    dead = true
+    showPauseMenu(true)
+func showPauseMenu(isDead = false):
     if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
         Globals.inGame = !Globals.inGame
+        if isDead:
+            $HUD/PauseMenu/SaveGame.visible = false
+            $HUD/PauseMenu/SaveGame.disabled = true
+            $HUD/PauseMenu/Resume.disabled = true
+            $HUD/PauseMenu/Resume.visible = false
+            $HUD/PauseMenu/GamePausedLabel.text = "You Died!"
+        else:
+            $HUD/PauseMenu/SaveGame.visible = true
+            $HUD/PauseMenu/SaveGame.disabled = false
+            $HUD/PauseMenu/Resume.disabled = false
+            $HUD/PauseMenu/Resume.visible = true
+            $HUD/PauseMenu/GamePausedLabel.text = "Game Paused"
         $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
@@ -451,6 +469,9 @@ func _on_SaveGame_button_up() -> void:
     displayDialog("Game saved successfully!", null, true)
 
 func _on_LoadGame_button_up(fromTrigger = false) -> void:
+    dead = false
+    $HUD/PauseMenu/Resume.disabled = false
+    $HUD/PauseMenu/Resume.visible = true
     Globals.load_game()
     $Banana.setLoadedData()
     readMapData()
@@ -482,3 +503,11 @@ func _on_Dialog_hide() -> void:
     $HUD/PauseMenu/SaveGame.disabled = false
     $HUD/PauseMenu/LoadGame.disabled = false
     $HUD/PauseMenu/ExitToMainMenu.disabled = false
+
+func _on_Dialog_popup_hide() -> void:
+    if !$HUD/PauseMenu.visible:
+        Globals.inGame = true
+
+func _on_Resume_button_up() -> void:
+    if !dead:
+        showPauseMenu()
