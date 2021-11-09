@@ -69,6 +69,11 @@ var damageStart = 0
 var damageSafety = 1000
 var KNOCKBACK_TIME = 200
 
+# this doesn't need to be done on every frame, temporary
+func _process(_delta: float) -> void:
+    if save.currentWeapon == Weapons.BFG9000:
+        $RightArm.set_animation("BFG")
+
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
         $LeftArm.playing = false
@@ -227,6 +232,8 @@ func _input(event: InputEvent) -> void:
         equipPreviousWeapon()
     
     if (event.is_action_pressed("fire_projectile")):
+        print(save.currentWeapon)
+        print(save.BFG9000Ammo)
         if (save.currentWeapon == Weapons.MELEE):
             # If punch animation currently animating, don't allow punch.
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
@@ -240,6 +247,13 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerProjectile()
+        if (
+            save.currentWeapon == Weapons.BFG9000 and
+            save.BFG9000Ammo > 0
+        ):
+            save.BFG9000Ammo -= 1
+            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
+            spawnPlayerProjectile()
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -248,6 +262,7 @@ func equipNextWeapon() -> void:
     if (save.currentWeapon == Weapons.MAX):
         save.currentWeapon = 0
     handleWeaponUI()
+    
 func equipPreviousWeapon() -> void:
     save.currentWeapon -=1
     skipWeapons(false)
@@ -256,6 +271,7 @@ func equipPreviousWeapon() -> void:
         # Since it cycles back, we have to check the highest weapon again.
         skipWeapons(false) 
     handleWeaponUI()
+    
 func handleWeaponUI():
     if !Globals.inGame:
         return
@@ -267,7 +283,7 @@ func handleWeaponUI():
         Weapons.BANANA_THROW:
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             return
-        _:
+        Weapons.BFG9000:
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             return
 func skipWeapons(add: bool) -> void:
