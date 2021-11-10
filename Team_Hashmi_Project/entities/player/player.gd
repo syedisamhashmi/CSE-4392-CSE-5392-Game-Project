@@ -351,7 +351,10 @@ func next_level_trigger(levelId):
     save.playerPosX = -9999
     save.playerPosY = -9999
     quicksave()
-    Signals.emit_signal("next_level_trigger_complete", true)
+    if levelId == 9999: #Credits has 'levelId' 9999 (not really a level but idc)
+        Utils.goto_scene("res://entities/credits/credits.tscn")
+    else:
+        Signals.emit_signal("next_level_trigger_complete", true)
     
 
 func displayDialog(_dialogText, id):
@@ -380,6 +383,9 @@ func setLoadedData() -> void:
                                     save.playerJumpHeight
                             )
 func quicksave(id = null) -> void:
+    # Don't allow quicksave if they're dead... Why would you?
+    if save.playerHealth <= 0:
+        return
     if id != null:
         save.completedTriggers.append(id)
     PlayerData.savedGame = save
@@ -438,7 +444,6 @@ func _on_PunchArea_body_entered(body: Node) -> void:
     if body.has_method("damage"):
         body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
 
-
 func _on_RightArm_frame_changed() -> void:
     if !Globals.inGame:
         return
@@ -480,8 +485,20 @@ func damage(damage, knockbackMultiplier):
     damageStart = OS.get_system_time_msecs()
     damage_flash_effect()
     xKnockback = damage * knockbackMultiplier * lastDir
-    save.playerHealth -= abs(damage) * save.difficulty
-    stats.playerDamageReceived += abs(damage) * save.difficulty
+    # If the attack is more damage than the health they have.
+    if (abs(damage) * save.difficulty) > save.playerHealth:
+        # Their health was taken in damage
+        stats.playerDamageReceived += save.playerHealth
+        # And they have 0 health
+        save.playerHealth = 0
+    else:
+        # Otherwise they should take the full damage amount 
+        save.playerHealth -= abs(damage) * save.difficulty
+        stats.playerDamageReceived += abs(damage) * save.difficulty
+    if save.playerHealth <= 0:
+        # Add to stats death count
+        stats.playerDeathCount += 1
+        Signals.emit_signal("player_death")
     Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func damage_flash_effect():

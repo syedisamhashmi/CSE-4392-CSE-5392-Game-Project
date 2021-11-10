@@ -6,6 +6,8 @@ var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn"
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_SPIKE         = preload("res://entities/enemies/spikes/spikes.tscn")
+
 
 var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
@@ -23,6 +25,8 @@ func _enter_tree() -> void:
     Signals.connect("displayDialog", self, "displayDialog")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
+    # warning-ignore:return_value_discarded
+    Signals.connect("player_death", self, "player_death")
 
 func _ready() -> void:
     readMapData()
@@ -156,7 +160,10 @@ func readMapData():
             
         for enemyData in levelData.enemies:
             var newEnemy = null
-            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
+            if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.SPIKE:
+                newEnemy = ENEMY_SPIKE.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.SPIKE
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.PINEAPPLE:
@@ -171,6 +178,8 @@ func readMapData():
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
+            newEnemy.scale.x = enemyData.scaleX
+            newEnemy.scale.y = enemyData.scaleY
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -296,6 +305,8 @@ func writeMapData():
         toAdd.type   = enemy.type
         toAdd.id     = enemy.id
         toAdd.health = enemy.baseHealth
+        toAdd.scaleX = enemy.scale.x
+        toAdd.scaleY = enemy.scale.y
         enemiesToUse.append(toAdd)
     LevelData.enemies = enemiesToUse
     
@@ -339,6 +350,8 @@ func getNewEnemy():
         posY = null,
         type = -1,
         health = 0,
+        scaleX = 1,
+        scaleY = 1,
         id   = 0
     } 
 func getNewPickup():
@@ -385,7 +398,7 @@ var kc = PoolByteArray([])
 func _input(event: InputEvent) -> void:
     if Input.is_action_just_pressed("write_map_data"):
         writeMapData()
-    if Input.is_action_just_released("ui_cancel"):
+    if Input.is_action_just_released("ui_cancel") and !dead:
         showPauseMenu()
     
     # You will be a horrible person.
@@ -415,10 +428,26 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     # If you are still reading this. It has to be in ALL classes
     return j
 #endregion
-
-func showPauseMenu():
+var dead = false
+func player_death():
+    Globals.save_stats()
+    dead = true
+    showPauseMenu(true)
+func showPauseMenu(isDead = false):
     if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
         Globals.inGame = !Globals.inGame
+        if isDead:
+            $HUD/PauseMenu/SaveGame.visible = false
+            $HUD/PauseMenu/SaveGame.disabled = true
+            $HUD/PauseMenu/Resume.disabled = true
+            $HUD/PauseMenu/Resume.visible = false
+            $HUD/PauseMenu/GamePausedLabel.text = "You Died!"
+        else:
+            $HUD/PauseMenu/SaveGame.visible = true
+            $HUD/PauseMenu/SaveGame.disabled = false
+            $HUD/PauseMenu/Resume.disabled = false
+            $HUD/PauseMenu/Resume.visible = true
+            $HUD/PauseMenu/GamePausedLabel.text = "Game Paused"
         $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
@@ -440,6 +469,9 @@ func _on_SaveGame_button_up() -> void:
     displayDialog("Game saved successfully!", null, true)
 
 func _on_LoadGame_button_up(fromTrigger = false) -> void:
+    dead = false
+    $HUD/PauseMenu/Resume.disabled = false
+    $HUD/PauseMenu/Resume.visible = true
     Globals.load_game()
     $Banana.setLoadedData()
     readMapData()
@@ -471,3 +503,11 @@ func _on_Dialog_hide() -> void:
     $HUD/PauseMenu/SaveGame.disabled = false
     $HUD/PauseMenu/LoadGame.disabled = false
     $HUD/PauseMenu/ExitToMainMenu.disabled = false
+
+func _on_Dialog_popup_hide() -> void:
+    if !$HUD/PauseMenu.visible:
+        Globals.inGame = true
+
+func _on_Resume_button_up() -> void:
+    if !dead:
+        showPauseMenu()

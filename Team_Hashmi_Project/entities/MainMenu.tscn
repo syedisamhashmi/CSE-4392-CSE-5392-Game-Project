@@ -1,31 +1,79 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://entities/Main.gd" type="Script" id=3]
 [ext_resource path="res://assets/images/Menu/difficulties/CanIPlayDaddy.png" type="Texture" id=4]
+[ext_resource path="res://assets/game-ui-pixel-art/5 Logo/Logo.png" type="Texture" id=5]
+[ext_resource path="res://assets/game-ui-pixel-art/1 Frames/Tileset.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/BG_04/BG_04.png" type="Texture" id=10]
 
-[sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0.0197044, 0.997537, 1 )
-colors = PoolColorArray( 0, 0, 0, 0.727877, 0.652344, 0.652344, 0.652344, 0.180392, 0, 0, 0, 0.599726 )
-
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
-width = 1000
-
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=1]
 size = 40
 font_data = ExtResource( 2 )
 
-[sub_resource type="Theme" id=4]
-default_font = SubResource( 3 )
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 30.0
+bg_color = Color( 0.4, 0.447059, 0.568627, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 30.0
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 30.0
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="DynamicFont" id=8]
 size = 40
 font_data = ExtResource( 2 )
 
-[sub_resource type="Theme" id=6]
-default_font = SubResource( 5 )
+[sub_resource type="Theme" id=9]
+default_font = SubResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.4, 0.447059, 0.568627, 1 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.109804, 0.101961, 0.188235, 1 )
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.4, 0.447059, 0.568627, 1 )
+
+[sub_resource type="TileSet" id=14]
+0/name = "Tileset.png 0"
+0/texture = ExtResource( 7 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 256, 224 )
+0/tile_mode = 2
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 32, 32 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -36,89 +84,120 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NewGameCreation" type="ColorRect" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
-color = Color( 0, 0, 0, 1 )
+[node name="Background" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = 960.0
+margin_bottom = 540.0
+texture = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gradient" type="TextureRect" parent="NewGameCreation"]
-margin_right = 1023.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( -520, -70 )
-texture = SubResource( 2 )
-stretch_mode = 1
+[node name="NewGameCreation" type="ColorRect" parent="."]
+margin_left = 50.0
+margin_top = 20.0
+margin_right = 455.0
+margin_bottom = 580.0
+color = Color( 0.164706, 0.188235, 0.305882, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DifficultyImage" type="TextureRect" parent="NewGameCreation"]
-margin_left = 564.0
-margin_top = 80.0
-margin_right = 852.0
-margin_bottom = 320.0
+margin_left = 590.0
+margin_top = 20.0
+margin_right = 910.0
+margin_bottom = 291.0
 texture = ExtResource( 4 )
 stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NewGameTitle" type="Label" parent="NewGameCreation"]
-margin_left = 23.0
-margin_top = 22.0
-margin_right = 259.0
-margin_bottom = 63.0
+[node name="Logo" type="TextureRect" parent="NewGameCreation"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -212.0
+margin_top = 24.0
+margin_right = 212.0
+margin_bottom = 216.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameTitle" type="Label" parent="NewGameCreation/Logo"]
+margin_left = 103.5
+margin_top = 108.0
+margin_right = 339.5
+margin_bottom = 149.0
 size_flags_stretch_ratio = 2.9
-theme = SubResource( 4 )
+theme = SubResource( 2 )
 text = "New Game"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BackToMainMenu" type="Button" parent="NewGameCreation"]
-margin_left = 23.0
-margin_top = 522.0
-margin_right = 268.0
-margin_bottom = 562.0
+margin_left = 55.0
+margin_top = 488.0
+margin_right = 177.0
+margin_bottom = 528.0
+custom_styles/normal = SubResource( 3 )
 text = "Back"
-
-[node name="Difficulties" type="OptionButton" parent="NewGameCreation"]
-margin_left = 23.0
-margin_top = 120.0
-margin_right = 403.0
-margin_bottom = 190.0
-text = "Difficulty"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DifficultyDescription" type="RichTextLabel" parent="NewGameCreation"]
-margin_left = 480.0
-margin_top = 320.0
-margin_right = 970.0
-margin_bottom = 510.0
+[node name="Difficulties" type="OptionButton" parent="NewGameCreation"]
+margin_left = 55.0
+margin_top = 251.0
+margin_right = 366.0
+margin_bottom = 321.0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+text = "Difficulty"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SaveSlots" type="OptionButton" parent="NewGameCreation"]
 anchor_bottom = 0.017
-margin_left = 23.0
-margin_top = 252.0
-margin_right = 403.0
-margin_bottom = 309.8
+margin_left = 55.0
+margin_top = 345.0
+margin_right = 366.0
+margin_bottom = 402.48
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 6 )
 text = "Save Slot"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="DifficultyDescription" type="RichTextLabel" parent="NewGameCreation"]
+margin_left = 526.0
+margin_top = 300.0
+margin_right = 942.0
+margin_bottom = 560.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Start" type="Button" parent="NewGameCreation"]
-margin_left = 723.0
-margin_top = 522.0
-margin_right = 968.0
-margin_bottom = 562.0
+margin_left = 249.0
+margin_top = 488.0
+margin_right = 366.0
+margin_bottom = 528.0
+custom_styles/normal = SubResource( 7 )
 text = "START"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -139,92 +218,155 @@ __meta__ = {
 
 [node name="LoadGame" type="ColorRect" parent="."]
 visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
-color = Color( 0, 0, 0, 1 )
+margin_left = 50.0
+margin_top = 20.0
+margin_right = 455.0
+margin_bottom = 580.0
+color = Color( 0.164706, 0.188235, 0.305882, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LoadSlots" type="OptionButton" parent="LoadGame"]
-margin_left = 23.0
-margin_top = 120.0
-margin_right = 403.0
-margin_bottom = 188.0
-text = "Load Slot"
+[node name="Logo" type="TextureRect" parent="LoadGame"]
+margin_left = -9.5
+margin_top = 24.0
+margin_right = 414.5
+margin_bottom = 216.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="LoadGame"]
-margin_left = 23.0
-margin_top = 22.0
-margin_right = 323.0
-margin_bottom = 82.0
-theme = SubResource( 6 )
+[node name="Label" type="Label" parent="LoadGame/Logo"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -84.5
+margin_top = -84.0
+margin_right = 97.5
+margin_bottom = -43.0
+theme = SubResource( 9 )
 text = "Load Game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="LoadSlots" type="OptionButton" parent="LoadGame"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -147.5
+margin_top = -20.0
+margin_right = 163.5
+margin_bottom = 20.0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 6 )
+text = "Load Slot"
+
 [node name="Back" type="Button" parent="LoadGame"]
-margin_left = 23.0
-margin_top = 522.0
-margin_right = 268.0
-margin_bottom = 569.0
+margin_left = 55.0
+margin_top = 488.0
+margin_right = 177.0
+margin_bottom = 528.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 text = "Back"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Start" type="Button" parent="LoadGame"]
-margin_left = 724.0
-margin_top = 522.0
-margin_right = 968.0
-margin_bottom = 569.0
+margin_left = 249.0
+margin_top = 488.0
+margin_right = 366.0
+margin_bottom = 528.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 text = "Start"
-
-[node name="MainMenuSelection" type="ColorRect" parent="."]
-visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
-color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BananaManiaTitle" type="Label" parent="MainMenuSelection"]
-margin_left = 23.0
-margin_top = 22.0
-margin_right = 259.0
-margin_bottom = 63.0
+[node name="MainMenuSelection" type="ColorRect" parent="."]
+visible = false
+margin_left = 50.0
+margin_top = 20.0
+margin_right = 455.0
+margin_bottom = 580.0
+color = Color( 0.164706, 0.188235, 0.305882, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Logo" type="TextureRect" parent="MainMenuSelection"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -212.0
+margin_top = 24.0
+margin_right = 212.0
+margin_bottom = 216.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BananaManiaTitle" type="Label" parent="MainMenuSelection/Logo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.5
+margin_top = 12.0
+margin_right = 127.5
+margin_bottom = 53.0
 size_flags_stretch_ratio = 2.9
-theme = SubResource( 4 )
+theme = SubResource( 2 )
 text = "Banana Mania"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="NewGame" type="Button" parent="MainMenuSelection"]
-margin_left = 23.0
-margin_top = 162.0
-margin_right = 268.0
-margin_bottom = 202.0
+margin_left = 54.0
+margin_top = 240.0
+margin_right = 366.0
+margin_bottom = 280.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 text = "New Game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LoadGame" type="Button" parent="MainMenuSelection"]
-margin_left = 23.0
-margin_top = 242.0
-margin_right = 268.0
-margin_bottom = 282.0
+margin_left = 54.0
+margin_top = 320.0
+margin_right = 366.0
+margin_bottom = 360.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/normal = SubResource( 12 )
 text = "Load Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Exit" type="Button" parent="MainMenuSelection"]
-margin_left = 23.0
-margin_top = 522.0
-margin_right = 268.0
-margin_bottom = 562.0
+margin_left = 55.0
+margin_top = 478.0
+margin_right = 366.0
+margin_bottom = 518.0
+custom_styles/hover = SubResource( 13 )
+custom_styles/normal = SubResource( 12 )
 text = "Exit Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ExitConfirmation" type="ConfirmationDialog" parent="MainMenuSelection"]
 margin_left = 312.0
@@ -237,6 +379,13 @@ window_title = "Quit Game?"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2( -79.1959, 10 )
+tile_set = SubResource( 14 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 4, 0, 4, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 5, 65540, 0, 65536, 65552, 0, 1, 131076, 0, 65536, 131088, 0, 1, 196612, 0, 65536, 196624, 0, 1, 262148, 0, 65536, 262160, 0, 1, 327684, 0, 65536, 327696, 0, 1, 393220, 0, 65536, 393232, 0, 1, 458756, 0, 65536, 458768, 0, 1, 524292, 0, 65536, 524304, 0, 1, 589828, 0, 65536, 589840, 0, 1, 655364, 0, 65536, 655376, 0, 1, 720900, 0, 65536, 720912, 0, 1, 786436, 0, 65536, 786448, 0, 1, 851972, 0, 65536, 851984, 0, 1, 917508, 0, 65536, 917520, 0, 1, 983044, 0, 65536, 983056, 0, 1, 1048580, 0, 65536, 1048592, 0, 1, 1114116, 0, 65540, 1114117, 0, 65537, 1114118, 0, 65537, 1114119, 0, 65537, 1114120, 0, 65537, 1114121, 0, 65537, 1114122, 0, 65537, 1114123, 0, 65537, 1114124, 0, 65537, 1114125, 0, 65537, 1114126, 0, 65537, 1114127, 0, 65537, 1114128, 0, 65541 )
 
 [connection signal="pressed" from="NewGameCreation/BackToMainMenu" to="." method="_on_BackToMainMenu_pressed"]
 [connection signal="item_selected" from="NewGameCreation/Difficulties" to="." method="_on_Difficulties_item_selected"]
