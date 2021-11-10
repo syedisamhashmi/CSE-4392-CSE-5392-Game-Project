@@ -343,6 +343,8 @@ func _ready() -> void:
     Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("health_pickup_get", self, "health_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("high_jump_pickup_get", self, "high_jump_pickup_get")
     
     # warning-ignore:return_value_discarded
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
@@ -354,7 +356,6 @@ func _ready() -> void:
     Signals.connect("checkpoint", self, "quicksave")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger", self, "next_level_trigger")
-
 func next_level_trigger(levelId):
     save.levelNum = levelId
     save.playerPosX = -9999
@@ -384,7 +385,15 @@ func banana_throw_pickup_get(pickupId):
 func gas_mask_pickup_get(pickupId):
     save.retrievedPickups.append(pickupId)
     save.gasMaskUnlocked = true
-    
+
+func high_jump_pickup_get(pickupId):    
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.playerJumpHeight += 300
+    acceleration = Vector2(save.playerMoveSpeed, 
+                       save.playerJumpHeight)
+
 func health_pickup_get(pickupId):
     if save.retrievedPickups.has(pickupId):
         return
@@ -400,9 +409,9 @@ func setLoadedData() -> void:
     stats = PlayerData.playerStats
     Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
-    topSpeed              = Vector2(save.playerMoveSpeed, 
-                                    save.playerJumpHeight
-                            )
+    acceleration   = Vector2(save.playerMoveSpeed, 
+                             save.playerJumpHeight)
+
 func quicksave(id = null) -> void:
     # Don't allow quicksave if they're dead... Why would you?
     if save.playerHealth <= 0:
