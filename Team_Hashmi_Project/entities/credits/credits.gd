@@ -92,7 +92,49 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "Edward Kressler", "type": "t"},
         #TODO: Edward
-    ],[
+    ],
+    [
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Assets", "type": "t"},
+        {"txt": "Fonts", "type": "c"},
+        {"txt": "AreaKilometer50-ow3xB.ttf", "type": "s"},
+        {"txt": "        www.fontspace.com/a-area-kilometer-50-font-f53888", "type": "s"},
+        {"txt": "        Freeware", "type": "s"},
+        
+        {"txt": "Audio", "type": "c"},
+        {"txt": "87535__whiprealgood__splat", "type": "s"},
+        {"txt": "        freesound.org/people/Whiprealgood/sounds/87535", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "253172__suntemple__retro-bonus-pickup-sfx", "type": "s"},
+        {"txt": "        freesound.org/people/suntemple/sounds/253172", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+                
+        {"txt": "Images", "type": "c"},
+        {"txt": "explosion_01_strip13.png", "type": "s"},
+        {"txt": "        opengameart.org/content/simple-explosion-bleeds-game-art", "type": "s"},
+        {"txt": "        Creative Commons License 3", "type": "s"},
+        {"txt": "        Attribution: Please check out Bleed - emusprites.carbonmade.com", "type": "s"},
+        {"txt": "spikes.png", "type": "s"},
+        {"txt": "        opengameart.org/content/spikes-0", "type": "s"},
+        {"txt": "        Public Domain CC0", "type": "s"},
+        {"txt": "pixel_icons_by_oceansdream.png", "type": "s"},
+        {"txt": "        opengameart.org/content/various-inventory-24-pixel-icon-set", "type": "s"},
+        {"txt": "        Creative Commons - BY 3.0, Creative Commons - BY-SA 3.0", "type": "s"},
+        
+        {"txt": "Pixel Art Vegetable Monsters Sprite Pack", "type": "s"},
+        {"txt": "        elthen.itch.io/2d-pixel-art-vegetable-monsters-sprite-pack", "type": "s"},
+        {"txt": "!PAID!  \"Feel free to use the sprites in commercial/non-commercial projects!\"", "type": "s"},
+                
+        {"txt": "night-city-street-game-background-tiles", "type": "s"},
+        {"txt": "        free-game-assets.itch.io/night-city-street-2d-background-tiles", "type": "s"},
+        {"txt": "!PAID!  \"no restrictions on use in commercial projects, \nas well as you can freely use each product in unlimited number of projects\"", "type": "s"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "All purchased assets will be spliced out of git history \nbefore going public before anyone thinks to steal anything. :)", "type": "s"},
+    ]
+    ,[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
