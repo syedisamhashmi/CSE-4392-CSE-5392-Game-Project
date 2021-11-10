@@ -75,6 +75,12 @@ var credits = [
         {"txt":"        - Dialog", "type": "s"},
         {"txt":"        - Next Level", "type": "s"},
         
+        {"txt":"Pickups", "type": "c"},
+        {"txt":"        - Health", "type": "s"},
+        {"txt":"        - Gas Mask", "type": "s"},
+        {"txt":"        - Banana Throw", "type": "s"},
+        {"txt":"        - High Jump", "type": "s"},
+        
         {"txt":"Various Gameplay Mehanics", "type": "c"},
         {"txt":"        - Tile Map Integration", "type": "s"},
         {"txt":"        - Spike Obstacles", "type": "s"},
@@ -92,6 +98,24 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "Edward Kressler", "type": "t"},
         #TODO: Edward
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Balamurale Balusamy Siva", "type": "t"},
+        #TODO: Balamurale Balusamy Siva
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Natraj Hullikunte", "type": "t"},
+        #TODO: Natraj Hullikunte
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Sundeep Kumar Gurrapusala", "type": "t"},
+        #TODO: Sundeep Kumar Gurrapusala
     ],
     [
         {"txt": "", "type": "t"},
@@ -122,6 +146,10 @@ var credits = [
         {"txt": "pixel_icons_by_oceansdream.png", "type": "s"},
         {"txt": "        opengameart.org/content/various-inventory-24-pixel-icon-set", "type": "s"},
         {"txt": "        Creative Commons - BY 3.0, Creative Commons - BY-SA 3.0", "type": "s"},
+        {"txt": "Energia.png", "type": "s"},
+        {"txt": "        opengameart.org/content/energy-icon", "type": "s"},
+        {"txt": "        Creative Commons - BY 4.0", "type": "s"},
+        {"txt": "        Attribution: https://opengameart.org/users/santoniche", "type": "s"},
         
         {"txt": "Pixel Art Vegetable Monsters Sprite Pack", "type": "s"},
         {"txt": "        elthen.itch.io/2d-pixel-art-vegetable-monsters-sprite-pack", "type": "s"},
@@ -132,7 +160,12 @@ var credits = [
         {"txt": "!PAID!  \"no restrictions on use in commercial projects, \nas well as you can freely use each product in unlimited number of projects\"", "type": "s"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
-        {"txt": "All purchased assets will be spliced out of git history \nbefore going public before anyone thinks to steal anything. :)", "type": "s"},
+        {"txt": "All purchased (and free) assets will be deleted (AND SPLICED) out of git history \nbefore going public before anyone thinks to steal anything. :)", "type": "s"},
+    ],
+    [
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Did you figure out the cheat codes? ;)", "type": "s"}
     ]
     ,[
         {"txt": "", "type": "t"},
