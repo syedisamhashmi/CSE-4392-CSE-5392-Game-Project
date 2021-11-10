@@ -16,6 +16,8 @@ var jumpCount            : int = 0
 var playerDamageReceived : float = 0
 # warning-ignore:unused_class_variable
 var playerDamageDealt    : float = 0
+# warning-ignore:unused_class_variable
+var playerDeathCount     : int = 0
 
 func init():
     return self

@@ -147,7 +147,7 @@ func player_location_changed(_position: Vector2):
     # If within walking distance
     elif (abs(dist) < WALKING_DISTANCE 
     # and not trying inside the player on the left side
-        and ((dir.x < 0 and abs(dist) > 70) 
+        and ((dir.x < 0 and abs(dist) > 100) 
     # or the right side, numbers are different due to the sprite and bounding boxes
             or (dir.x > 0 and abs(dist) > 80)
         )
