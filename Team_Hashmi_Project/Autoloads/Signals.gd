@@ -5,6 +5,10 @@ signal exit_game()
 
 # warning-ignore:unused_signal
 signal banana_throw_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal gas_mask_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal health_pickup_get(pickupId)    
     
  # warning-ignore:unused_signal
 signal player_location_changed(position)
