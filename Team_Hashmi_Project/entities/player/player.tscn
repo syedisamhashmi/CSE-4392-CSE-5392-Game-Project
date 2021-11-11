@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/images/banana_run/banana-punch-spritesheet.png" type="Texture" id=10]
 [ext_resource path="res://assets/audio/87535__whiprealgood__splat.wav" type="AudioStream" id=11]
 [ext_resource path="res://entities/damage_shader.gdshader" type="Shader" id=12]
-[ext_resource path="res://assets/images/weapons/banana-BFG.png" type="Texture" id=13]
+[ext_resource path="res://assets/images/weapons/banana-BFG9000.png" type="Texture" id=13]
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 5 )
@@ -93,6 +93,10 @@ region = Rect2( 128, 0, 64, 64 )
 atlas = ExtResource( 7 )
 region = Rect2( 192, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 64, 64 )
@@ -117,10 +121,6 @@ region = Rect2( 256, 0, 64, 64 )
 atlas = ExtResource( 1 )
 region = Rect2( 320, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 64, 64 )
-
 [sub_resource type="SpriteFrames" id=24]
 animations = [ {
 "frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ) ],
@@ -128,14 +128,14 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
-"loop": true,
-"name": "Run",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 13 ) ],
 "loop": true,
 "name": "Slide",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
+"loop": true,
+"name": "Run",
 "speed": 5.0
 } ]
 
@@ -196,6 +196,22 @@ region = Rect2( 256, 0, 64, 64 )
 atlas = ExtResource( 13 )
 region = Rect2( 320, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 10 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 10 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 10 )
+region = Rect2( 192, 0, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=31]
 atlas = ExtResource( 9 )
 region = Rect2( 0, 0, 64, 64 )
@@ -220,22 +236,6 @@ region = Rect2( 256, 0, 64, 64 )
 atlas = ExtResource( 9 )
 region = Rect2( 320, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 10 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 10 )
-region = Rect2( 64, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 10 )
-region = Rect2( 128, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 10 )
-region = Rect2( 192, 0, 64, 64 )
-
 [sub_resource type="SpriteFrames" id=41]
 animations = [ {
 "frames": [ SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
@@ -245,17 +245,17 @@ animations = [ {
 }, {
 "frames": [ SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 46 ), SubResource( 47 ), SubResource( 48 ) ],
 "loop": true,
-"name": "BFG",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ) ],
-"loop": true,
-"name": "Run",
+"name": "BFG9000",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
 "loop": true,
 "name": "Punch",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ) ],
+"loop": true,
+"name": "Run",
 "speed": 5.0
 } ]
 
@@ -315,7 +315,7 @@ texture = ExtResource( 3 )
 position = Vector2( 24, -40 )
 scale = Vector2( 1.5, 1.25 )
 frames = SubResource( 41 )
-animation = "Idle"
+animation = "BFG9000"
 
 [node name="RightPunchArea" type="Area2D" parent="."]
 position = Vector2( 42, -39 )

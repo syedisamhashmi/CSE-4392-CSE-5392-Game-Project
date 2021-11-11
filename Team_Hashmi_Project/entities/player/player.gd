@@ -227,8 +227,6 @@ func _input(event: InputEvent) -> void:
         equipPreviousWeapon()
     
     if (event.is_action_pressed("fire_projectile")):
-        print(save.currentWeapon)
-        print(save.BFG9000Ammo)
         if (save.currentWeapon == Weapons.MELEE):
             # If punch animation currently animating, don't allow punch.
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
@@ -286,7 +284,7 @@ func player_weapon_changed(_weapon):
     if save.currentWeapon == Weapons.MELEE:
         $LeftArm.visible = true;
     elif save.currentWeapon == Weapons.BFG9000:
-        $RightArm.set_animation("BFG")
+        $RightArm.set_animation("BFG9000")
         $LeftArm.visible = false;
 
 func skipWeapons(add: bool) -> void:
@@ -359,7 +357,7 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
-    Signals.connect("BFG_pickup_get", self, "BFG_pickup_get")
+    Signals.connect("BFG9000_pickup_get", self, "BFG9000_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
     # warning-ignore:return_value_discarded
@@ -424,7 +422,7 @@ func health_pickup_get(pickupId):
     save.playerHealth += healthPickupValue
     Signals.emit_signal("player_health_changed", save.playerHealth)
 
-func BFG_pickup_get(pickupId):
+func BFG9000_pickup_get(pickupId):
     save.isBFG9000Unlocked = true
     save.retrievedPickups.append(pickupId)
     save.BFG9000Ammo += 5 * (5 - save.difficulty)
