@@ -7,7 +7,7 @@ signal exit_game()
 signal banana_throw_pickup_get(pickupId)
 
 # warning-ignore:unused_signal
-signal BFG_pickup_get(pickupId)
+signal BFG9000_pickup_get(pickupId)
 # warning-ignore:unused_signal
 signal gas_mask_pickup_get(pickupId)
 # warning-ignore:unused_signal
