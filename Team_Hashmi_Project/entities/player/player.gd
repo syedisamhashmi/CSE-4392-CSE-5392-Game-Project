@@ -341,13 +341,17 @@ func spawnPlayerProjectile() -> void:
         projectile_speed_to_use)
     $Projectiles.add_child(projectile_instance)
 
+
+var BASE_HEALTH_PICKUP = 30
+var BASE_HEALTH_PICKUP_HANDICAP = 5
+var healthPickupValue = BASE_HEALTH_PICKUP
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
     Globals.load_game()
     setLoadedData()
-
+    healthPickupValue = BASE_HEALTH_PICKUP - (save.difficulty * BASE_HEALTH_PICKUP_HANDICAP)
     # Default play animations to start idle process.
     $BananaImage._set_playing(true)
     $RightArm._set_playing(true)
@@ -356,6 +360,12 @@ func _ready() -> void:
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("BFG_pickup_get", self, "BFG_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("health_pickup_get", self, "health_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("high_jump_pickup_get", self, "high_jump_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
     # warning-ignore:return_value_discarded
@@ -385,6 +395,8 @@ func displayDialog(_dialogText, id):
 
 func banana_throw_pickup_get(pickupId):
     save.isBananaThrowUnlocked = true
+    if save.retrievedPickups.has(pickupId):
+        return
     # Add pickup id to list of retrieved pickups,
     # so that next time the player loads the game, 
     # they can't get it again
@@ -393,6 +405,24 @@ func banana_throw_pickup_get(pickupId):
     # so as to at least give 5ammo on highest difficulty
     save.bananaThrowAmmo += 5 * (5 - save.difficulty)
     handleWeaponUI()
+func gas_mask_pickup_get(pickupId):
+    save.retrievedPickups.append(pickupId)
+    save.gasMaskUnlocked = true
+
+func high_jump_pickup_get(pickupId):    
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.playerJumpHeight += 300
+    acceleration = Vector2(save.playerMoveSpeed, 
+                       save.playerJumpHeight)
+
+func health_pickup_get(pickupId):
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.playerHealth += healthPickupValue
+    Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func BFG_pickup_get(pickupId):
     save.isBFG9000Unlocked = true
@@ -408,10 +438,13 @@ func setLoadedData() -> void:
     stats = PlayerData.playerStats
     Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
-    topSpeed              = Vector2(save.playerMoveSpeed, 
-                                    save.playerJumpHeight
-                            )
+    acceleration   = Vector2(save.playerMoveSpeed, 
+                             save.playerJumpHeight)
+
 func quicksave(id = null) -> void:
+    # Don't allow quicksave if they're dead... Why would you?
+    if save.playerHealth <= 0:
+        return
     if id != null:
         save.completedTriggers.append(id)
     PlayerData.savedGame = save
@@ -471,7 +504,6 @@ func _on_PunchArea_body_entered(body: Node) -> void:
     if body.has_method("damage"):
         body.damage(PUNCH_DAMAGE, PUNCH_DAMAGE * lastDir, true, stats.punchesThrown)
 
-
 func _on_RightArm_frame_changed() -> void:
     if !Globals.inGame:
         return
@@ -513,8 +545,20 @@ func damage(damage, knockbackMultiplier):
     damageStart = OS.get_system_time_msecs()
     damage_flash_effect()
     xKnockback = damage * knockbackMultiplier * lastDir
-    save.playerHealth -= abs(damage) * save.difficulty
-    stats.playerDamageReceived += abs(damage) * save.difficulty
+    # If the attack is more damage than the health they have.
+    if (abs(damage) * save.difficulty) > save.playerHealth:
+        # Their health was taken in damage
+        stats.playerDamageReceived += save.playerHealth
+        # And they have 0 health
+        save.playerHealth = 0
+    else:
+        # Otherwise they should take the full damage amount 
+        save.playerHealth -= abs(damage) * save.difficulty
+        stats.playerDamageReceived += abs(damage) * save.difficulty
+    if save.playerHealth <= 0:
+        # Add to stats death count
+        stats.playerDeathCount += 1
+        Signals.emit_signal("player_death")
     Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func damage_flash_effect():
