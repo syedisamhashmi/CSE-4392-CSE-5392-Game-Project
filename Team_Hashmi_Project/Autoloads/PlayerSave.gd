@@ -26,7 +26,8 @@ var difficulty              : int   = PlayerDefaults.DEFAULT_DIFFICULTY
 var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 # warning-ignore:unused_class_variable
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
-
+# warning-ignore:unused_class_variable
+var gasMaskUnlocked         : bool  = false
 # warning-ignore:unused_class_variable
 var levelNum                : int   = 0
 var retrievedPickups        : Array = []

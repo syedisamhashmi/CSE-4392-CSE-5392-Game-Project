@@ -75,6 +75,12 @@ var credits = [
         {"txt":"        - Dialog", "type": "s"},
         {"txt":"        - Next Level", "type": "s"},
         
+        {"txt":"Pickups", "type": "c"},
+        {"txt":"        - Health", "type": "s"},
+        {"txt":"        - Gas Mask", "type": "s"},
+        {"txt":"        - Banana Throw", "type": "s"},
+        {"txt":"        - High Jump", "type": "s"},
+        
         {"txt":"Various Gameplay Mehanics", "type": "c"},
         {"txt":"        - Tile Map Integration", "type": "s"},
         {"txt":"        - Spike Obstacles", "type": "s"},
@@ -93,6 +99,75 @@ var credits = [
         {"txt": "Edward Kressler", "type": "t"},
         #TODO: Edward
     ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Balamurale Balusamy Siva", "type": "t"},
+        #TODO: Balamurale Balusamy Siva
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Natraj Hullikunte", "type": "t"},
+        #TODO: Natraj Hullikunte
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Sundeep Kumar Gurrapusala", "type": "t"},
+        #TODO: Sundeep Kumar Gurrapusala
+    ],
+    [
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Assets", "type": "t"},
+        {"txt": "Fonts", "type": "c"},
+        {"txt": "AreaKilometer50-ow3xB.ttf", "type": "s"},
+        {"txt": "        www.fontspace.com/a-area-kilometer-50-font-f53888", "type": "s"},
+        {"txt": "        Freeware", "type": "s"},
+        
+        {"txt": "Audio", "type": "c"},
+        {"txt": "87535__whiprealgood__splat", "type": "s"},
+        {"txt": "        freesound.org/people/Whiprealgood/sounds/87535", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "253172__suntemple__retro-bonus-pickup-sfx", "type": "s"},
+        {"txt": "        freesound.org/people/suntemple/sounds/253172", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+                
+        {"txt": "Images", "type": "c"},
+        {"txt": "explosion_01_strip13.png", "type": "s"},
+        {"txt": "        opengameart.org/content/simple-explosion-bleeds-game-art", "type": "s"},
+        {"txt": "        Creative Commons License 3", "type": "s"},
+        {"txt": "        Attribution: Please check out Bleed - emusprites.carbonmade.com", "type": "s"},
+        {"txt": "spikes.png", "type": "s"},
+        {"txt": "        opengameart.org/content/spikes-0", "type": "s"},
+        {"txt": "        Public Domain CC0", "type": "s"},
+        {"txt": "pixel_icons_by_oceansdream.png", "type": "s"},
+        {"txt": "        opengameart.org/content/various-inventory-24-pixel-icon-set", "type": "s"},
+        {"txt": "        Creative Commons - BY 3.0, Creative Commons - BY-SA 3.0", "type": "s"},
+        {"txt": "Energia.png", "type": "s"},
+        {"txt": "        opengameart.org/content/energy-icon", "type": "s"},
+        {"txt": "        Creative Commons - BY 4.0", "type": "s"},
+        {"txt": "        Attribution: https://opengameart.org/users/santoniche", "type": "s"},
+        
+        {"txt": "Pixel Art Vegetable Monsters Sprite Pack", "type": "s"},
+        {"txt": "        elthen.itch.io/2d-pixel-art-vegetable-monsters-sprite-pack", "type": "s"},
+        {"txt": "!PAID!  \"Feel free to use the sprites in commercial/non-commercial projects!\"", "type": "s"},
+                
+        {"txt": "night-city-street-game-background-tiles", "type": "s"},
+        {"txt": "        free-game-assets.itch.io/night-city-street-2d-background-tiles", "type": "s"},
+        {"txt": "!PAID!  \"no restrictions on use in commercial projects, \nas well as you can freely use each product in unlimited number of projects\"", "type": "s"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "All purchased (and free) assets will be deleted (AND SPLICED) out of git history \nbefore going public before anyone thinks to steal anything. :)", "type": "s"},
+    ],
+    [
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Did you figure out the cheat codes? ;)", "type": "s"}
+    ]
+    ,[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
@@ -149,6 +224,7 @@ func _process(delta):
         finish()
 
 func _ready():
+    Utils.current_scene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
     Globals.load_stats()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))
@@ -157,11 +233,15 @@ func _ready():
     $stats/jumpCount.set_text(str(stats.jumpCount))
     $stats/damageReceivedCount.set_text(str(stats.playerDamageReceived))
     $stats/damageDealtCount.set_text(str(stats.playerDamageDealt))
+    $stats/deathCount.set_text(str(stats.playerDeathCount))
 
 
 func finish():
     if not finished:
         finished = true
+        $exitToMenuButton.visible = true
+        $exitToMenuButton.disabled = false
+        
 
 func add_line():
     var new_line
@@ -177,7 +257,7 @@ func add_line():
         new_line.rect_position.y += 160
     elif lineToUse.type == "fin":
         new_line = storyLine.duplicate()
-        finished = true
+        finish()
     new_line.rect_position.x = 0
     new_line.text = lineToUse.txt
     lines.append(new_line)
@@ -211,3 +291,7 @@ func _unhandled_input(event):
     if event.is_action_pressed("ui_up") and !event.is_echo():
         speed_up = true
         speed_up_multiplier = -5
+
+
+func _on_exitToMenuButton_button_up() -> void:
+    Utils.goto_scene("res://entities/MainMenu.tscn")

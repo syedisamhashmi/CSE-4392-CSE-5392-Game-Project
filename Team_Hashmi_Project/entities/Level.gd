@@ -2,8 +2,10 @@ extends Node2D
 
 export var IS_BUILDING = true
 
-var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
+var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
 var BFG_PICKUP          = preload("res://entities/pickup_items/BFG_item.tscn")
+var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
+var PICKUP_HIGH_JUMP     = preload("res://entities/pickup_items/high-jump.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
@@ -26,6 +28,8 @@ func _enter_tree() -> void:
     Signals.connect("displayDialog", self, "displayDialog")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
+    # warning-ignore:return_value_discarded
+    Signals.connect("player_death", self, "player_death")
 
 func _ready() -> void:
     readMapData()
@@ -138,11 +142,19 @@ func readMapData():
             var newPickup
             if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
                 # Create a new banana throw pickup instance
-                newPickup = BANANA_THROW_PICKUP.instance()
+                newPickup = PICKUP_BANANA_THROW.instance()
                 newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
             elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BFG:
                 newPickup = BFG_PICKUP.instance()
                 newPickup.type = EntityTypeEnums.PICKUP_TYPE.BFG
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
+                # Create a new gas mask pickup instance
+                newPickup = PICKUP_GAS_MASK.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.GAS_MASK
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP:
+                # Create a new high jump pickup instance
+                newPickup = PICKUP_HIGH_JUMP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP
             else:
                 continue
             # Set the id saved from the editor
@@ -400,7 +412,7 @@ var kc = PoolByteArray([])
 func _input(event: InputEvent) -> void:
     if Input.is_action_just_pressed("write_map_data"):
         writeMapData()
-    if Input.is_action_just_released("ui_cancel"):
+    if Input.is_action_just_released("ui_cancel") and !dead:
         showPauseMenu()
     
     # You will be a horrible person.
@@ -430,10 +442,26 @@ func rxt(a: PoolByteArray) -> PoolByteArray:
     # If you are still reading this. It has to be in ALL classes
     return j
 #endregion
-
-func showPauseMenu():
+var dead = false
+func player_death():
+    Globals.save_stats()
+    dead = true
+    showPauseMenu(true)
+func showPauseMenu(isDead = false):
     if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
         Globals.inGame = !Globals.inGame
+        if isDead:
+            $HUD/PauseMenu/SaveGame.visible = false
+            $HUD/PauseMenu/SaveGame.disabled = true
+            $HUD/PauseMenu/Resume.disabled = true
+            $HUD/PauseMenu/Resume.visible = false
+            $HUD/PauseMenu/GamePausedLabel.text = "You Died!"
+        else:
+            $HUD/PauseMenu/SaveGame.visible = true
+            $HUD/PauseMenu/SaveGame.disabled = false
+            $HUD/PauseMenu/Resume.disabled = false
+            $HUD/PauseMenu/Resume.visible = true
+            $HUD/PauseMenu/GamePausedLabel.text = "Game Paused"
         $HUD/PauseMenu.visible = !$HUD/PauseMenu.visible
 
 func _on_Dialog_confirmed() -> void:
@@ -455,6 +483,9 @@ func _on_SaveGame_button_up() -> void:
     displayDialog("Game saved successfully!", null, true)
 
 func _on_LoadGame_button_up(fromTrigger = false) -> void:
+    dead = false
+    $HUD/PauseMenu/Resume.disabled = false
+    $HUD/PauseMenu/Resume.visible = true
     Globals.load_game()
     $Banana.setLoadedData()
     readMapData()
@@ -486,3 +517,11 @@ func _on_Dialog_hide() -> void:
     $HUD/PauseMenu/SaveGame.disabled = false
     $HUD/PauseMenu/LoadGame.disabled = false
     $HUD/PauseMenu/ExitToMainMenu.disabled = false
+
+func _on_Dialog_popup_hide() -> void:
+    if !$HUD/PauseMenu.visible:
+        Globals.inGame = true
+
+func _on_Resume_button_up() -> void:
+    if !dead:
+        showPauseMenu()

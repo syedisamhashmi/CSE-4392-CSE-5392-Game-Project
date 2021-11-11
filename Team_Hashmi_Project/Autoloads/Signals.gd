@@ -8,6 +8,12 @@ signal banana_throw_pickup_get(pickupId)
 
 # warning-ignore:unused_signal
 signal BFG_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal gas_mask_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal health_pickup_get(pickupId)    
+# warning-ignore:unused_signal
+signal high_jump_pickup_get(pickupId)
     
  # warning-ignore:unused_signal
 signal player_location_changed(position)
@@ -23,6 +29,8 @@ signal player_ammo_changed(ammoCount)
 
 # warning-ignore:unused_signal
 signal player_damage_dealt(amount)
+# warning-ignore:unused_signal
+signal player_death()
 
 # warning-ignore:unused_signal
 signal displayDialog(dialogText, id)
