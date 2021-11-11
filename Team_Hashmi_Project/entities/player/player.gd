@@ -322,19 +322,30 @@ func spawnPlayerProjectile() -> void:
         projectile_speed_to_use)
     $Projectiles.add_child(projectile_instance)
 
+
+var BASE_HEALTH_PICKUP = 30
+var BASE_HEALTH_PICKUP_HANDICAP = 5
+var healthPickupValue = BASE_HEALTH_PICKUP
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
     Globals.load_game()
     setLoadedData()
-
+    healthPickupValue = BASE_HEALTH_PICKUP - (save.difficulty * BASE_HEALTH_PICKUP_HANDICAP)
     # Default play animations to start idle process.
     $BananaImage._set_playing(true)
     $RightArm._set_playing(true)
     $LeftArm._set_playing(true)
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("health_pickup_get", self, "health_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("high_jump_pickup_get", self, "high_jump_pickup_get")
+    
     # warning-ignore:return_value_discarded
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
     # warning-ignore:return_value_discarded
@@ -345,7 +356,6 @@ func _ready() -> void:
     Signals.connect("checkpoint", self, "quicksave")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger", self, "next_level_trigger")
-
 func next_level_trigger(levelId):
     save.levelNum = levelId
     save.playerPosX = -9999
@@ -362,6 +372,8 @@ func displayDialog(_dialogText, id):
 
 func banana_throw_pickup_get(pickupId):
     save.isBananaThrowUnlocked = true
+    if save.retrievedPickups.has(pickupId):
+        return
     # Add pickup id to list of retrieved pickups,
     # so that next time the player loads the game, 
     # they can't get it again
@@ -370,6 +382,24 @@ func banana_throw_pickup_get(pickupId):
     # so as to at least give 5ammo on highest difficulty
     save.bananaThrowAmmo += 5 * (5 - save.difficulty)
     handleWeaponUI()
+func gas_mask_pickup_get(pickupId):
+    save.retrievedPickups.append(pickupId)
+    save.gasMaskUnlocked = true
+
+func high_jump_pickup_get(pickupId):    
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.playerJumpHeight += 300
+    acceleration = Vector2(save.playerMoveSpeed, 
+                       save.playerJumpHeight)
+
+func health_pickup_get(pickupId):
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.playerHealth += healthPickupValue
+    Signals.emit_signal("player_health_changed", save.playerHealth)
 
 func player_damage_dealt(amount):
     stats.playerDamageDealt += amount
@@ -379,9 +409,9 @@ func setLoadedData() -> void:
     stats = PlayerData.playerStats
     Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
-    topSpeed              = Vector2(save.playerMoveSpeed, 
-                                    save.playerJumpHeight
-                            )
+    acceleration   = Vector2(save.playerMoveSpeed, 
+                             save.playerJumpHeight)
+
 func quicksave(id = null) -> void:
     # Don't allow quicksave if they're dead... Why would you?
     if save.playerHealth <= 0:

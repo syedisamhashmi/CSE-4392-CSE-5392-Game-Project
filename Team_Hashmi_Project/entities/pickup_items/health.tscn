@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://entities/pickup_items/pickup_base.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/pickup_items/pixel_icons_by_oceansdream.png" type="Texture" id=2]
+[ext_resource path="res://assets/audio/253172__suntemple__retro-bonus-pickup-sfx.wav" type="AudioStream" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
+
+[node name="health" type="Area2D"]
+script = ExtResource( 1 )
+signalName = "health_pickup_get"
+type = 90
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 72, 0, 24, 24 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
+shape = SubResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[connection signal="body_entered" from="." to="." method="_on_pickup_body_entered"]
