@@ -80,6 +80,7 @@ var credits = [
         {"txt":"        - Gas Mask", "type": "s"},
         {"txt":"        - Banana Throw", "type": "s"},
         {"txt":"        - High Jump", "type": "s"},
+        {"txt":"        - Spike Armor", "type": "s"},
         
         {"txt":"Various Gameplay Mehanics", "type": "c"},
         {"txt":"        - Tile Map Integration", "type": "s"},
