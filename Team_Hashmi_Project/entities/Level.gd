@@ -177,7 +177,7 @@ func readMapData():
             newEnemy.scale.x = enemyData.scaleX
             newEnemy.scale.y = enemyData.scaleY
             newEnemy.rotation_degrees = enemyData.rotDeg
-            newEnemy.itemDropType = enemyData.itemDropType
+            newEnemy.itemDroptype = enemyData.itemDroptype
             newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
             newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
             $Enemies.call_deferred("add_child", newEnemy)

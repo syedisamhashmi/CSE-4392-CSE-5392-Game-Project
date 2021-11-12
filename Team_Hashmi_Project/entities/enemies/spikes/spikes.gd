@@ -11,6 +11,7 @@ func _ready() -> void:
     usePhys = false
     difficulty = PlayerData.savedGame.difficulty
     SPIKE_DAMAGE += (SPIKE_DAMAGE_HANDICAP * difficulty)
+    setupEnemyDetails()
     if deployed:
         $Image.playing = true
 
@@ -36,6 +37,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0) ->
 
 func _on_Image_animation_finished() -> void:
     $SpikeArea/SpikeAreaCollider.set_deferred("disabled", false)
+    deployed = true
+    updateEnemyDetails(id)
 
 func _on_SpikeArea_body_entered(body: Node) -> void:
     if !body.save.spikeArmorUnlocked and body.has_method("damage"):
