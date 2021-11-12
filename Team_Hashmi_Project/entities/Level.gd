@@ -2,7 +2,9 @@ extends Node2D
 
 export var IS_BUILDING = true
 
-var BANANA_THROW_PICKUP = preload("res://entities/pickup_items/banana_item.tscn")
+var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
+var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
+var PICKUP_HIGH_JUMP     = preload("res://entities/pickup_items/high-jump.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
@@ -139,8 +141,16 @@ func readMapData():
             var newPickup
             if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
                 # Create a new banana throw pickup instance
-                newPickup = BANANA_THROW_PICKUP.instance()
+                newPickup = PICKUP_BANANA_THROW.instance()
                 newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
+                # Create a new gas mask pickup instance
+                newPickup = PICKUP_GAS_MASK.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.GAS_MASK
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP:
+                # Create a new high jump pickup instance
+                newPickup = PICKUP_HIGH_JUMP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP
             else:
                 continue
             # Set the id saved from the editor

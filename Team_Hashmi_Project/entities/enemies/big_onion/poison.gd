@@ -1,5 +1,6 @@
 extends Node2D
 
+export var speedScale = 1.0
 var currBody
 
 var dmgStart = 0
@@ -15,7 +16,9 @@ func init(_position:Vector2, _velocity: Vector2) -> void:
 
 func _ready() -> void:
     difficulty = PlayerData.savedGame.difficulty
-#    $Image.speed_scale /= difficulty 
+    # TODO: thinking to maybe reduce this so it doesnt die
+    # TODO: this would make the gas mask useful in a room full of poison gas.
+    $Image.speed_scale = speedScale 
     dmgTimeout -= DAMAGE_TIMEOUT_HANDICAP * difficulty
     position.y += velocity.y
     $Image.playing = true
@@ -35,6 +38,8 @@ func _on_PoisonArea_body_entered(body: Node) -> void:
         body.has_method("damage") and 
         OS.get_system_time_msecs() - dmgStart > dmgTimeout
     ):
+        if body.save.gasMaskUnlocked:
+            return
         dmgStart = OS.get_system_time_msecs()
         currBody = body
         body.damage(1, 1)
