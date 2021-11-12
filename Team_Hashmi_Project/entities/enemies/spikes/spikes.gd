@@ -38,7 +38,7 @@ func _on_Image_animation_finished() -> void:
     $SpikeArea/SpikeAreaCollider.set_deferred("disabled", false)
 
 func _on_SpikeArea_body_entered(body: Node) -> void:
-    if body.has_method("damage"):
+    if !body.save.spikeArmorUnlocked and body.has_method("damage"):
         currBody = body
         body.damage(SPIKE_DAMAGE * body.velocity.sign().x , -body.velocity.sign().x)
 

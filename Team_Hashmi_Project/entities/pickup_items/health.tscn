@@ -8,6 +8,9 @@
 extents = Vector2( 8, 8 )
 
 [node name="health" type="Area2D"]
+scale = Vector2( 1.97441, 1.97441 )
+collision_layer = 0
+collision_mask = 2
 script = ExtResource( 1 )
 signalName = "health_pickup_get"
 type = 90

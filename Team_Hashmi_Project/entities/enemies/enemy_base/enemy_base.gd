@@ -6,6 +6,18 @@ const DEATH = "DEATH" # METAL
 export var id: String = "-1"
 # warning-ignore:unused_class_variable
 export(EntityTypeEnums.ENEMY_TYPE) var type = EntityTypeEnums.ENEMY_TYPE.NONE
+export(EntityTypeEnums.PICKUP_TYPE) var itemDroptype = EntityTypeEnums.PICKUP_TYPE.NONE
+
+export var alreadyDroppedItem: bool = false
+# warning-ignore:unused_class_variable
+export var dropsOnDifficulties =  {
+    Strings.DIFFICULTIES.CAN_I_PLAY_DADDY      : false,
+    Strings.DIFFICULTIES.IM_TOO_SQUISHY_TO_DIE : false,
+    Strings.DIFFICULTIES.BRUISE_ME_PLENTY      : false,
+    Strings.DIFFICULTIES.I_AM_BANANA_INCARNATE : false
+}
+   
+
 # warning-ignore:unused_class_variable
 export var baseHealth = 0
 var hitOnPunchNum: int = 0
@@ -102,6 +114,19 @@ func updateEnemyDetails(_id):
 
 func checkAlive():
     if (health <= 0):
+        if (!alreadyDroppedItem):
+            if dropsOnDifficulties.get(Strings.DIFFICULTIES_STR[PlayerData.savedGame.difficulty]):
+                if (itemDroptype == null or itemDroptype == EntityTypeEnums.PICKUP_TYPE.NONE):
+                    pass
+                else:
+                    var newItem = {
+                        "type": itemDroptype,
+                        "posX": self.position.x,
+                        "posY": self.position.y,
+                        "id": self.id + "death"
+                       }
+                    Signals.emit_signal("enemy_pickup_spawn", newItem)
+                    alreadyDroppedItem = true
         self.set_collision_mask_bit(1, false)
         self.set_collision_layer_bit(9, true)
         self.set_collision_layer_bit(2, false)
