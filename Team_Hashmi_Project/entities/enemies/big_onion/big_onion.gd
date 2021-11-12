@@ -12,8 +12,6 @@ const WALK = "walk" # - Pantera
 #region Attributes
 var maxHealth = 50
 var HEALTH_HANDICAP = 5
-var ROLL_ATTACK_DAMAGE = 1
-var ROLL_ATTACK_DAMAGE_HANDICAP = 2
 
 var WALKING_DISTANCE = 300 
 var WALKING_DISTANCE_HANDICAP = 50
@@ -47,7 +45,6 @@ func _ready() -> void:
     $Image.set_speed_scale(1 + (.2 * difficulty))
     $Image.get_sprite_frames().set_animation_speed(DAMAGE, 5 + difficulty)
     $Image.get_sprite_frames().set_animation_speed(ATTACK, 5 + (2 * difficulty))
-    ROLL_ATTACK_DAMAGE += ROLL_ATTACK_DAMAGE_HANDICAP * (difficulty - 1) 
     WALKING_DISTANCE += WALKING_DISTANCE_HANDICAP * difficulty
     ATTACK_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty

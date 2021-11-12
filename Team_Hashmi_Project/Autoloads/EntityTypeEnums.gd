@@ -21,7 +21,8 @@ enum PICKUP_TYPE {
     BANANA_THROW = 10,
     
     GAS_MASK     = 20,
-    HIGH_JUMP       = 21,
+    HIGH_JUMP    = 21,
+    SPIKE_ARMOR  = 22
     
     HEALTH       = 90
 }
