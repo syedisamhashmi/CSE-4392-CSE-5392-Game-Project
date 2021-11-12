@@ -20,10 +20,12 @@ var startJump = OS.get_system_time_msecs()
 
 var hitFloorStart = 0
 var maxHealth = 100
-var HEALTH_HANDICAP = 100
+var HEALTH_HANDICAP = 30
 
 var CHEST_BUMP_DAMAGE = 5
+var CHEST_BUMP_DAMAGE_HANDICAP = 2
 var JUMP_ATTACK_DAMAGE = 15
+var JUMP_DAMAGE_HANDICAP = 3
 
 var JUMPING_DISTANCE = 500
 var JUMPING_DISTANCE_HANDICAP = 50
@@ -54,7 +56,9 @@ func _ready() -> void:
     difficulty = PlayerData.savedGame.difficulty
     health += (HEALTH_HANDICAP * difficulty)
     maxHealth += (HEALTH_HANDICAP * difficulty)
+    CHEST_BUMP_DAMAGE += (CHEST_BUMP_DAMAGE_HANDICAP * difficulty)
     CHEST_BUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty)
+    JUMP_ATTACK_DAMAGE += (JUMP_DAMAGE_HANDICAP * difficulty)
     JUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty * 2)
     JUMP_ACCURACY_REDUCER -= (JUMP_ACCURACY_HANDICAP * difficulty)
     JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * difficulty)
@@ -180,7 +184,7 @@ func _on_ChestBox_body_entered(_body: Node) -> void:
             $Image.set_frame(0)
             $Image.set_animation(CHEST_BUMP)
             if body.has_method("damage"):
-                body.damage(CHEST_BUMP_DAMAGE * -1 if $Image.flip_h else 1, 1)
+                body.damage(CHEST_BUMP_DAMAGE * (-1 if $Image.flip_h else 1), 1)
 
 func _on_Image_animation_finished() -> void:
     if !Globals.inGame:
@@ -207,7 +211,7 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     # If parent deemed enemy not hit, return.
     if !hit:
         return
-    var calculatedDamage = abs(_damage) / difficulty
+    var calculatedDamage = abs(_damage)
     health -= calculatedDamage
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
