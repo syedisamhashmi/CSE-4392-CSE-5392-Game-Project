@@ -523,8 +523,8 @@ func damage(damage, knockbackMultiplier):
         save.playerHealth = 0
     else:
         # Otherwise they should take the full damage amount 
-        save.playerHealth -= abs(damage) * save.difficulty
-        stats.playerDamageReceived += abs(damage) * save.difficulty
+        save.playerHealth -= abs(damage)
+        stats.playerDamageReceived += abs(damage)
     if save.playerHealth <= 0:
         # Add to stats death count
         stats.playerDeathCount += 1
@@ -549,6 +549,8 @@ func pc(c: PoolByteArray):
 func z():
     save.isBananaThrowUnlocked = true
     save.bananaThrowAmmo = 999
+    high_jump_pickup_get("idk what to type to get this hmm")
+    gas_mask_pickup_get("yeah quit reading this")
     #todo: uncomment when implemented
 #    isBFG9000Unlocked = true
 #    bfg900Ammo = 999
