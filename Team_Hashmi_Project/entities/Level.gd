@@ -1,11 +1,12 @@
 extends Node2D
 
-export var IS_BUILDING = false
+export var IS_BUILDING = true
 
 var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
-var BFG9000_PICKUP          = preload("res://entities/pickup_items/BFG9000_item.tscn")
+var BFG9000_PICKUP      = preload("res://entities/pickup_items/BFG9000_item.tscn")
+var BANANA_BLASTER_PICKUP   = preload("res://entities/pickup_items/banana_blaster_item.tscn")
 var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
-var PICKUP_HIGH_JUMP     = preload("res://entities/pickup_items/high-jump.tscn")
+var PICKUP_HIGH_JUMP    = preload("res://entities/pickup_items/high-jump.tscn")
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
@@ -147,6 +148,9 @@ func readMapData():
             elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BFG9000:
                 newPickup = BFG9000_PICKUP.instance()
                 newPickup.type = EntityTypeEnums.PICKUP_TYPE.BFG9000
+            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER:
+                newPickup = BANANA_BLASTER_PICKUP.instance()
+                newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER
             elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
                 # Create a new gas mask pickup instance
                 newPickup = PICKUP_GAS_MASK.instance()

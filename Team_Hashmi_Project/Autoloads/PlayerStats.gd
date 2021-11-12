@@ -11,6 +11,8 @@ var bananasThrown        : int = 0
 # warning-ignore:unused_class_variable
 var bfg9000ShotsFired    : int = 0
 # warning-ignore:unused_class_variable
+var bananaBlasterShotsFired    : int = 0
+# warning-ignore:unused_class_variable
 var jumpCount            : int = 0
 # warning-ignore:unused_class_variable
 var playerDamageReceived : float = 0
