@@ -19,4 +19,9 @@ enum ENEMY_TYPE {
 enum PICKUP_TYPE {
     NONE         = -1,
     BANANA_THROW = 10,
+    
+    GAS_MASK     = 20,
+    HIGH_JUMP       = 21,
+    
+    HEALTH       = 90
 }
