@@ -110,7 +110,7 @@ func readMapData():
                 # Which TileSet to use
                 tile.index,
                 # Some transform options
-                false, false, false,
+                tile.flipX, tile.flipY, tile.transpose,
                 # Which Tile in the tileset to use
                 Vector2(tile.tileCoordX, tile.tileCoordY)
             )
@@ -173,6 +173,7 @@ func readMapData():
             if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.SPIKE:
                 newEnemy = ENEMY_SPIKE.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.SPIKE
+                newEnemy.deployed = enemyData.deployed
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
@@ -190,6 +191,7 @@ func readMapData():
             newEnemy.position.y = enemyData.posY
             newEnemy.scale.x = enemyData.scaleX
             newEnemy.scale.y = enemyData.scaleY
+            newEnemy.rotation_degrees = enemyData.rotDeg
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -289,6 +291,9 @@ func writeMapData():
         tile.index = tm.get_cell(position.x,position.y)
         tile.tileCoordX = tm.get_cell_autotile_coord(position.x, position.y).x
         tile.tileCoordY = tm.get_cell_autotile_coord(position.x, position.y).y
+        tile.flipX = tm.is_cell_x_flipped(position.x, position.y)
+        tile.flipY = tm.is_cell_y_flipped(position.x, position.y)
+        tile.transpose = tm.is_cell_transposed(position.x, position.y)
         tileInfo.append(tile)
     LevelData.tiles = tileInfo
     
@@ -317,6 +322,9 @@ func writeMapData():
         toAdd.health = enemy.baseHealth
         toAdd.scaleX = enemy.scale.x
         toAdd.scaleY = enemy.scale.y
+        toAdd.rotDeg = enemy.rotation_degrees
+        if enemy.get("deployed") != null:
+            toAdd.deployed = enemy.deployed
         enemiesToUse.append(toAdd)
     LevelData.enemies = enemiesToUse
     
@@ -362,7 +370,8 @@ func getNewEnemy():
         health = 0,
         scaleX = 1,
         scaleY = 1,
-        id   = 0
+        id   = 0,
+        rotDeg = 0
     } 
 func getNewPickup():
     return {
@@ -375,7 +384,10 @@ func getNewTile():
     return {
         posX = null,
         posY = null,
-        index = null
+        index = null,
+        flipX = false,
+        flipY = false,
+        transpose = false
     } 
 
 var isOverride = false

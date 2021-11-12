@@ -5,11 +5,13 @@ var DANGER_ZONE = 50
 var SPIKE_DAMAGE = 5
 var SPIKE_DAMAGE_HANDICAP = 2
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
-
+export var deployed = false
 func _ready() -> void:
     usePhys = false
     difficulty = PlayerData.savedGame.difficulty
     SPIKE_DAMAGE += (SPIKE_DAMAGE_HANDICAP * difficulty)
+    if deployed:
+        $Image.playing = true
 
 func player_location_changed(_position: Vector2):
     if !Globals.inGame:
