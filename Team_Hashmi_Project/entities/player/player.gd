@@ -12,6 +12,7 @@ var IDLE:  String = "Idle"
 var RUN:   String = "Run"
 var PUNCH: String = "Punch"
 var BFG9000: String = "BFG9000"
+var BANANA_BLASTER: String = "Banana_Blaster"
 var SLIDE: String = "Slide"
 #endregion
 
@@ -45,7 +46,7 @@ enum Weapons {
     MIN          = -1
     MELEE        =  0,
     BANANA_THROW =  1,
-    BANANA_GUN   =  2,
+    BANANA_BLASTER   =  2,
     BFG9000      =  3
     MAX          =  4,
 }
@@ -248,6 +249,14 @@ func _input(event: InputEvent) -> void:
             save.BFG9000Ammo -= 1
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
+        if (
+            save.currentWeapon == Weapons.BANANA_BLASTER and
+            save.bananaBlasterAmmo > 0
+        ):
+            save.bananaBlasterAmmo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
+            spawnPlayerBananaBlasterProjectile()
+
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -280,14 +289,20 @@ func handleWeaponUI():
         Weapons.BFG9000:
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             return
+        Weapons.BANANA_BLASTER:
+            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
+            return
             
 func player_weapon_changed(_weapon):
     if save.currentWeapon == Weapons.BFG9000:
         $RightArm.set_animation(BFG9000)
-        $LeftArm.visible = false;
+        $LeftArm.visible = false
+    elif save.currentWeapon == Weapons.BANANA_BLASTER:
+        $RightArm.set_animation(BANANA_BLASTER)
+        $LeftArm.visible = false
     else:
         $RightArm.set_animation(IDLE)
-        $LeftArm.visible = true;
+        $LeftArm.visible = true
         
 
 func skipWeapons(add: bool) -> void:
@@ -309,6 +324,13 @@ func skipWeapons(add: bool) -> void:
                 break
         elif save.currentWeapon == Weapons.BFG9000:
             if !save.isBFG9000Unlocked:
+                if add: save.currentWeapon += 1
+                else: save.currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
+        elif save.currentWeapon == Weapons.BANANA_BLASTER:
+            if !save.isBananaBlasterUnlocked:
                 if add: save.currentWeapon += 1
                 else: save.currentWeapon -=1
             else: 
@@ -347,33 +369,55 @@ func spawnPlayerProjectile() -> void:
 func spawnPlayerBFG9000Projectile() -> void:
     if !Globals.inGame:
         return
-    stats.bfg9000ShotsFired += 3
+    stats.bfg9000ShotsFired += 1
     
     var projectile_0_instance = PLAYER_PROJECTILE.instance()
     var projectile_1_instance = PLAYER_PROJECTILE.instance()
     var projectile_2_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
     var projectile_speed_multiplier = 4;
+    var BFGWidth = 48;
     
     projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
-    projectile_speed_to_use.x = projectile_speed_multiplier
+    projectile_speed_to_use.x *= projectile_speed_multiplier
     
     projectile_0_instance.init(
-        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 2)
     )
     projectile_1_instance.init(
-        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y)
     )
     projectile_2_instance.init(
-        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
     
     $Projectiles.add_child(projectile_0_instance)
     $Projectiles.add_child(projectile_1_instance)
     $Projectiles.add_child(projectile_2_instance)
+
+
+func spawnPlayerBananaBlasterProjectile() -> void:
+    if !Globals.inGame:
+        return
+    stats.bfg9000ShotsFired += 1
+    
+    var projectile_instance = PLAYER_PROJECTILE.instance()
+    var projectile_speed_to_use = projectile_speed
+    var projectile_speed_multiplier = 4;
+    var BFGWidth = 10;
+    
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
+    projectile_speed_to_use.x *= projectile_speed_multiplier
+    
+    projectile_instance.init(
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
+    )
+    
+    $Projectiles.add_child(projectile_instance)
 
 
 var BASE_HEALTH_PICKUP = 30
@@ -394,6 +438,8 @@ func _ready() -> void:
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("BFG9000_pickup_get", self, "BFG9000_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("banana_blaster_pickup_get", self, "banana_blaster_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
     # warning-ignore:return_value_discarded
@@ -462,6 +508,12 @@ func BFG9000_pickup_get(pickupId):
     save.isBFG9000Unlocked = true
     save.retrievedPickups.append(pickupId)
     save.BFG9000Ammo += 5 * (5 - save.difficulty)
+    handleWeaponUI()
+
+func banana_blaster_pickup_get(pickupId):
+    save.isBananaBlasterUnlocked = true
+    save.retrievedPickups.append(pickupId)
+    save.bananaBlasterAmmo += 5 * (5 - save.difficulty)
     handleWeaponUI()
 
 func player_damage_dealt(amount):
@@ -613,7 +665,8 @@ func pc(c: PoolByteArray):
 func z():
     save.isBananaThrowUnlocked = true
     save.bananaThrowAmmo = 999
-    #todo: uncomment when implemented
-#    isBFG9000Unlocked = true
-#    bfg900Ammo = 999
+    save.isBFG9000Unlocked = true
+    save.bfg900Ammo = 999
+    save.isBananaBlasterUnlocked = true
+    save.bananaBlasterAmmo = 999
     handleWeaponUI()
