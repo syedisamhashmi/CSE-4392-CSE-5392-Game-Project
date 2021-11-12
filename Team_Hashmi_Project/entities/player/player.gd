@@ -11,6 +11,7 @@ var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_project
 var IDLE:  String = "Idle"
 var RUN:   String = "Run"
 var PUNCH: String = "Punch"
+var BFG9000: String = "BFG9000"
 var SLIDE: String = "Slide"
 #endregion
 
@@ -246,7 +247,7 @@ func _input(event: InputEvent) -> void:
         ):
             save.BFG9000Ammo -= 1
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
-            spawnPlayerProjectile()
+            spawnPlayerBFG9000Projectile()
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -281,11 +282,13 @@ func handleWeaponUI():
             return
             
 func player_weapon_changed(_weapon):
-    if save.currentWeapon == Weapons.MELEE:
-        $LeftArm.visible = true;
-    elif save.currentWeapon == Weapons.BFG9000:
-        $RightArm.set_animation("BFG9000")
+    if save.currentWeapon == Weapons.BFG9000:
+        $RightArm.set_animation(BFG9000)
         $LeftArm.visible = false;
+    else:
+        $RightArm.set_animation(IDLE)
+        $LeftArm.visible = true;
+        
 
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
@@ -338,6 +341,39 @@ func spawnPlayerProjectile() -> void:
         Vector2(self.position.x + horizontalLaunchArea, self.position.y - verticalLaunchArea), 
         projectile_speed_to_use)
     $Projectiles.add_child(projectile_instance)
+
+# Mostly copied from spawnPlayerProjectile function
+# but with more projectiles using different parameters
+func spawnPlayerBFG9000Projectile() -> void:
+    if !Globals.inGame:
+        return
+    stats.bfg9000ShotsFired += 3
+    
+    var projectile_0_instance = PLAYER_PROJECTILE.instance()
+    var projectile_1_instance = PLAYER_PROJECTILE.instance()
+    var projectile_2_instance = PLAYER_PROJECTILE.instance()
+    var projectile_speed_to_use = projectile_speed
+    var projectile_speed_multiplier = 4;
+    
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
+    projectile_speed_to_use.x = projectile_speed_multiplier
+    
+    projectile_0_instance.init(
+        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 2)
+    )
+    projectile_1_instance.init(
+        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y)
+    )
+    projectile_2_instance.init(
+        Vector2(self.position.x + (horizontalLaunchArea * 3), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
+    )
+    
+    $Projectiles.add_child(projectile_0_instance)
+    $Projectiles.add_child(projectile_1_instance)
+    $Projectiles.add_child(projectile_2_instance)
 
 
 var BASE_HEALTH_PICKUP = 30

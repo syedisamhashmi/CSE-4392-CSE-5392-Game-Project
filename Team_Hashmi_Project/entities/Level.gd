@@ -1,6 +1,6 @@
 extends Node2D
 
-export var IS_BUILDING = true
+export var IS_BUILDING = false
 
 var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
 var BFG9000_PICKUP          = preload("res://entities/pickup_items/BFG9000_item.tscn")
