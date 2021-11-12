@@ -101,7 +101,7 @@ func player_location_changed(_position: Vector2):
         else:
             var anim = $Image.get_animation()
             if (anim == ROLLING or anim == START_ROLL):
-                $Roll/RollBox.disabled = false
+                $Roll/RollBox.set_deferred("disabled", false)
                 if dir.x <= 0:
                     self.velocity.x -= MOVEMENT_SPEED
                 else:
@@ -176,7 +176,7 @@ func _on_Roll_body_entered(body: Node) -> void:
     if $Image.get_animation() != ROLLING and $Image.get_animation() != START_ROLL:
         return
     
-    $Roll/RollBox.disabled = true
+    $Roll/RollBox.set_deferred("disabled", true)
     if body.has_method("damage"):
         body.damage(ROLL_ATTACK_DAMAGE * velocity.sign().x, 1.5)
         $Image.set_animation(ROLLING_HIT)
