@@ -29,7 +29,7 @@ var gasMaskUnlocked         : bool  = false
 # warning-ignore:unused_class_variable
 var spikeArmorUnlocked      : bool  = false
 # warning-ignore:unused_class_variable
-var levelNum                : int   = 0
+var levelNum                : int   = 1
 var retrievedPickups        : Array = []
 # warning-ignore:unused_class_variable
 var completedTriggers       : Array = []
