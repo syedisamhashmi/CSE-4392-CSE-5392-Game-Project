@@ -89,6 +89,12 @@ func setupEnemyDetails():
         self.position.y = enemyDetails.posY
         self.scale.x = enemyDetails.scaleX
         self.scale.y = enemyDetails.scaleY
+        self.alreadyDroppedItem = enemyDetails.alreadyDroppedItem
+        self.dropsOnDifficulties = enemyDetails.dropsOnDifficulties
+        self.itemDroptype = enemyDetails.itemDroptype
+        self.alreadyDroppedItem = enemyDetails.alreadyDroppedItem
+        if (self.get("deployed") != null):
+            self.deployed = enemyDetails.deployed
     else:
         enemyDetails.id = id
         enemyDetails.health = health
@@ -104,7 +110,11 @@ func getNewEnemyDetails():
         "posX": self.position.x,
         "posY": self.position.y,
         "scaleX": self.scale.x,
-        "scaleY": self.scale.y
+        "scaleY": self.scale.y,
+        "deployed": true,
+        "alreadyDroppedItem": self.alreadyDroppedItem,
+        "dropsOnDifficulties": self.dropsOnDifficulties,
+        "itemDroptype": self.itemDroptype
     }
 func updateEnemyDetails(_id):
     if !PlayerData.savedGame.enemiesData.has(_id):
