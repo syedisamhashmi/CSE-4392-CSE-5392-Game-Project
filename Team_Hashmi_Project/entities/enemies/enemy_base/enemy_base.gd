@@ -104,18 +104,20 @@ func setupEnemyDetails():
         enemyDetails.scaleY = self.scale.y
 
 func getNewEnemyDetails():
-    return {
+    var deets = {
         "id": self.id,
         "health": 0,
         "posX": self.position.x,
         "posY": self.position.y,
         "scaleX": self.scale.x,
         "scaleY": self.scale.y,
-        "deployed": true,
         "alreadyDroppedItem": self.alreadyDroppedItem,
         "dropsOnDifficulties": self.dropsOnDifficulties,
         "itemDroptype": self.itemDroptype
     }
+    if "deployed" in self:
+        deets["deployed"] = self.deployed
+    return deets;
 func updateEnemyDetails(_id):
     if !PlayerData.savedGame.enemiesData.has(_id):
        PlayerData.savedGame.enemiesData[_id] = getNewEnemyDetails()
@@ -133,10 +135,12 @@ func checkAlive():
                         "type": itemDroptype,
                         "posX": self.position.x,
                         "posY": self.position.y,
-                        "id": self.id + "death"
+                        "id": self.id + "death",
+                        "enemyId": self.id
                        }
-                    Signals.emit_signal("enemy_pickup_spawn", newItem)
+                    Signals.emit_signal("enemy_pickup_spawn", newItem, true)
                     alreadyDroppedItem = true
+                    updateEnemyDetails(self.id)
         self.set_collision_mask_bit(1, false)
         self.set_collision_layer_bit(9, true)
         self.set_collision_layer_bit(2, false)
