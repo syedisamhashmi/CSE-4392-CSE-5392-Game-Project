@@ -143,7 +143,7 @@ func readMapData():
             # I would use a match case, but it has proved annoying
             # So if if if it is.
             # If a banana throw pickup.
-            addpickup(pickup)
+            addpickup(pickup, false)
      
     if (
         levelData.enemies != null and
@@ -384,7 +384,7 @@ func getNewTile():
         transpose = false
     } 
 
-func addpickup(pickup):
+func addpickup(pickup, fromSignal):
     var newPickup
     if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
         # Create a new banana throw pickup instance
@@ -412,6 +412,8 @@ func addpickup(pickup):
     newPickup.id = pickup.id 
     # Set the position
     newPickup.position = Vector2(pickup.posX, pickup.posY)
+    if fromSignal:
+        $Banana.save.enemiesData[pickup.enemyId].alreadyDroppedItem = true
     # And off it goes, new pickup in the level.
     $Pickups.call_deferred("add_child", newPickup)
 
