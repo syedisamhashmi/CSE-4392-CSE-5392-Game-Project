@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://entities/pickup_items/pickup_base.gd" type="Script" id=1]
+[ext_resource path="res://assets/audio/253172__suntemple__retro-bonus-pickup-sfx.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/images/pickup_items/BFG9000_pickup.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 23.5, 8 )
+
+[node name="BFG9000_item" type="Area2D"]
+script = ExtResource( 1 )
+signalName = "BFG9000_pickup_get"
+type = 11
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_pickup_body_entered"]
