@@ -33,6 +33,8 @@ var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 # warning-ignore:unused_class_variable
 var gasMaskUnlocked         : bool  = false
 # warning-ignore:unused_class_variable
+var spikeArmorUnlocked      : bool  = false
+# warning-ignore:unused_class_variable
 var levelNum                : int   = 0
 var retrievedPickups        : Array = []
 # warning-ignore:unused_class_variable
