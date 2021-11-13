@@ -10,10 +10,8 @@ const WALK = "walk" # - Pantera
 #endregion
 
 #region Attributes
-var maxHealth = 50
+var maxHealth = 150
 var HEALTH_HANDICAP = 5
-var ROLL_ATTACK_DAMAGE = 1
-var ROLL_ATTACK_DAMAGE_HANDICAP = 2
 
 var WALKING_DISTANCE = 300 
 var WALKING_DISTANCE_HANDICAP = 50
@@ -37,22 +35,20 @@ var dir = Vector2.ZERO
 
 func _ready() -> void:
     rng.randomize()
-    health = 50
-    baseHealth = health
-    type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
     difficulty = PlayerData.savedGame.difficulty
-    health += (HEALTH_HANDICAP * difficulty)
-    maxHealth += (HEALTH_HANDICAP * difficulty)
+    if health == 9999:
+        health = baseHealth
+        maxHealth = baseHealth
+        type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
+        health += (HEALTH_HANDICAP * difficulty)
+        maxHealth += (HEALTH_HANDICAP * difficulty)
     MOVEMENT_SPEED += MOVEMENT_SPEED_HANDICAP * (difficulty - 1)
     $Image.set_speed_scale(1 + (.2 * difficulty))
     $Image.get_sprite_frames().set_animation_speed(DAMAGE, 5 + difficulty)
     $Image.get_sprite_frames().set_animation_speed(ATTACK, 5 + (2 * difficulty))
-    ROLL_ATTACK_DAMAGE += ROLL_ATTACK_DAMAGE_HANDICAP * (difficulty - 1) 
     WALKING_DISTANCE += WALKING_DISTANCE_HANDICAP * difficulty
     ATTACK_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty
-    setupEnemyDetails()
-    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
@@ -68,8 +64,6 @@ func _physics_process(delta: float) -> void:
         $Image.get_animation() != ATTACK
     ):
         handleAnimationState()
-    enemyDetails.posX = self.position.x
-    enemyDetails.posY = self.position.y
     updateEnemyDetails(id)
 func player_location_changed(_position: Vector2):
     if !Globals.inGame:
@@ -139,9 +133,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     if !hit:
         return
     damageStart = OS.get_system_time_msecs()
-    var calculatedDamage = abs(_damage) / difficulty
+    var calculatedDamage = abs(_damage)
     health -= calculatedDamage
-    enemyDetails.health = health
     updateEnemyDetails(id)
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)

@@ -35,21 +35,20 @@ var rng = RandomNumberGenerator.new()
 
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
-    rng.randomize()
-    health = 50
-    type = EntityTypeEnums.ENEMY_TYPE.RADDISH
-    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
-    health += (HEALTH_HANDICAP * difficulty)
-    maxHealth += (HEALTH_HANDICAP * difficulty)
+    rng.randomize()
+    if health == 9999:
+        health = baseHealth
+        maxHealth = baseHealth
+        type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+        health += (HEALTH_HANDICAP * difficulty)
+        maxHealth += (HEALTH_HANDICAP * difficulty)
     MOVEMENT_SPEED += MOVEMENT_SPEED_HANDICAP * (difficulty - 1)
     $Image.set_speed_scale(1 + (.2 * difficulty))
     ROLL_ATTACK_DAMAGE += ROLL_ATTACK_DAMAGE_HANDICAP * (difficulty - 1) 
     ROLLING_DISTANCE += ROLLING_DISTANCE_HANDICAP * difficulty
     ROLL_TIMEOUT -= DIFFICULTY_HANDICAP * difficulty
     DAMAGE_TIMEOUT -= DAMAGE_TIMEOUT_HANDICAP * difficulty
-    setupEnemyDetails()
-    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
@@ -66,8 +65,6 @@ func _physics_process(delta: float) -> void:
         $Image.get_animation() != ROLLING_HIT
     ):
         handleAnimationState()
-    enemyDetails.posX = self.position.x
-    enemyDetails.posY = self.position.y
     updateEnemyDetails(id)
 
 func player_location_changed(_position: Vector2):
@@ -85,11 +82,6 @@ func player_location_changed(_position: Vector2):
     
     # If within walking distance
     if (abs(dist) < ROLLING_DISTANCE 
-    # and not trying inside the player on the left side
-        and ((dir.x > 0 and abs(dist) > 32) 
-    # or the right side, numbers are different due to the sprite and bounding boxes
-            or (dir.x < 0 and abs(dist) > 70)
-        )
         and OS.get_system_time_msecs() - damageStart > DAMAGE_TIMEOUT
     ):
         if ($Image.get_animation() != ROLLING and
@@ -106,7 +98,7 @@ func player_location_changed(_position: Vector2):
         else:
             var anim = $Image.get_animation()
             if (anim == ROLLING or anim == START_ROLL):
-                $Roll/RollBox.disabled = false
+                $Roll/RollBox.set_deferred("disabled", false)
                 if dir.x <= 0:
                     self.velocity.x -= MOVEMENT_SPEED
                 else:
@@ -148,9 +140,8 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
         return
     $Roll/RollBox.set_deferred('disabled', true)
     damageStart = OS.get_system_time_msecs()
-    var calculatedDamage = abs(_damage) / difficulty
+    var calculatedDamage = abs(_damage) 
     health -= calculatedDamage
-    enemyDetails.health = health
     updateEnemyDetails(id)
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
@@ -178,10 +169,10 @@ func handleAnimationState() -> void:
 func _on_Roll_body_entered(body: Node) -> void:
     if !Globals.inGame:
         return
-    if $Image.get_animation() != ROLLING:
+    if $Image.get_animation() != ROLLING and $Image.get_animation() != START_ROLL:
         return
     
-    $Roll/RollBox.disabled = true
+    $Roll/RollBox.set_deferred("disabled", true)
     if body.has_method("damage"):
         body.damage(ROLL_ATTACK_DAMAGE * velocity.sign().x, 1.5)
         $Image.set_animation(ROLLING_HIT)

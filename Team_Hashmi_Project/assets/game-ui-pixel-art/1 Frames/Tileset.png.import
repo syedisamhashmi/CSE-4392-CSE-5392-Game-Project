@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/BFG.png-0d4915d6eac51cd82e018a7c35dfc13a.stex"
+path="res://.import/Tileset.png-17357fa17808eb13dee384b677b0f4d7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pickup_items/BFG.png"
-dest_files=[ "res://.import/BFG.png-0d4915d6eac51cd82e018a7c35dfc13a.stex" ]
+source_file="res://assets/game-ui-pixel-art/1 Frames/Tileset.png"
+dest_files=[ "res://.import/Tileset.png-17357fa17808eb13dee384b677b0f4d7.stex" ]
 
 [params]
 

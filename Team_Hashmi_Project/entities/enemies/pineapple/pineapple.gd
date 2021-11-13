@@ -20,10 +20,12 @@ var startJump = OS.get_system_time_msecs()
 
 var hitFloorStart = 0
 var maxHealth = 100
-var HEALTH_HANDICAP = 100
+var HEALTH_HANDICAP = 30
 
 var CHEST_BUMP_DAMAGE = 5
+var CHEST_BUMP_DAMAGE_HANDICAP = 2
 var JUMP_ATTACK_DAMAGE = 15
+var JUMP_DAMAGE_HANDICAP = 3
 
 var JUMPING_DISTANCE = 500
 var JUMPING_DISTANCE_HANDICAP = 50
@@ -48,20 +50,21 @@ var MAX_PROJECTILE_HANDICAP = 10
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
-    type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
-    health = 100
-    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
-    health += (HEALTH_HANDICAP * difficulty)
-    maxHealth += (HEALTH_HANDICAP * difficulty)
+    if health == 9999:
+        type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
+        health = baseHealth
+        maxHealth = baseHealth
+        health += (HEALTH_HANDICAP * difficulty)
+        maxHealth += (HEALTH_HANDICAP * difficulty)
+    CHEST_BUMP_DAMAGE += (CHEST_BUMP_DAMAGE_HANDICAP * difficulty)
     CHEST_BUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty)
+    JUMP_ATTACK_DAMAGE += (JUMP_DAMAGE_HANDICAP * difficulty)
     JUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty * 2)
     JUMP_ACCURACY_REDUCER -= (JUMP_ACCURACY_HANDICAP * difficulty)
     JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * difficulty)
     THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * difficulty)
     MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * difficulty)
-    setupEnemyDetails()
-    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
@@ -96,8 +99,6 @@ func _physics_process(delta: float) -> void:
         $Image.get_animation() != TAKE_DAMAGE and
         !isJumping):
         handleAnimationState()
-    enemyDetails.posX = self.position.x
-    enemyDetails.posY = self.position.y
     updateEnemyDetails(id)
     
 func player_location_changed(_position: Vector2):
@@ -147,7 +148,7 @@ func player_location_changed(_position: Vector2):
     # If within walking distance
     elif (abs(dist) < WALKING_DISTANCE 
     # and not trying inside the player on the left side
-        and ((dir.x < 0 and abs(dist) > 70) 
+        and ((dir.x < 0 and abs(dist) > 100) 
     # or the right side, numbers are different due to the sprite and bounding boxes
             or (dir.x > 0 and abs(dist) > 80)
         )
@@ -180,7 +181,7 @@ func _on_ChestBox_body_entered(_body: Node) -> void:
             $Image.set_frame(0)
             $Image.set_animation(CHEST_BUMP)
             if body.has_method("damage"):
-                body.damage(CHEST_BUMP_DAMAGE * -1 if $Image.flip_h else 1, 1)
+                body.damage(CHEST_BUMP_DAMAGE * (-1 if $Image.flip_h else 1), 1)
 
 func _on_Image_animation_finished() -> void:
     if !Globals.inGame:
@@ -207,13 +208,12 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     # If parent deemed enemy not hit, return.
     if !hit:
         return
-    var calculatedDamage = abs(_damage) / difficulty
+    var calculatedDamage = abs(_damage)
     health -= calculatedDamage
     # Signal out we are dealing damage to the player for stat-tracking.
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(TAKE_DAMAGE)
     canChestBump = false
-    enemyDetails.health = health
     updateEnemyDetails(id)
     checkAlive()
 

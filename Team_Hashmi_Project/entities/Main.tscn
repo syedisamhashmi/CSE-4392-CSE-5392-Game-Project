@@ -455,6 +455,9 @@ margin_top = 525.0
 margin_right = 225.0
 margin_bottom = 560.0
 text = "Exit To Main Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ExitConfirmationDialog" type="ConfirmationDialog" parent="HUD/PauseMenu"]
 margin_left = 325.0
@@ -465,10 +468,19 @@ rect_min_size = Vector2( 400, 140 )
 window_title = "Are you Sure?"
 dialog_text = "If you leave now, you will lose ANY unsaved progress..."
 
+[node name="Resume" type="Button" parent="HUD/PauseMenu"]
+margin_left = 768.0
+margin_top = 525.0
+margin_right = 967.0
+margin_bottom = 560.0
+text = "Resume"
+
 [connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
 [connection signal="hide" from="HUD/Dialog" to="." method="_on_Dialog_hide"]
+[connection signal="popup_hide" from="HUD/Dialog" to="." method="_on_Dialog_popup_hide"]
 [connection signal="button_up" from="HUD/PauseMenu/SaveGame" to="." method="_on_SaveGame_button_up"]
 [connection signal="button_up" from="HUD/PauseMenu/LoadGame" to="." method="_on_LoadGame_button_up"]
 [connection signal="button_up" from="HUD/PauseMenu/ExitToMainMenu" to="." method="_on_ExitToMainMenu_button_up"]
 [connection signal="confirmed" from="HUD/PauseMenu/ExitConfirmationDialog" to="." method="_on_ExitConfirmationDialog_confirmed"]
 [connection signal="hide" from="HUD/PauseMenu/ExitConfirmationDialog" to="." method="_on_ExitConfirmationDialog_hide"]
+[connection signal="button_up" from="HUD/PauseMenu/Resume" to="." method="_on_Resume_button_up"]
