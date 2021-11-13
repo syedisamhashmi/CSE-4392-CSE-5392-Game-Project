@@ -8,7 +8,10 @@
 extents = Vector2( 11.5, 4.5 )
 
 [node name="banana_blaster_item" type="Area2D"]
+scale = Vector2( 2.10294, 2.10294 )
 script = ExtResource( 3 )
+signalName = "banana_blaster_pickup_get"
+type = 12
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

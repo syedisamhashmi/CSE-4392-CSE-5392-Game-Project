@@ -17,9 +17,9 @@ enum ENEMY_TYPE {
 }
 
 enum PICKUP_TYPE {
-    NONE         = -1,
-    BANANA_THROW = 10,
-    BFG9000 = 11,
+    NONE           = -1,
+    BANANA_THROW   = 10,
+    BFG9000        = 11,
     BANANA_BLASTER = 12,
     
     GAS_MASK     = 20,
