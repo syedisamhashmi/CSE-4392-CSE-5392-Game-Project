@@ -1,22 +1,23 @@
 extends Node2D
 
 export var IS_BUILDING = false
-
-var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
-var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
-var PICKUP_HEALTH       = preload("res://entities/pickup_items/health.tscn")
-var PICKUP_HIGH_JUMP    = preload("res://entities/pickup_items/high-jump.tscn")
-var PICKUP_SPIKE_ARMOR  = preload("res://entities/pickup_items/spike-armor.tscn")
-
-var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
-var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
-var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
-var ENEMY_SPIKE         = preload("res://entities/enemies/spikes/spikes.tscn")
-
-
-var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
-var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
-var NEXT_LEVEL_TRIGGER  = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+# Pickups
+var PICKUP_BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")
+var BFG9000_PICKUP        = preload("res://entities/pickup_items/BFG9000_item.tscn")
+var BANANA_BLASTER_PICKUP = preload("res://entities/pickup_items/banana_blaster_item.tscn")
+var PICKUP_GAS_MASK       = preload("res://entities/pickup_items/gas-mask.tscn")
+var PICKUP_HEALTH         = preload("res://entities/pickup_items/health.tscn")
+var PICKUP_HIGH_JUMP      = preload("res://entities/pickup_items/high-jump.tscn")
+var PICKUP_SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tscn")
+# Enemies
+var ENEMY_BIG_ONION       = preload("res://entities/enemies/big_onion/big_onion.tscn")
+var ENEMY_PINEAPPLE       = preload("res://entities/enemies/pineapple/pineapple.tscn")
+var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
+# Triggers
+var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
+var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
+var NEXT_LEVEL_TRIGGER    = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
 
 
 func _enter_tree() -> void:
@@ -406,6 +407,12 @@ func addpickup(pickup, fromSignal):
         # Create a new banana throw pickup instance
         newPickup = PICKUP_BANANA_THROW.instance()
         newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BFG9000:
+        newPickup = BFG9000_PICKUP.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.BFG9000
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER:
+        newPickup = BANANA_BLASTER_PICKUP.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER
     elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
         # Create a new gas mask pickup instance
         newPickup = PICKUP_GAS_MASK.instance()

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/BFG.png-0d4915d6eac51cd82e018a7c35dfc13a.stex"
+path="res://.import/banana_blaster_pickup.png-f744ade8e365541aaf55f8f8e57cd89c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pickup_items/BFG.png"
-dest_files=[ "res://.import/BFG.png-0d4915d6eac51cd82e018a7c35dfc13a.stex" ]
+source_file="res://assets/images/pickup_items/banana_blaster_pickup.png"
+dest_files=[ "res://.import/banana_blaster_pickup.png-f744ade8e365541aaf55f8f8e57cd89c.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -28,7 +28,8 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
