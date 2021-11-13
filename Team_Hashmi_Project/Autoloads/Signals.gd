@@ -41,6 +41,8 @@ signal checkpoint(id)
 signal next_level_trigger(levelId)
 # warning-ignore:unused_signal
 signal next_level_trigger_complete(fromTrigger)
+# warning-ignore:unused_signal
+signal update_enemy(enemyDetails)
 
 # warning-ignore:unused_signal
 signal pc(c)
