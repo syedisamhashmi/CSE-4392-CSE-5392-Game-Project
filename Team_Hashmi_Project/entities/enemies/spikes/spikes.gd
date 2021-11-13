@@ -7,8 +7,13 @@ var currBody
 var SPIKE_DAMAGE_HANDICAP = 2
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 export var deployed = false
+var physOverride = false
 func _ready() -> void:
     usePhys = false
+    if physOverride:
+        usePhys = true
+        $SpikeArea.set_collision_mask_bit(0, true)
+        $Image.set_frame(3)
     difficulty = PlayerData.savedGame.difficulty
     SPIKE_DAMAGE += (SPIKE_DAMAGE_HANDICAP * difficulty)
     if deployed:
@@ -40,10 +45,11 @@ func _on_Image_animation_finished() -> void:
     updateEnemyDetails(id)
 
 func _on_SpikeArea_body_entered(body: Node) -> void:
-    if !body.save.spikeArmorUnlocked and body.has_method("damage"):
+    if "save" in body and !body.save.spikeArmorUnlocked and body.has_method("damage"):
         currBody = body
         body.damage(SPIKE_DAMAGE * body.velocity.sign().x , -body.velocity.sign().x)
-
+    if physOverride:
+        queue_free()
 
 func _on_SpikeArea_body_exited(_body: Node) -> void:
     currBody = null
