@@ -243,20 +243,22 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo > 0
         ):
             save.bananaThrowAmmo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerProjectile()
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
         ):
             save.BFG9000Ammo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerBFG9000Projectile()
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
         ):
             save.bananaBlasterAmmo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerBananaBlasterProjectile()
-        handleWeaponUI()
 
 
 #region Weapon Management
