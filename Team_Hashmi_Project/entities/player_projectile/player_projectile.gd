@@ -4,6 +4,8 @@ var perDeltaRotAngle: float = PI / 32
 var gravity: float = 10.0
 var velocity: Vector2 = Vector2.ZERO
 var projectileDamage = 10
+var isBananaBlasterShot = false
+var isBFG9000Shot = false
 func init(positionP: Vector2, velocityP: Vector2) -> void:
     self.position = positionP
     self.velocity = velocityP
@@ -16,7 +18,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_projectile_area_body_entered(body: Node) -> void:
     # the enemy knockback is determined by the projectile velocity multiplied by a scalar
-    var knockback_scaling = 10;
+    var knockback_scaling = 4;
     var knockback = knockback_scaling * velocity.x;
     
     # checks if body has method "damage" if so, call that method
@@ -25,7 +27,12 @@ func _on_projectile_area_body_entered(body: Node) -> void:
         body.on_tile_hit(self, self.position)
         
     if body.has_method("damage"):
-        body.damage(projectileDamage, knockback)
+        var calcDmg = projectileDamage
+        if isBananaBlasterShot:
+            calcDmg *= 4
+        if isBFG9000Shot:
+            calcDmg *= 7
+        body.damage(calcDmg, knockback)
       
     self.queue_free()
 
