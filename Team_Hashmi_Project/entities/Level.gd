@@ -4,7 +4,10 @@ export var IS_BUILDING = false
 
 var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
 var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
-var PICKUP_HIGH_JUMP     = preload("res://entities/pickup_items/high-jump.tscn")
+var PICKUP_HEALTH       = preload("res://entities/pickup_items/health.tscn")
+var PICKUP_HIGH_JUMP    = preload("res://entities/pickup_items/high-jump.tscn")
+var PICKUP_SPIKE_ARMOR  = preload("res://entities/pickup_items/spike-armor.tscn")
+
 var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
@@ -29,6 +32,10 @@ func _enter_tree() -> void:
     Signals.connect("next_level_trigger_complete", self, "_on_LoadGame_button_up")
     # warning-ignore:return_value_discarded
     Signals.connect("player_death", self, "player_death")
+    # warning-ignore:return_value_discarded
+    Signals.connect("enemy_pickup_spawn", self, "addpickup")
+    # warning-ignore:return_value_discarded
+    Signals.connect("update_enemy", self, "update_enemy")
 
 func _ready() -> void:
     readMapData()
@@ -110,7 +117,7 @@ func readMapData():
                 # Which TileSet to use
                 tile.index,
                 # Some transform options
-                false, false, false,
+                tile.flipX, tile.flipY, tile.transpose,
                 # Which Tile in the tileset to use
                 Vector2(tile.tileCoordX, tile.tileCoordY)
             )
@@ -138,27 +145,7 @@ func readMapData():
             # I would use a match case, but it has proved annoying
             # So if if if it is.
             # If a banana throw pickup.
-            var newPickup
-            if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
-                # Create a new banana throw pickup instance
-                newPickup = PICKUP_BANANA_THROW.instance()
-                newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
-            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
-                # Create a new gas mask pickup instance
-                newPickup = PICKUP_GAS_MASK.instance()
-                newPickup.type = EntityTypeEnums.PICKUP_TYPE.GAS_MASK
-            elif pickup.type == EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP:
-                # Create a new high jump pickup instance
-                newPickup = PICKUP_HIGH_JUMP.instance()
-                newPickup.type = EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP
-            else:
-                continue
-            # Set the id saved from the editor
-            newPickup.id = pickup.id 
-            # Set the position
-            newPickup.position = Vector2(pickup.posX, pickup.posY)
-            # And off it goes, new pickup in the level.
-            $Pickups.call_deferred("add_child", newPickup)
+            addpickup(pickup, false)
      
     if (
         levelData.enemies != null and
@@ -173,6 +160,7 @@ func readMapData():
             if   enemyData.type == EntityTypeEnums.ENEMY_TYPE.SPIKE:
                 newEnemy = ENEMY_SPIKE.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.SPIKE
+                newEnemy.deployed = enemyData.deployed
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BIG_ONION:
                 newEnemy = ENEMY_BIG_ONION.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BIG_ONION
@@ -184,12 +172,30 @@ func readMapData():
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
             else:
                 continue
-            newEnemy.health = enemyData.type
+            newEnemy.health = enemyData.health
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
             newEnemy.scale.x = enemyData.scaleX
             newEnemy.scale.y = enemyData.scaleY
+            newEnemy.rotation_degrees = enemyData.rotDeg
+            newEnemy.itemDroptype = enemyData.itemDroptype
+            newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
+            newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
+            if enemyData.id in $Banana.save.enemiesData:
+                var saveEnemy = $Banana.save.enemiesData[enemyData.id]
+                if "deployed" in saveEnemy:
+                    newEnemy["deployed"] = saveEnemy["deployed"] 
+                newEnemy.itemDroptype = saveEnemy.itemDroptype
+                newEnemy.alreadyDroppedItem = saveEnemy.alreadyDroppedItem
+                newEnemy.dropsOnDifficulties = saveEnemy.dropsOnDifficulties
+                newEnemy.health = saveEnemy.health
+                newEnemy.position.x = saveEnemy.posX
+                newEnemy.position.y = saveEnemy.posY
+                newEnemy.scale.x = saveEnemy.scaleX
+                newEnemy.scale.y = saveEnemy.scaleY
+                newEnemy.dropsOnDifficulties = saveEnemy.dropsOnDifficulties
+                newEnemy.itemDroptype = saveEnemy.itemDroptype
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -289,6 +295,9 @@ func writeMapData():
         tile.index = tm.get_cell(position.x,position.y)
         tile.tileCoordX = tm.get_cell_autotile_coord(position.x, position.y).x
         tile.tileCoordY = tm.get_cell_autotile_coord(position.x, position.y).y
+        tile.flipX = tm.is_cell_x_flipped(position.x, position.y)
+        tile.flipY = tm.is_cell_y_flipped(position.x, position.y)
+        tile.transpose = tm.is_cell_transposed(position.x, position.y)
         tileInfo.append(tile)
     LevelData.tiles = tileInfo
     
@@ -314,9 +323,15 @@ func writeMapData():
         toAdd.posY   = enemy.position.y
         toAdd.type   = enemy.type
         toAdd.id     = enemy.id
+        toAdd.itemDroptype = enemy.itemDroptype
+        toAdd.dropsOnDifficulties = enemy.dropsOnDifficulties
+        toAdd.alreadyDroppedItem = enemy.alreadyDroppedItem
         toAdd.health = enemy.baseHealth
         toAdd.scaleX = enemy.scale.x
         toAdd.scaleY = enemy.scale.y
+        toAdd.rotDeg = enemy.rotation_degrees
+        if enemy.get("deployed") != null:
+            toAdd.deployed = enemy.deployed
         enemiesToUse.append(toAdd)
     LevelData.enemies = enemiesToUse
     
@@ -362,7 +377,11 @@ func getNewEnemy():
         health = 0,
         scaleX = 1,
         scaleY = 1,
-        id   = 0
+        id   = 0,
+        rotDeg = 0,
+        itemDroptype = null,
+        alreadyDroppedItem = true,
+        dropsOnDifficulties = []
     } 
 func getNewPickup():
     return {
@@ -375,8 +394,48 @@ func getNewTile():
     return {
         posX = null,
         posY = null,
-        index = null
+        index = null,
+        flipX = false,
+        flipY = false,
+        transpose = false
     } 
+
+func addpickup(pickup, fromSignal):
+    var newPickup
+    if pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_THROW:
+        # Create a new banana throw pickup instance
+        newPickup = PICKUP_BANANA_THROW.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
+        # Create a new gas mask pickup instance
+        newPickup = PICKUP_GAS_MASK.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.GAS_MASK
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.HEALTH:
+        # Create a new health pickup instance
+        newPickup = PICKUP_HEALTH.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.HEALTH
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP:
+        # Create a new high jump pickup instance
+        newPickup = PICKUP_HIGH_JUMP.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.SPIKE_ARMOR:
+        # Create a new high jump pickup instance
+        newPickup = PICKUP_SPIKE_ARMOR.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.SPIKE_ARMOR
+    else:
+        return
+    # Set the id saved from the editor
+    newPickup.id = pickup.id 
+    # Set the position
+    newPickup.position = Vector2(pickup.posX, pickup.posY)
+    if fromSignal:
+        if pickup.enemyId in $Banana.save.enemiesData:
+            $Banana.save.enemiesData[pickup.enemyId].alreadyDroppedItem = true
+    # And off it goes, new pickup in the level.
+    $Pickups.call_deferred("add_child", newPickup)
+
+func update_enemy(enemyDetails):
+    $Banana.save.enemiesData[enemyDetails.id] = enemyDetails
 
 var isOverride = false
 func displayDialog(dialogText, _id, _isOverride = false):

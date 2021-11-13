@@ -11,6 +11,8 @@ signal gas_mask_pickup_get(pickupId)
 signal health_pickup_get(pickupId)    
 # warning-ignore:unused_signal
 signal high_jump_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal spike_armor_pickup_get(pickupId)
     
  # warning-ignore:unused_signal
 signal player_location_changed(position)
@@ -21,6 +23,8 @@ signal player_health_changed(health)
 # warning-ignore:unused_signal
 signal player_weapon_changed(weaponId)
 
+# warning-ignore:unused_signal
+signal enemy_pickup_spawn(newItem)
 # warning-ignore:unused_signal
 signal player_ammo_changed(ammoCount)
 
@@ -37,6 +41,8 @@ signal checkpoint(id)
 signal next_level_trigger(levelId)
 # warning-ignore:unused_signal
 signal next_level_trigger_complete(fromTrigger)
+# warning-ignore:unused_signal
+signal update_enemy(enemyDetails)
 
 # warning-ignore:unused_signal
 signal pc(c)

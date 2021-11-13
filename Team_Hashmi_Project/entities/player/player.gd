@@ -344,6 +344,8 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("health_pickup_get", self, "health_pickup_get")
     # warning-ignore:return_value_discarded
+    Signals.connect("spike_armor_pickup_get", self, "spike_armor_pickup_get")
+    # warning-ignore:return_value_discarded
     Signals.connect("high_jump_pickup_get", self, "high_jump_pickup_get")
     
     # warning-ignore:return_value_discarded
@@ -393,6 +395,13 @@ func high_jump_pickup_get(pickupId):
     save.playerJumpHeight += 300
     acceleration = Vector2(save.playerMoveSpeed, 
                        save.playerJumpHeight)
+
+func spike_armor_pickup_get(pickupId):
+    if save.retrievedPickups.has(pickupId):
+        return
+    save.retrievedPickups.append(pickupId)
+    save.spikeArmorUnlocked = true
+    
 
 func health_pickup_get(pickupId):
     if save.retrievedPickups.has(pickupId):
@@ -523,8 +532,8 @@ func damage(damage, knockbackMultiplier):
         save.playerHealth = 0
     else:
         # Otherwise they should take the full damage amount 
-        save.playerHealth -= abs(damage) * save.difficulty
-        stats.playerDamageReceived += abs(damage) * save.difficulty
+        save.playerHealth -= abs(damage)
+        stats.playerDamageReceived += abs(damage)
     if save.playerHealth <= 0:
         # Add to stats death count
         stats.playerDeathCount += 1
@@ -549,6 +558,8 @@ func pc(c: PoolByteArray):
 func z():
     save.isBananaThrowUnlocked = true
     save.bananaThrowAmmo = 999
+    high_jump_pickup_get("idk what to type to get this hmm")
+    gas_mask_pickup_get("yeah quit reading this")
     #todo: uncomment when implemented
 #    isBFG9000Unlocked = true
 #    bfg900Ammo = 999

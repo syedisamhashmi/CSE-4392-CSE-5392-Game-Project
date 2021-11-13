@@ -3,6 +3,13 @@ extends Node
 # Likely can use these as multipliers to reduce 
 # player damage and increase enemy health
 const DIFFICULTIES_I = [1,2,3,4] 
+const DIFFICULTIES_STR = [
+    "",
+    "Can I Play, Daddy?", 
+    "I'm too squishy to die!",
+    "Bruise Me Plenty",
+    "I Am Banana Incarnate!"
+    ]
 # If you get this throwback, we can be friends :)
 const DIFFICULTIES = {
     CAN_I_PLAY_DADDY      = "Can I Play, Daddy?",      # Easy
