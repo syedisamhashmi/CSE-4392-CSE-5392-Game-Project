@@ -19,11 +19,11 @@ var bananaThrowAmmo         : int   = 0
 # warning-ignore:unused_class_variable
 var isBFG9000Unlocked       : bool  = PlayerDefaults.IS_BFG9000_UNLOCKED
 # warning-ignore:unused_class_variable
-var BFG9000Ammo             : int = 0
+var BFG9000Ammo             : int   = 0
 # warning-ignore:unused_class_variable
 var isBananaBlasterUnlocked : bool  = PlayerDefaults.IS_BANANA_BLASTER_UNLOCKED
 # warning-ignore:unused_class_variable
-var bananaBlasterAmmo       : int = 0
+var bananaBlasterAmmo       : int   = 0
 # warning-ignore:unused_class_variable
 var difficulty              : int   = PlayerDefaults.DEFAULT_DIFFICULTY
 # warning-ignore:unused_class_variable
