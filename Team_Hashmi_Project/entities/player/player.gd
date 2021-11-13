@@ -21,6 +21,9 @@ var SLIDE: String = "Slide"
 var horizontalLaunchArea = 24
 # Half of the players height, determines where the projectile is spawned vertically
 var verticalLaunchArea = 40
+# Widths of guns, used for projectile instance location
+var BFGWidth = 48;
+var bananaBlasterWidth = 10;
 #endregion
 
 # These are very sensitive, change with care
@@ -371,12 +374,12 @@ func spawnPlayerBFG9000Projectile() -> void:
         return
     stats.bfg9000ShotsFired += 1
     
+    # there is probably a more elegant way to do this
     var projectile_0_instance = PLAYER_PROJECTILE.instance()
     var projectile_1_instance = PLAYER_PROJECTILE.instance()
     var projectile_2_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
     var projectile_speed_multiplier = 4;
-    var BFGWidth = 48;
     
     projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
     projectile_speed_to_use.x *= projectile_speed_multiplier
@@ -407,13 +410,12 @@ func spawnPlayerBananaBlasterProjectile() -> void:
     var projectile_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
     var projectile_speed_multiplier = 4;
-    var BFGWidth = 10;
     
     projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
     projectile_speed_to_use.x *= projectile_speed_multiplier
     
     projectile_instance.init(
-        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(self.position.x + horizontalLaunchArea + (bananaBlasterWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
     
