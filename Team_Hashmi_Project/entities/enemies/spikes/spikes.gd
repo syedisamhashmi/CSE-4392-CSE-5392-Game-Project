@@ -11,7 +11,6 @@ func _ready() -> void:
     usePhys = false
     difficulty = PlayerData.savedGame.difficulty
     SPIKE_DAMAGE += (SPIKE_DAMAGE_HANDICAP * difficulty)
-    setupEnemyDetails()
     if deployed:
         $Image.playing = true
 

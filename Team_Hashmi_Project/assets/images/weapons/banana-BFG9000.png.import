@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/banana-run-right-arm-spritesheet.png-13d8ea37c73e111fb5010ed377053578.stex"
+path="res://.import/banana-BFG9000.png-ee5dbdff51a6c175ae82dbc475f8c78e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/banana_run/banana-run-right-arm-spritesheet.png"
-dest_files=[ "res://.import/banana-run-right-arm-spritesheet.png-13d8ea37c73e111fb5010ed377053578.stex" ]
+source_file="res://assets/images/weapons/banana-BFG9000.png"
+dest_files=[ "res://.import/banana-BFG9000.png-ee5dbdff51a6c175ae82dbc475f8c78e.stex" ]
 
 [params]
 

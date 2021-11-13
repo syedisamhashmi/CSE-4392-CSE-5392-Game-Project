@@ -26,12 +26,10 @@ var velocity: Vector2 = Vector2.ZERO
 var gravity: float = 900.0
 var friction: float = .95
 
-var enemyDetails = {}
 var usePhys = true
 func _ready() -> void: 
     # warning-ignore:return_value_discarded
     Signals.connect("player_location_changed", self, "player_location_changed")
-    enemyDetails = getNewEnemyDetails()
 
 func player_location_changed(_position: Vector2):
     pass
@@ -79,49 +77,21 @@ func damage_flash_effect():
     $Image.material.set_shader_param("intensity", 0.0)
   
 
-func setupEnemyDetails():
-    enemyDetails = getNewEnemyDetails()
-    if PlayerData.savedGame.enemiesData.has(id):
-        enemyDetails = PlayerData.savedGame.enemiesData[id]
-        self.id = enemyDetails.id
-        self.health = enemyDetails.health
-        self.position.x = enemyDetails.posX
-        self.position.y = enemyDetails.posY
-        self.scale.x = enemyDetails.scaleX
-        self.scale.y = enemyDetails.scaleY
-        self.alreadyDroppedItem = enemyDetails.alreadyDroppedItem
-        self.dropsOnDifficulties = enemyDetails.dropsOnDifficulties
-        self.itemDroptype = enemyDetails.itemDroptype
-        self.alreadyDroppedItem = enemyDetails.alreadyDroppedItem
-        if (self.get("deployed") != null):
-            self.deployed = enemyDetails.deployed
-    else:
-        enemyDetails.id = id
-        enemyDetails.health = health
-        enemyDetails.posX = self.position.x
-        enemyDetails.posY = self.position.y
-        enemyDetails.scaleX = self.scale.x
-        enemyDetails.scaleY = self.scale.y
 
-func getNewEnemyDetails():
-    var deets = {
-        "id": self.id,
-        "health": 0,
-        "posX": self.position.x,
-        "posY": self.position.y,
-        "scaleX": self.scale.x,
-        "scaleY": self.scale.y,
-        "alreadyDroppedItem": self.alreadyDroppedItem,
-        "dropsOnDifficulties": self.dropsOnDifficulties,
-        "itemDroptype": self.itemDroptype
-    }
-    if "deployed" in self:
-        deets["deployed"] = self.deployed
-    return deets;
 func updateEnemyDetails(_id):
-    if !PlayerData.savedGame.enemiesData.has(_id):
-       PlayerData.savedGame.enemiesData[_id] = getNewEnemyDetails()
-    PlayerData.savedGame.enemiesData[_id] = enemyDetails
+    var enemyDetails = {}
+    enemyDetails.id = self.id
+    enemyDetails.health = self.health 
+    enemyDetails.posX = self.position.x
+    enemyDetails.posY = self.position.y
+    enemyDetails.scaleX = self.scale.x
+    enemyDetails.scaleY = self.scale.y
+    enemyDetails.alreadyDroppedItem = self.alreadyDroppedItem
+    enemyDetails.dropsOnDifficulties = self.dropsOnDifficulties
+    enemyDetails.itemDroptype = self.itemDroptype
+    if ("deployed" in self):
+        enemyDetails.deployed = self.deployed
+    Signals.emit_signal("update_enemy", enemyDetails)
 
 
 func checkAlive():
