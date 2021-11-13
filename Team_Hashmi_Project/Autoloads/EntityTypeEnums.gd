@@ -28,3 +28,9 @@ enum PICKUP_TYPE {
     
     HEALTH       = 90
 }
+
+enum SPAWNER_TYPE {
+    NONE       = -1
+    SPIKE      = 10,
+    POISON     = 20,
+}
