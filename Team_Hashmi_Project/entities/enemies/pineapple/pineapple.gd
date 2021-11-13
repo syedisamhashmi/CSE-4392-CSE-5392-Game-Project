@@ -50,12 +50,13 @@ var MAX_PROJECTILE_HANDICAP = 10
 var difficulty = PlayerDefaults.DEFAULT_DIFFICULTY
 func _ready() -> void:
     rng.randomize()
-    type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
-    health = 100
-    baseHealth = health
     difficulty = PlayerData.savedGame.difficulty
-    health += (HEALTH_HANDICAP * difficulty)
-    maxHealth += (HEALTH_HANDICAP * difficulty)
+    if health == 9999:
+        type = EntityTypeEnums.ENEMY_TYPE.PINEAPPLE
+        health = baseHealth
+        maxHealth = baseHealth
+        health += (HEALTH_HANDICAP * difficulty)
+        maxHealth += (HEALTH_HANDICAP * difficulty)
     CHEST_BUMP_DAMAGE += (CHEST_BUMP_DAMAGE_HANDICAP * difficulty)
     CHEST_BUMP_TIMEOUT -= (DIFFICULTY_HANDICAP * difficulty)
     JUMP_ATTACK_DAMAGE += (JUMP_DAMAGE_HANDICAP * difficulty)
@@ -64,8 +65,6 @@ func _ready() -> void:
     JUMPING_DISTANCE += (JUMPING_DISTANCE_HANDICAP * difficulty)
     THROW_COOLDOWN -= (THROW_COOLDOWN_HANDICAP * difficulty)
     MAX_PROJECTILE += (MAX_PROJECTILE_HANDICAP * difficulty)
-    setupEnemyDetails()
-    updateEnemyDetails(id)
 
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
@@ -100,8 +99,6 @@ func _physics_process(delta: float) -> void:
         $Image.get_animation() != TAKE_DAMAGE and
         !isJumping):
         handleAnimationState()
-    enemyDetails.posX = self.position.x
-    enemyDetails.posY = self.position.y
     updateEnemyDetails(id)
     
 func player_location_changed(_position: Vector2):
@@ -217,7 +214,6 @@ func damage(_damage: float, knockback, isPunch : bool  = false, punchNum = 0):
     Signals.emit_signal("player_damage_dealt", calculatedDamage)
     $Image.set_animation(TAKE_DAMAGE)
     canChestBump = false
-    enemyDetails.health = health
     updateEnemyDetails(id)
     checkAlive()
 

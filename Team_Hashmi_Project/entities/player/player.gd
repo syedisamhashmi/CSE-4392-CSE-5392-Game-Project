@@ -11,6 +11,8 @@ var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_project
 var IDLE:  String = "Idle"
 var RUN:   String = "Run"
 var PUNCH: String = "Punch"
+var BFG9000: String = "BFG9000"
+var BANANA_BLASTER: String = "Banana_Blaster"
 var SLIDE: String = "Slide"
 #endregion
 
@@ -19,6 +21,9 @@ var SLIDE: String = "Slide"
 var horizontalLaunchArea = 24
 # Half of the players height, determines where the projectile is spawned vertically
 var verticalLaunchArea = 40
+# Widths of guns, used for projectile instance location
+var BFGWidth = 48;
+var bananaBlasterWidth = 10;
 #endregion
 
 # These are very sensitive, change with care
@@ -41,12 +46,12 @@ enum PlayerDirection {
 }
 
 enum Weapons {
-    MIN          = -1
-    MELEE        =  0,
-    BANANA_THROW =  1,
-    BANANA_GUN   =  2,
-    BFG9000      =  3
-    MAX          =  4,
+    MIN            = -1
+    MELEE          =  0,
+    BANANA_THROW   =  1,
+    BANANA_BLASTER =  2,
+    BFG9000        =  3
+    MAX            =  4,
 }
 
 #region PlayerAttributes
@@ -185,9 +190,10 @@ func _physics_process(delta: float) -> void:
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
-        if ($RightArm.get_animation() != PUNCH):
-            $RightArm.set_animation(IDLE)
-        $LeftArm.set_animation(IDLE)
+        if (save.currentWeapon == Weapons.MELEE):
+            if ($RightArm.get_animation() != PUNCH):
+                $RightArm.set_animation(IDLE)
+            $LeftArm.set_animation(IDLE)
         # If they aren't moving, don't emit the slide particles anymore 
         $BananaImage/ParticleSlideLeft.emitting = false
         $BananaImage/ParticleSlideRight.emitting = false
@@ -220,7 +226,6 @@ func _input(event: InputEvent) -> void:
         return
     if (event.is_action_pressed("quicksave")):
         quicksave()
-    
     if (event.is_action_pressed("weapon_next")):
         equipNextWeapon()
     if (event.is_action_pressed("weapon_previous")):
@@ -238,8 +243,21 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo > 0
         ):
             save.bananaThrowAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerProjectile()
+        if (
+            save.currentWeapon == Weapons.BFG9000 and
+            save.BFG9000Ammo > 0
+        ):
+            save.BFG9000Ammo -= 1
+            spawnPlayerBFG9000Projectile()
+        if (
+            save.currentWeapon == Weapons.BANANA_BLASTER and
+            save.bananaBlasterAmmo > 0
+        ):
+            save.bananaBlasterAmmo -= 1
+            spawnPlayerBananaBlasterProjectile()
+        handleWeaponUI()
+
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -248,6 +266,7 @@ func equipNextWeapon() -> void:
     if (save.currentWeapon == Weapons.MAX):
         save.currentWeapon = 0
     handleWeaponUI()
+    
 func equipPreviousWeapon() -> void:
     save.currentWeapon -=1
     skipWeapons(false)
@@ -256,6 +275,7 @@ func equipPreviousWeapon() -> void:
         # Since it cycles back, we have to check the highest weapon again.
         skipWeapons(false) 
     handleWeaponUI()
+    
 func handleWeaponUI():
     if !Globals.inGame:
         return
@@ -267,9 +287,25 @@ func handleWeaponUI():
         Weapons.BANANA_THROW:
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             return
-        _:
-            Signals.emit_signal("player_ammo_changed", 777)
+        Weapons.BFG9000:
+            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             return
+        Weapons.BANANA_BLASTER:
+            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
+            return
+            
+func player_weapon_changed(_weapon):
+    if save.currentWeapon == Weapons.BFG9000:
+        $RightArm.set_animation(BFG9000)
+        $LeftArm.visible = false
+    elif save.currentWeapon == Weapons.BANANA_BLASTER:
+        $RightArm.set_animation(BANANA_BLASTER)
+        $LeftArm.visible = false
+    else:
+        $RightArm.set_animation(IDLE)
+        $LeftArm.visible = true
+        
+
 func skipWeapons(add: bool) -> void:
     var hasAllowedWeapon: bool = false
     while !hasAllowedWeapon:
@@ -289,6 +325,13 @@ func skipWeapons(add: bool) -> void:
                 break
         elif save.currentWeapon == Weapons.BFG9000:
             if !save.isBFG9000Unlocked:
+                if add: save.currentWeapon += 1
+                else: save.currentWeapon -=1
+            else: 
+                hasAllowedWeapon = true
+                break
+        elif save.currentWeapon == Weapons.BANANA_BLASTER:
+            if !save.isBananaBlasterUnlocked:
                 if add: save.currentWeapon += 1
                 else: save.currentWeapon -=1
             else: 
@@ -322,6 +365,60 @@ func spawnPlayerProjectile() -> void:
         projectile_speed_to_use)
     $Projectiles.add_child(projectile_instance)
 
+# Mostly copied from spawnPlayerProjectile function
+# but with more projectiles using different parameters
+func spawnPlayerBFG9000Projectile() -> void:
+    if !Globals.inGame:
+        return
+    stats.bfg9000ShotsFired += 1
+    
+    # there is probably a more elegant way to do this
+    var projectile_0_instance = PLAYER_PROJECTILE.instance()
+    var projectile_1_instance = PLAYER_PROJECTILE.instance()
+    var projectile_2_instance = PLAYER_PROJECTILE.instance()
+    var projectile_speed_to_use = projectile_speed
+    var projectile_speed_multiplier = 4;
+    
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
+    projectile_speed_to_use.x *= projectile_speed_multiplier
+    
+    projectile_0_instance.init(
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 2)
+    )
+    projectile_1_instance.init(
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y)
+    )
+    projectile_2_instance.init(
+        Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
+    )
+    
+    $Projectiles.add_child(projectile_0_instance)
+    $Projectiles.add_child(projectile_1_instance)
+    $Projectiles.add_child(projectile_2_instance)
+
+
+func spawnPlayerBananaBlasterProjectile() -> void:
+    if !Globals.inGame:
+        return
+    stats.bfg9000ShotsFired += 1
+    
+    var projectile_instance = PLAYER_PROJECTILE.instance()
+    var projectile_speed_to_use = projectile_speed
+    var projectile_speed_multiplier = 4;
+    
+    projectile_speed_to_use.x = ((projectile_speed_to_use.x * lastDir) + (velocity.x / 60))
+    projectile_speed_to_use.x *= projectile_speed_multiplier
+    
+    projectile_instance.init(
+        Vector2(self.position.x + horizontalLaunchArea + (bananaBlasterWidth * lastDir), self.position.y - verticalLaunchArea), 
+        Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
+    )
+    
+    $Projectiles.add_child(projectile_instance)
+
 
 var BASE_HEALTH_PICKUP = 30
 var BASE_HEALTH_PICKUP_HANDICAP = 5
@@ -340,6 +437,10 @@ func _ready() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("banana_throw_pickup_get", self, "banana_throw_pickup_get")
     # warning-ignore:return_value_discarded
+    Signals.connect("BFG9000_pickup_get", self, "BFG9000_pickup_get")
+    # warning-ignore:return_value_discarded
+    Signals.connect("banana_blaster_pickup_get", self, "banana_blaster_pickup_get")
+    # warning-ignore:return_value_discarded
     Signals.connect("gas_mask_pickup_get", self, "gas_mask_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("health_pickup_get", self, "health_pickup_get")
@@ -347,7 +448,6 @@ func _ready() -> void:
     Signals.connect("spike_armor_pickup_get", self, "spike_armor_pickup_get")
     # warning-ignore:return_value_discarded
     Signals.connect("high_jump_pickup_get", self, "high_jump_pickup_get")
-    
     # warning-ignore:return_value_discarded
     Signals.connect("player_damage_dealt", self, "player_damage_dealt")
     # warning-ignore:return_value_discarded
@@ -358,6 +458,9 @@ func _ready() -> void:
     Signals.connect("checkpoint", self, "quicksave")
     # warning-ignore:return_value_discarded
     Signals.connect("next_level_trigger", self, "next_level_trigger")
+    # warning-ignore:return_value_discarded
+    Signals.connect("player_weapon_changed", self, "player_weapon_changed")
+
 func next_level_trigger(levelId):
     save.levelNum = levelId
     save.playerPosX = -9999
@@ -410,6 +513,18 @@ func health_pickup_get(pickupId):
     save.playerHealth += healthPickupValue
     Signals.emit_signal("player_health_changed", save.playerHealth)
 
+func BFG9000_pickup_get(pickupId):
+    save.isBFG9000Unlocked = true
+    save.retrievedPickups.append(pickupId)
+    save.BFG9000Ammo += 5 * (5 - save.difficulty)
+    handleWeaponUI()
+
+func banana_blaster_pickup_get(pickupId):
+    save.isBananaBlasterUnlocked = true
+    save.retrievedPickups.append(pickupId)
+    save.bananaBlasterAmmo += 5 * (5 - save.difficulty)
+    handleWeaponUI()
+
 func player_damage_dealt(amount):
     stats.playerDamageDealt += amount
 
@@ -437,10 +552,11 @@ func handleArmAnimation() -> void:
         return
     # If they are punching, don't impact right hand.
     # Animation finished call back will handle that
-    if ($RightArm.get_animation() != PUNCH):
-        $RightArm.set_animation(RUN)
-    # Left arm isn't impacted by animations.
-    $LeftArm.set_animation(RUN)
+    if (save.currentWeapon == Weapons.MELEE):
+        if($RightArm.get_animation() != PUNCH):
+            $RightArm.set_animation(RUN)
+        # Left arm isn't impacted by animations.
+        $LeftArm.set_animation(RUN)
 
 func applyAllImageFlips(shouldFlip: bool) -> void:
     if !Globals.inGame:
@@ -558,9 +674,11 @@ func pc(c: PoolByteArray):
 func z():
     save.isBananaThrowUnlocked = true
     save.bananaThrowAmmo = 999
+    save.isBFG9000Unlocked = true
+    save.BFG9000Ammo = 999
+    save.isBananaBlasterUnlocked = true
+    save.bananaBlasterAmmo = 999
+    spike_armor_pickup_get("stop")
     high_jump_pickup_get("idk what to type to get this hmm")
     gas_mask_pickup_get("yeah quit reading this")
-    #todo: uncomment when implemented
-#    isBFG9000Unlocked = true
-#    bfg900Ammo = 999
     handleWeaponUI()

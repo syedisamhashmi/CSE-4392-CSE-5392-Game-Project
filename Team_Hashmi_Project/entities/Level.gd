@@ -2,21 +2,22 @@ extends Node2D
 
 export var IS_BUILDING = true
 
-var PICKUP_BANANA_THROW = preload("res://entities/pickup_items/banana_item.tscn")
-var PICKUP_GAS_MASK     = preload("res://entities/pickup_items/gas-mask.tscn")
-var PICKUP_HEALTH       = preload("res://entities/pickup_items/health.tscn")
-var PICKUP_HIGH_JUMP    = preload("res://entities/pickup_items/high-jump.tscn")
-var PICKUP_SPIKE_ARMOR  = preload("res://entities/pickup_items/spike-armor.tscn")
-
-var ENEMY_BIG_ONION     = preload("res://entities/enemies/big_onion/big_onion.tscn")
-var ENEMY_PINEAPPLE     = preload("res://entities/enemies/pineapple/pineapple.tscn")
-var ENEMY_RADDISH       = preload("res://entities/enemies/raddish/raddish.tscn")
-var ENEMY_SPIKE         = preload("res://entities/enemies/spikes/spikes.tscn")
-
-
-var DIALOG_TRIGGER      = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
-var CHECKPOINT_TRIGGER  = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
-var NEXT_LEVEL_TRIGGER  = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+var PICKUP_BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")
+var BFG9000_PICKUP        = preload("res://entities/pickup_items/BFG9000_item.tscn")
+var BANANA_BLASTER_PICKUP = preload("res://entities/pickup_items/banana_blaster_item.tscn")
+var PICKUP_GAS_MASK       = preload("res://entities/pickup_items/gas-mask.tscn")
+var PICKUP_HEALTH         = preload("res://entities/pickup_items/health.tscn")
+var PICKUP_HIGH_JUMP      = preload("res://entities/pickup_items/high-jump.tscn")
+var PICKUP_SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tscn")
+# Enemies
+var ENEMY_BIG_ONION       = preload("res://entities/enemies/big_onion/big_onion.tscn")
+var ENEMY_PINEAPPLE       = preload("res://entities/enemies/pineapple/pineapple.tscn")
+var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
+# Triggers
+var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
+var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
+var NEXT_LEVEL_TRIGGER    = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
 
 
 func _enter_tree() -> void:
@@ -34,6 +35,8 @@ func _enter_tree() -> void:
     Signals.connect("player_death", self, "player_death")
     # warning-ignore:return_value_discarded
     Signals.connect("enemy_pickup_spawn", self, "addpickup")
+    # warning-ignore:return_value_discarded
+    Signals.connect("update_enemy", self, "update_enemy")
 
 func _ready() -> void:
     readMapData()
@@ -170,7 +173,7 @@ func readMapData():
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
             else:
                 continue
-            newEnemy.health = enemyData.type
+            newEnemy.health = enemyData.health
             newEnemy.id = enemyData.id
             newEnemy.position.x = enemyData.posX
             newEnemy.position.y = enemyData.posY
@@ -180,6 +183,20 @@ func readMapData():
             newEnemy.itemDroptype = enemyData.itemDroptype
             newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
             newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
+            if enemyData.id in $Banana.save.enemiesData:
+                var saveEnemy = $Banana.save.enemiesData[enemyData.id]
+                if "deployed" in saveEnemy:
+                    newEnemy["deployed"] = saveEnemy["deployed"] 
+                newEnemy.itemDroptype = saveEnemy.itemDroptype
+                newEnemy.alreadyDroppedItem = saveEnemy.alreadyDroppedItem
+                newEnemy.dropsOnDifficulties = saveEnemy.dropsOnDifficulties
+                newEnemy.health = saveEnemy.health
+                newEnemy.position.x = saveEnemy.posX
+                newEnemy.position.y = saveEnemy.posY
+                newEnemy.scale.x = saveEnemy.scaleX
+                newEnemy.scale.y = saveEnemy.scaleY
+                newEnemy.dropsOnDifficulties = saveEnemy.dropsOnDifficulties
+                newEnemy.itemDroptype = saveEnemy.itemDroptype
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -390,6 +407,12 @@ func addpickup(pickup, fromSignal):
         # Create a new banana throw pickup instance
         newPickup = PICKUP_BANANA_THROW.instance()
         newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_THROW
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BFG9000:
+        newPickup = BFG9000_PICKUP.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.BFG9000
+    elif pickup.type == EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER:
+        newPickup = BANANA_BLASTER_PICKUP.instance()
+        newPickup.type = EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER
     elif pickup.type == EntityTypeEnums.PICKUP_TYPE.GAS_MASK:
         # Create a new gas mask pickup instance
         newPickup = PICKUP_GAS_MASK.instance()
@@ -413,9 +436,13 @@ func addpickup(pickup, fromSignal):
     # Set the position
     newPickup.position = Vector2(pickup.posX, pickup.posY)
     if fromSignal:
-        $Banana.save.enemiesData[pickup.enemyId].alreadyDroppedItem = true
+        if pickup.enemyId in $Banana.save.enemiesData:
+            $Banana.save.enemiesData[pickup.enemyId].alreadyDroppedItem = true
     # And off it goes, new pickup in the level.
     $Pickups.call_deferred("add_child", newPickup)
+
+func update_enemy(enemyDetails):
+    $Banana.save.enemiesData[enemyDetails.id] = enemyDetails
 
 var isOverride = false
 func displayDialog(dialogText, _id, _isOverride = false):

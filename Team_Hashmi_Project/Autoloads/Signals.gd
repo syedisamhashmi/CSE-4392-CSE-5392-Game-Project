@@ -5,6 +5,11 @@ signal exit_game()
 
 # warning-ignore:unused_signal
 signal banana_throw_pickup_get(pickupId)
+
+# warning-ignore:unused_signal
+signal BFG9000_pickup_get(pickupId)
+# warning-ignore:unused_signal
+signal banana_blaster_pickup_get(pickupId)
 # warning-ignore:unused_signal
 signal gas_mask_pickup_get(pickupId)
 # warning-ignore:unused_signal
@@ -41,6 +46,8 @@ signal checkpoint(id)
 signal next_level_trigger(levelId)
 # warning-ignore:unused_signal
 signal next_level_trigger_complete(fromTrigger)
+# warning-ignore:unused_signal
+signal update_enemy(enemyDetails)
 
 # warning-ignore:unused_signal
 signal pc(c)
