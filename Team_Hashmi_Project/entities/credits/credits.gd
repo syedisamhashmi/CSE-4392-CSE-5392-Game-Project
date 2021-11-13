@@ -98,7 +98,7 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "Edward Kressler", "type": "t"},
-        #TODO: Edward
+
         {"txt":"Animation", "type": "c"},
         {"txt":"        - Banana-man", "type": "s"},
         {"txt":"        - Pineapple", "type": "s"},
@@ -106,8 +106,8 @@ var credits = [
         {"txt":"Art", "type": "c"},
         {"txt":"        - Level 1 Background", "type": "s"},
         {"txt":"        - Level 1 Tilemap", "type": "s"},
-        {"txt":"        - BFG", "type": "s"},
-        {"txt":"        - Banana Blaster", "type": "s"}
+        {"txt":"        - Banana Blaster", "type": "s"},
+        {"txt":"        - BFG9000", "type": "s"},
     ],[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},

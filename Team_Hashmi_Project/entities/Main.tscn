@@ -1,13 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
-[ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://entities/pickup_items/BFG9000_item.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://theme.tres" type="Theme" id=5]
-[ext_resource path="res://entities/Level.gd" type="Script" id=6]
-[ext_resource path="res://entities/pickup_items/banana_item.tscn" type="PackedScene" id=7]
-[ext_resource path="res://entities/pickup_items/banana_blaster_item.tscn" type="PackedScene" id=8]
+ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
+ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
+ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=4]
+ext_resource path="res://theme.tres" type="Theme" id=5]
+ext_resource path="res://entities/Level.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
@@ -51,7 +48,6 @@ __meta__ = {
 
 [node name="World" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
-tile_data = PoolIntArray( -262155, 2, 4, -262154, 2, 4, -262153, 2, 4, -262152, 2, 4, -262151, 2, 4, -262150, 2, 4, -262149, 2, 4, -262148, 2, 4, -262147, 2, 4, -262146, 2, 4, -262145, 2, 4, -327680, 2, 4 )
 
 [node name="Enemies" type="Node2D" parent="."]
 z_index = -1
@@ -62,19 +58,6 @@ z_index = -1
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="banana_item" parent="Pickups" instance=ExtResource( 7 )]
-position = Vector2( -145, 75 )
-id = "bt"
-
-[node name="BFG9000_item" parent="Pickups" instance=ExtResource( 3 )]
-position = Vector2( -373, 76 )
-id = "bfg"
-
-[node name="banana_blaster_item" parent="Pickups" instance=ExtResource( 8 )]
-position = Vector2( 268, 77 )
-signalName = "banana_blaster_pickup_get"
-id = "bb"
 
 [node name="Triggers" type="Node2D" parent="."]
 __meta__ = {

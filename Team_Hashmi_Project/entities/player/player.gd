@@ -46,12 +46,12 @@ enum PlayerDirection {
 }
 
 enum Weapons {
-    MIN          = -1
-    MELEE        =  0,
-    BANANA_THROW =  1,
-    BANANA_BLASTER   =  2,
-    BFG9000      =  3
-    MAX          =  4,
+    MIN            = -1
+    MELEE          =  0,
+    BANANA_THROW   =  1,
+    BANANA_BLASTER =  2,
+    BFG9000        =  3
+    MAX            =  4,
 }
 
 #region PlayerAttributes
@@ -243,22 +243,20 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo > 0
         ):
             save.bananaThrowAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             spawnPlayerProjectile()
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
         ):
             save.BFG9000Ammo -= 1
-            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
         ):
             save.bananaBlasterAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
             spawnPlayerBananaBlasterProjectile()
+        handleWeaponUI()
 
 
 #region Weapon Management

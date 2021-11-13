@@ -10,7 +10,7 @@ extents = Vector2( 23.5, 8 )
 [node name="BFG9000_item" type="Area2D"]
 script = ExtResource( 1 )
 signalName = "BFG9000_pickup_get"
-type = 20
+type = 11
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )

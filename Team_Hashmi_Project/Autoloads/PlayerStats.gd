@@ -5,21 +5,21 @@ extends Node
 #   the rest should be handled.
 
 # warning-ignore:unused_class_variable
-var punchesThrown        : int = 0
+var punchesThrown           : int = 0
 # warning-ignore:unused_class_variable
-var bananasThrown        : int = 0
+var bananasThrown           : int = 0
 # warning-ignore:unused_class_variable
-var bfg9000ShotsFired    : int = 0
+var bfg9000ShotsFired       : int = 0
 # warning-ignore:unused_class_variable
-var bananaBlasterShotsFired    : int = 0
+var bananaBlasterShotsFired : int = 0
 # warning-ignore:unused_class_variable
-var jumpCount            : int = 0
+var jumpCount               : int = 0
 # warning-ignore:unused_class_variable
-var playerDamageReceived : float = 0
+var playerDamageReceived    : float = 0
 # warning-ignore:unused_class_variable
-var playerDamageDealt    : float = 0
+var playerDamageDealt       : float = 0
 # warning-ignore:unused_class_variable
-var playerDeathCount     : int = 0
+var playerDeathCount        : int = 0
 
 func init():
     return self
