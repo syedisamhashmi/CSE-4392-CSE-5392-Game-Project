@@ -44,6 +44,8 @@ extents = Vector2( 38.3015, 1.55033 )
 
 [node name="spikes" type="KinematicBody2D"]
 z_index = 1
+collision_layer = 0
+collision_mask = 0
 script = ExtResource( 2 )
 type = 5
 baseHealth = 9999

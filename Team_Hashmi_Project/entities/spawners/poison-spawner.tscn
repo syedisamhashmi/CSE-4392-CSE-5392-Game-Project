@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/spawners/poison-spawner.gd" type="Script" id=1]
+[ext_resource path="res://entities/enemies/big_onion/poison.tscn" type="PackedScene" id=2]
+
+[node name="poison-spawner" type="Node2D"]
+script = ExtResource( 1 )
+type = 20
+typeToSpawn = ExtResource( 2 )
+randomTimeDelay = 0.0
+spawnDelayMs = 800.0
