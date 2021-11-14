@@ -1,5 +1,7 @@
 extends Node
 # warning-ignore:unused_class_variable
+var TESTS = false
+# warning-ignore:unused_class_variable
 var SHOW_TRIGGERS = false
 
 # warning-ignore:unused_class_variable
