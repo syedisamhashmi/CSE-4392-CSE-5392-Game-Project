@@ -29,19 +29,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          lfs: true
-      - name: Godot GUT CI
-        working-directory: "./Team_Hashmi_Project"
+          lfs: true   
+      - name: godot-tester
         # You may pin to the exact commit or the version.
-        # uses: ceceppa/godot-gut-ci@2aa64feb8e192140f9f3a758ba7288a23c532c2e
-        uses: ceceppa/godot-gut-ci@0.1.0
+        # uses: croconut/godot-tester@c4a23e6bc4b4a2646686bdc391823ed6ef083206
+        uses: croconut/godot-tester@v2.4
         with:
-          # Godot Version
-          godot_version: "3.3.4"
-          # Unit tests path
-          unit_test: "res://test/unit"
-          # Integration tests path
-          integration_test: "res://test/integration"
+          # Your Godot version number e.g. 3.2.2
+          version: "3.3.4"
+          path: "./Team_Hashmi_Project"
+          minimum-pass: 1
+          # Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it
+          max-fails: 0          
       - name: Build
         id: build
         uses: josephbmanley/build-godot-action@v1.4.1
