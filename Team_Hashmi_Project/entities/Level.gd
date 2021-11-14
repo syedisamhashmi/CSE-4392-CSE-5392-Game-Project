@@ -156,7 +156,7 @@ func readMapData():
     ):
         # Clear current editor enemies to use level data
         for child in $Enemies.get_children():
-            $Enemies.remove_child(child)
+            child.queue_free()
             
         for enemyData in levelData.enemies:
             var newEnemy = null
