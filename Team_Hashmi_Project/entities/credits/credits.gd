@@ -88,7 +88,9 @@ var credits = [
         {"txt":"        - Destructible Tiles", "type": "s"},
         
         {"txt":"Level Design Tools", "type": "c"},
-        
+
+        {"txt":"Unit Tests", "type": "c"},
+
         {"txt":"Release Pipelines / Git Management", "type": "c"},
         {"txt":"This Credits Sequence", "type": "c"},
         {"txt":"    Adapted from https://github.com/benbishopnz/godot-credits", "type": "s"}
