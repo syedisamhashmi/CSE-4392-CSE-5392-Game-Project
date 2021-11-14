@@ -24,10 +24,12 @@ func before_all():
     # Turn on testing so save files are not read from disk and
     # generated fresh every time
     Globals.TESTS = true 
+    PlayerData.saveSlot = 999
     gut.p("ran run setup", 2)
 
 func after_all():
     Globals.TESTS = false
+    PlayerData.saveSlot = 0
     gut.p("ran run teardown", 2)
     
 func test_assert_not_in_game():
