@@ -75,6 +75,8 @@ func saveDataToFile(fileName: String, data, var isInst=true, encode = true) -> v
 
 # Just a wrapper function, easier to read.
 func doesFileExist(fileName: String) -> bool:
+    if Globals.TESTS:
+        return false
     return File.new().file_exists(fileName)  
 
 var current_scene = null

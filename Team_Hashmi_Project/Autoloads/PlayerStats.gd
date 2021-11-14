@@ -4,22 +4,22 @@ extends Node
 # To extend it, just add a property access it, call save.
 #   the rest should be handled.
 
-# warning-ignore:unused_class_variable
-var punchesThrown           : int = 0
-# warning-ignore:unused_class_variable
-var bananasThrown           : int = 0
-# warning-ignore:unused_class_variable
-var bfg9000ShotsFired       : int = 0
-# warning-ignore:unused_class_variable
-var bananaBlasterShotsFired : int = 0
-# warning-ignore:unused_class_variable
-var jumpCount               : int = 0
-# warning-ignore:unused_class_variable
+var punchesThrown           : int   = 0
+var bananasThrown           : int   = 0
+var bfg9000ShotsFired       : int   = 0
+var bananaBlasterShotsFired : int   = 0
+var jumpCount               : int   = 0
 var playerDamageReceived    : float = 0
-# warning-ignore:unused_class_variable
 var playerDamageDealt       : float = 0
-# warning-ignore:unused_class_variable
-var playerDeathCount        : int = 0
+var playerDeathCount        : int   = 0
 
 func init():
+    punchesThrown           = 0
+    bananasThrown           = 0
+    bfg9000ShotsFired       = 0
+    bananaBlasterShotsFired = 0
+    jumpCount               = 0
+    playerDamageReceived    = 0
+    playerDamageDealt       = 0
+    playerDeathCount        = 0
     return self
