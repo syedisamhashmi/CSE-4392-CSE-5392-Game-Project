@@ -75,9 +75,6 @@ var damageStart = 0
 var damageSafety = 1000
 var KNOCKBACK_TIME = 200
 
-func _process(_delta: float) -> void:
-    print($RightArm.get_animation())
-
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
         $LeftArm.playing = false
@@ -194,7 +191,7 @@ func _physics_process(delta: float) -> void:
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
-        if (save.currentWeapon == Weapons.MELEE):
+        if (save.currentWeapon == Weapons.MELEE or save.currentWeapon == Weapons.BANANA_THROW):
             if ($RightArm.get_animation() != PUNCH and $RightArm.get_animation() != BANANA_THROW):
                 $RightArm.set_animation(IDLE)
             $LeftArm.set_animation(IDLE)
@@ -247,6 +244,8 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo > 0
         ):
             save.bananaThrowAmmo -= 1
+            if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
+                return
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             $RightArm.set_animation(BANANA_THROW)
         if (
@@ -558,8 +557,8 @@ func handleArmAnimation() -> void:
         return
     # If they are punching, don't impact right hand.
     # Animation finished call back will handle that
-    if (save.currentWeapon == Weapons.MELEE):
-        if($RightArm.get_animation() != PUNCH):
+    if (save.currentWeapon == Weapons.MELEE or save.currentWeapon == Weapons.BANANA_THROW):
+        if($RightArm.get_animation() != PUNCH and $RightArm.get_animation() != BANANA_THROW):
             $RightArm.set_animation(RUN)
         # Left arm isn't impacted by animations.
         $LeftArm.set_animation(RUN)
