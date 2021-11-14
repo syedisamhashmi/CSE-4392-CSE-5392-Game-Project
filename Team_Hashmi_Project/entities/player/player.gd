@@ -11,6 +11,7 @@ var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_project
 var IDLE:  String = "Idle"
 var RUN:   String = "Run"
 var PUNCH: String = "Punch"
+var BANANA_THROW = "Banana_Throw"
 var BFG9000: String = "BFG9000"
 var BANANA_BLASTER: String = "Banana_Blaster"
 var SLIDE: String = "Slide"
@@ -190,8 +191,8 @@ func _physics_process(delta: float) -> void:
         isMoving = false
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
-        if (save.currentWeapon == Weapons.MELEE):
-            if ($RightArm.get_animation() != PUNCH):
+        if (save.currentWeapon == Weapons.MELEE or save.currentWeapon == Weapons.BANANA_THROW):
+            if ($RightArm.get_animation() != PUNCH and $RightArm.get_animation() != BANANA_THROW):
                 $RightArm.set_animation(IDLE)
             $LeftArm.set_animation(IDLE)
         # If they aren't moving, don't emit the slide particles anymore 
@@ -243,8 +244,10 @@ func _input(event: InputEvent) -> void:
             save.bananaThrowAmmo > 0
         ):
             save.bananaThrowAmmo -= 1
+            if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
+                return
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
-            spawnPlayerProjectile()
+            $RightArm.set_animation(BANANA_THROW)
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
@@ -388,15 +391,17 @@ func spawnPlayerBFG9000Projectile() -> void:
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 2)
     )
+    projectile_0_instance.isBFG9000Shot = true
     projectile_1_instance.init(
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y)
     )
+    projectile_1_instance.isBFG9000Shot = true
     projectile_2_instance.init(
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
-    
+    projectile_2_instance.isBFG9000Shot = true
     $Projectiles.add_child(projectile_0_instance)
     $Projectiles.add_child(projectile_1_instance)
     $Projectiles.add_child(projectile_2_instance)
@@ -405,7 +410,7 @@ func spawnPlayerBFG9000Projectile() -> void:
 func spawnPlayerBananaBlasterProjectile() -> void:
     if !Globals.inGame:
         return
-    stats.bfg9000ShotsFired += 1
+    stats.bananaBlasterShotsFired += 1
     
     var projectile_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
@@ -418,7 +423,7 @@ func spawnPlayerBananaBlasterProjectile() -> void:
         Vector2(self.position.x + horizontalLaunchArea + (bananaBlasterWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
-    
+    projectile_instance.isBananaBlasterShot = true
     $Projectiles.add_child(projectile_instance)
 
 
@@ -554,8 +559,8 @@ func handleArmAnimation() -> void:
         return
     # If they are punching, don't impact right hand.
     # Animation finished call back will handle that
-    if (save.currentWeapon == Weapons.MELEE):
-        if($RightArm.get_animation() != PUNCH):
+    if (save.currentWeapon == Weapons.MELEE or save.currentWeapon == Weapons.BANANA_THROW):
+        if($RightArm.get_animation() != PUNCH and $RightArm.get_animation() != BANANA_THROW):
             $RightArm.set_animation(RUN)
         # Left arm isn't impacted by animations.
         $LeftArm.set_animation(RUN)
@@ -583,7 +588,7 @@ func _on_RightArm_animation_finished() -> void:
     # Disable ability to deal punch damage.
     $RightPunchArea/Collider.set_disabled(true)
     $LeftPunchArea/Collider.set_disabled(true)
-    if $RightArm.get_animation() == PUNCH:
+    if $RightArm.get_animation() == PUNCH or $RightArm.get_animation() == BANANA_THROW:
         if isMoving:
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
@@ -605,6 +610,8 @@ func _on_RightArm_frame_changed() -> void:
     if !Globals.inGame:
         return
     var currFrame: int = $RightArm.get_frame()
+    if $RightArm.get_animation() == BANANA_THROW and currFrame == 3:
+        spawnPlayerProjectile()
     match lastDir:
         PlayerDirection.RIGHT:
             # If the right arm is punching, and 
@@ -640,10 +647,9 @@ func damage(damage, knockbackMultiplier):
     if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * save.difficulty) )):
         return
     damageStart = OS.get_system_time_msecs()
-    damage_flash_effect()
     xKnockback = damage * knockbackMultiplier * lastDir
     # If the attack is more damage than the health they have.
-    if (abs(damage) * save.difficulty) > save.playerHealth:
+    if abs(damage) >= save.playerHealth:
         # Their health was taken in damage
         stats.playerDamageReceived += save.playerHealth
         # And they have 0 health
@@ -657,6 +663,8 @@ func damage(damage, knockbackMultiplier):
         stats.playerDeathCount += 1
         Signals.emit_signal("player_death")
     Signals.emit_signal("player_health_changed", save.playerHealth)
+    damage_flash_effect()
+
 
 func damage_flash_effect():
     if !Globals.inGame:

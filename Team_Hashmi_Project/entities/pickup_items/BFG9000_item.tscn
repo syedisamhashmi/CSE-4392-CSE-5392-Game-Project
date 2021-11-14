@@ -8,6 +8,8 @@
 extents = Vector2( 23.5, 8 )
 
 [node name="BFG9000_item" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource( 1 )
 signalName = "BFG9000_pickup_get"
 type = 11

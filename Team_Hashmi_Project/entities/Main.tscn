@@ -226,6 +226,7 @@ dialogText = "Use the scroll wheel to switch weapons!"
 position = Vector2( 18950.7, -404.435 )
 id = "next_level"
 goToLevel = 1
+[node name="Spawners" type="Node2D" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

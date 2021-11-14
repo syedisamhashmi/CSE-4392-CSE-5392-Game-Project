@@ -18,6 +18,9 @@ var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
 var NEXT_LEVEL_TRIGGER    = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+# Spawners
+var SPAWNER_POISON        = preload("res://entities/spawners/poison-spawner.tscn")
+var SPAWNER_SPIKES        = preload("res://entities/spawners/spike-spawner.tscn")
 
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
@@ -224,7 +227,24 @@ func readMapData():
             newTrigger.scale.x    = trigger.scaleX
             newTrigger.scale.y    = trigger.scaleY
             $Triggers.call_deferred("add_child", newTrigger)
-            
+
+    if levelData != null and levelData.spawners != null:
+        for spawner in levelData.spawners:
+            var toAdd
+            if spawner.type == EntityTypeEnums.SPAWNER_TYPE.POISON:
+                 toAdd = SPAWNER_POISON.instance()
+            elif spawner.type == EntityTypeEnums.SPAWNER_TYPE.SPIKE:
+                toAdd = SPAWNER_SPIKES.instance()
+            if toAdd == null:
+                continue
+            toAdd.id = spawner.id
+            toAdd.type = spawner.type
+            toAdd.randomTimeDelay = spawner.randomTimeDelay
+            toAdd.spawnDelayMs = spawner.spawnDelayMs
+            toAdd.position.x = spawner.posX
+            toAdd.position.y = spawner.posY
+            $Spawners.call_deferred("add_child", toAdd)
+
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
     LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
@@ -351,6 +371,20 @@ func writeMapData():
         toAdd.posY      = trigger.position.y
         triggersToUse.append(toAdd)
     LevelData.triggers = triggersToUse
+    
+    var spawners = $Spawners.get_children()
+    var spawnersToUse = []
+    for spawner in spawners:
+        var toAdd = {
+            "id": spawner.id,
+            "type": spawner.type,
+            "randomTimeDelay": spawner.randomTimeDelay,
+            "spawnDelayMs": spawner.spawnDelayMs,
+            "posX": spawner.position.x,
+            "posY": spawner.position.y,
+        }
+        spawnersToUse.append(toAdd)
+    LevelData.spawners = spawnersToUse
     
     Utils.saveDataToFile(
         "user://level" + str(PlayerData.savedGame.levelNum) + ".tres",
