@@ -391,15 +391,17 @@ func spawnPlayerBFG9000Projectile() -> void:
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 2)
     )
+    projectile_0_instance.isBFG9000Shot = true
     projectile_1_instance.init(
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y)
     )
+    projectile_1_instance.isBFG9000Shot = true
     projectile_2_instance.init(
         Vector2(self.position.x + horizontalLaunchArea + (BFGWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
-    
+    projectile_2_instance.isBFG9000Shot = true
     $Projectiles.add_child(projectile_0_instance)
     $Projectiles.add_child(projectile_1_instance)
     $Projectiles.add_child(projectile_2_instance)
@@ -408,7 +410,7 @@ func spawnPlayerBFG9000Projectile() -> void:
 func spawnPlayerBananaBlasterProjectile() -> void:
     if !Globals.inGame:
         return
-    stats.bfg9000ShotsFired += 1
+    stats.bananaBlasterShotsFired += 1
     
     var projectile_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
@@ -421,7 +423,7 @@ func spawnPlayerBananaBlasterProjectile() -> void:
         Vector2(self.position.x + horizontalLaunchArea + (bananaBlasterWidth * lastDir), self.position.y - verticalLaunchArea), 
         Vector2(projectile_speed_to_use.x, projectile_speed_to_use.y * 0.5)
     )
-    
+    projectile_instance.isBananaBlasterShot = true
     $Projectiles.add_child(projectile_instance)
 
 
