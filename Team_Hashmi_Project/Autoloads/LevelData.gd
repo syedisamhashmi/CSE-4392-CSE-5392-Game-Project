@@ -45,6 +45,8 @@ var pickups:            = []
 var enemies:            = []
 # warning-ignore:unused_class_variable
 var triggers:           = []
+# warning-ignore:unused_class_variable
+var spawners:           = []
 #endregion
 
 

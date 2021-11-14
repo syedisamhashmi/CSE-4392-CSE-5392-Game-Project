@@ -75,6 +75,10 @@ var credits = [
         {"txt":"        - Dialog", "type": "s"},
         {"txt":"        - Next Level", "type": "s"},
         
+        {"txt":"Entity Spawners", "type": "c"},
+        {"txt":"        - Spikes", "type": "s"},
+        {"txt":"        - Poisonous Gas", "type": "s"},
+        
         {"txt":"Pickups", "type": "c"},
         {"txt":"        - Health", "type": "s"},
         {"txt":"        - Gas Mask", "type": "s"},
