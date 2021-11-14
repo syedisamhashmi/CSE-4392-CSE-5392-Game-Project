@@ -83,74 +83,169 @@ baseHealth = 200
 position = Vector2( 6805.39, -192.62 )
 scale = Vector2( 4, 4 )
 id = "rad7"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish8" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 6905.89, 4.39774 )
+position = Vector2( 7083.11, 54.8515 )
 scale = Vector2( 4, 4 )
 id = "rad8"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish9" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 6907.67, -193.885 )
+position = Vector2( 7915.06, -72.7959 )
 scale = Vector2( 4, 4 )
 id = "rad9"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish10" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 8799.66, -618.184 )
 scale = Vector2( 4, 4 )
 id = "rad10"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish11" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 9258.47, -920.941 )
 scale = Vector2( 4, 4 )
 id = "rad11"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish12" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 10033.7, -903.777 )
+position = Vector2( 10025.7, -903.777 )
 scale = Vector2( 4, 4 )
 id = "rad12"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish13" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 10865.3, -929.868 )
 scale = Vector2( 4, 4 )
 id = "rad13"
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 baseHealth = 100
 
 [node name="raddish14" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 10966.3, -580.523 )
 scale = Vector2( 4, 4 )
 id = "rad14"
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish15" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 10371.1, -589.09 )
 scale = Vector2( 4, 4 )
 id = "rad15"
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish16" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 9521.27, -596.69 )
 scale = Vector2( 4, 4 )
 id = "rad16"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish17" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 8009.84, -617.982 )
+position = Vector2( 8013.84, -617.982 )
 scale = Vector2( 4, 4 )
 id = "rad17"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 
 [node name="raddish18" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 5628.37, 331.476 )
 scale = Vector2( 10, 10 )
 id = "rad18"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 baseHealth = 75
 
 [node name="raddish19" parent="Enemies" instance=ExtResource( 3 )]
 position = Vector2( 6925.64, 320.907 )
 scale = Vector2( 10, 10 )
 id = "rad19"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": true,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 baseHealth = 75
 
 [node name="raddish20" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 6540.41, 316.376 )
+position = Vector2( 6535.37, 316.376 )
 scale = Vector2( 10, 10 )
 id = "rad20"
+itemDroptype = 10
+dropsOnDifficulties = {
+"Bruise Me Plenty": false,
+"Can I Play, Daddy?": true,
+"I Am Banana Incarnate!": false,
+"I'm too squishy to die!": true
+}
 baseHealth = 75
 
 [node name="Banana" parent="." instance=ExtResource( 2 )]
@@ -161,7 +256,7 @@ __meta__ = {
 }
 
 [node name="banana_item" parent="Pickups" instance=ExtResource( 4 )]
-position = Vector2( 5637.62, -622.863 )
+position = Vector2( 5706.54, -652.829 )
 id = "b1"
 
 [node name="banana_item2" parent="Pickups" instance=ExtResource( 4 )]
@@ -176,56 +271,41 @@ id = "b3"
 position = Vector2( 14271.9, -121.93 )
 id = "b4"
 
-[node name="banana_item5" parent="Pickups" instance=ExtResource( 4 )]
-position = Vector2( 5712.77, -623.572 )
-id = "b5"
-
-[node name="banana_item6" parent="Pickups" instance=ExtResource( 4 )]
-position = Vector2( 7521.82, 342.737 )
-id = "b6"
-
-[node name="banana_item7" parent="Pickups" instance=ExtResource( 4 )]
-position = Vector2( 7279.39, -632.624 )
-id = "b7"
-
-[node name="banana_item8" parent="Pickups" instance=ExtResource( 4 )]
-position = Vector2( 9799.26, -688.863 )
-id = "b8"
-
 [node name="Triggers" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="dialogTrigger" parent="Triggers" instance=ExtResource( 9 )]
-position = Vector2( -882, -6 )
+position = Vector2( -630.016, -41.2778 )
 id = "wrong_way"
 dialogText = "Wrong way!"
 
 [node name="dialogTrigger2" parent="Triggers" instance=ExtResource( 9 )]
 position = Vector2( 1066.69, -73.0364 )
 id = "jump"
-dialogText = "Press space or w to jump!"
+dialogText = "Press the Spacebar or W to jump!"
 
 [node name="dialogTrigger3" parent="Triggers" instance=ExtResource( 9 )]
-position = Vector2( 1598.47, -25.4143 )
+position = Vector2( 1593.43, -40.5333 )
 id = "hold_jump"
 dialogText = "Hold the jump button to jump higher!"
 
 [node name="dialogTrigger4" parent="Triggers" instance=ExtResource( 9 )]
-position = Vector2( 2185.27, -37.9322 )
+position = Vector2( 2160.07, -68.1702 )
 id = "punch"
 dialogText = "Press left mouse button to punch!"
 
 [node name="dialogTrigger5" parent="Triggers" instance=ExtResource( 9 )]
 position = Vector2( 5495.6, -707.709 )
 id = "switch_weapons"
-dialogText = "Use the scroll wheel to switch weapons!"
+dialogText = "Use the scroll wheel to switch weapons!\\nAlternatively, use Q and E!"
 
 [node name="nextLevelTrigger" parent="Triggers" instance=ExtResource( 10 )]
 position = Vector2( 18950.7, -404.435 )
 id = "next_level"
 goToLevel = 1
+
 [node name="Spawners" type="Node2D" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
