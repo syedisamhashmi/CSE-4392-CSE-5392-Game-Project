@@ -38,6 +38,8 @@ jobs:
           # Your Godot version number e.g. 3.2.2
           version: "3.3.4"
           path: "./Team_Hashmi_Project"
+          # how long to spend importing assets before tests are run
+          import-time: "5"
           test-timeout: 30
           minimum-pass: 1
           # Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it
