@@ -75,6 +75,9 @@ var damageStart = 0
 var damageSafety = 1000
 var KNOCKBACK_TIME = 200
 
+func _process(_delta: float) -> void:
+    print($RightArm.get_animation())
+
 func _physics_process(delta: float) -> void:
     if !Globals.inGame:
         $LeftArm.playing = false
@@ -192,7 +195,7 @@ func _physics_process(delta: float) -> void:
         # Set them to be idle.
         $BananaImage.set_animation(IDLE)
         if (save.currentWeapon == Weapons.MELEE):
-            if ($RightArm.get_animation() != PUNCH):
+            if ($RightArm.get_animation() != PUNCH and $RightArm.get_animation() != BANANA_THROW):
                 $RightArm.set_animation(IDLE)
             $LeftArm.set_animation(IDLE)
         # If they aren't moving, don't emit the slide particles anymore 
@@ -245,10 +248,7 @@ func _input(event: InputEvent) -> void:
         ):
             save.bananaThrowAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
-            if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
-                return
             $RightArm.set_animation(BANANA_THROW)
-            spawnPlayerProjectile()
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
@@ -587,7 +587,7 @@ func _on_RightArm_animation_finished() -> void:
     # Disable ability to deal punch damage.
     $RightPunchArea/Collider.set_disabled(true)
     $LeftPunchArea/Collider.set_disabled(true)
-    if $RightArm.get_animation() == PUNCH:
+    if $RightArm.get_animation() == PUNCH or $RightArm.get_animation() == BANANA_THROW:
         if isMoving:
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
@@ -609,6 +609,8 @@ func _on_RightArm_frame_changed() -> void:
     if !Globals.inGame:
         return
     var currFrame: int = $RightArm.get_frame()
+    if $RightArm.get_animation() == BANANA_THROW and currFrame == 3:
+        spawnPlayerProjectile()
     match lastDir:
         PlayerDirection.RIGHT:
             # If the right arm is punching, and 
