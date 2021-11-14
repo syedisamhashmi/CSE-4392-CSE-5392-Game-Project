@@ -11,6 +11,7 @@ var PLAYER_PROJECTILE = preload("res://entities/player_projectile/player_project
 var IDLE:  String = "Idle"
 var RUN:   String = "Run"
 var PUNCH: String = "Punch"
+var BANANA_THROW = "Banana_Throw"
 var BFG9000: String = "BFG9000"
 var BANANA_BLASTER: String = "Banana_Blaster"
 var SLIDE: String = "Slide"
@@ -244,6 +245,9 @@ func _input(event: InputEvent) -> void:
         ):
             save.bananaThrowAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
+            if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
+                return
+            $RightArm.set_animation(BANANA_THROW)
             spawnPlayerProjectile()
         if (
             save.currentWeapon == Weapons.BFG9000 and
