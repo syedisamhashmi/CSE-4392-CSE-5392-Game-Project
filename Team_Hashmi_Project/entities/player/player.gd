@@ -640,10 +640,9 @@ func damage(damage, knockbackMultiplier):
     if (OS.get_system_time_msecs() - damageStart < (damageSafety - (200 * save.difficulty) )):
         return
     damageStart = OS.get_system_time_msecs()
-    damage_flash_effect()
     xKnockback = damage * knockbackMultiplier * lastDir
     # If the attack is more damage than the health they have.
-    if (abs(damage) * save.difficulty) > save.playerHealth:
+    if abs(damage) >= save.playerHealth:
         # Their health was taken in damage
         stats.playerDamageReceived += save.playerHealth
         # And they have 0 health
@@ -657,6 +656,8 @@ func damage(damage, knockbackMultiplier):
         stats.playerDeathCount += 1
         Signals.emit_signal("player_death")
     Signals.emit_signal("player_health_changed", save.playerHealth)
+    damage_flash_effect()
+
 
 func damage_flash_effect():
     if !Globals.inGame:
