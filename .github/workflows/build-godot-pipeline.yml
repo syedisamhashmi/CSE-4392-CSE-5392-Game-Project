@@ -44,17 +44,17 @@ jobs:
           minimum-pass: 1
           # Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it
           max-fails: 0          
-      - name: Build
-        id: build
-        uses: josephbmanley/build-godot-action@v1.4.1
-        with:
-          name: Team_Hashmi_Godot_Game.zip
-          preset: ${{ matrix.platform }}
-          debugMode: "true"
-          # Set true to output an artifact zip file
-          package: "true"
-          # Location of Godot project in repository
-          projectDir: "./Team_Hashmi_Project"
+      #- name: Build
+      #  id: build
+      #  uses: josephbmanley/build-godot-action@v1.4.1
+      #  with:
+      #    name: Team_Hashmi_Godot_Game.zip
+      #    preset: ${{ matrix.platform }}
+      #    debugMode: "true"
+      #    # Set true to output an artifact zip file
+      #    package: "true"
+      #    # Location of Godot project in repository
+      #    projectDir: "./Team_Hashmi_Project"
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
