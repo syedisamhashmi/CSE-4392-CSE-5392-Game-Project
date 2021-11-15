@@ -15,6 +15,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  GODOT_VERSION: 3.3.4
+  EXPORT_NAME: Banana_Mania
+  GITHUB_WORKSPACE: ${{ github.workspace }}
+  STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
+
 jobs:
   Godot:
     runs-on: ubuntu-latest
@@ -44,19 +50,88 @@ jobs:
           minimum-pass: 1
           # Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it
           max-fails: 0
-      - name: Build
-        id: build
-        uses: josephbmanley/build-godot-action@v1.4.1
+      # - name: Build
+      #   id: build
+      #   uses: josephbmanley/build-godot-action@v1.4.1
+      #   with:
+      #     name: Team_Hashmi_Godot_Game.zip
+      #     preset: ${{ matrix.platform }}
+      #     debugMode: "true"
+      #     # Set true to output an artifact zip file
+      #     package: "true"
+      #     # Location of Godot project in repository
+      #     projectDir: "./Team_Hashmi_Project"
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: Client - ${{ matrix.platform }}
+      #     path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          name: Team_Hashmi_Godot_Game.zip
-          preset: ${{ matrix.platform }}
-          debugMode: "true"
-          # Set true to output an artifact zip file
-          package: "true"
-          # Location of Godot project in repository
-          projectDir: "./Team_Hashmi_Project"
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+      - name: Windows Build
+        run: |
+          cd ./Team_Hashmi_Project
+          godot -v --export "Team_Hashmi_Godot_Game_Windows_x64" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.exe
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         with:
-          name: Client - ${{ matrix.platform }}
-          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          name: windows
+          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
+
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+      - name: Linux Build
+        run: |
+          cd ./Team_Hashmi_Project
+          godot -v --export "Team_Hashmi_Godot_Game_Linux_x64" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.x86_64
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: linux
+          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
+
+  export-mac:
+    name: Mac Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+      - name: Mac Build
+        run: |
+          cd ./Team_Hashmi_Project
+          godot -v --export "Team_Hashmi_Godot_Game_OSX" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.zip
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: mac
+          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
