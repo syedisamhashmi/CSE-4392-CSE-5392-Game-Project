@@ -37,7 +37,7 @@ func test_assert_level_empty_nodes():
     var triggers = level.get_node("Triggers")
     var enemies = level.get_node("Enemies")
     var pickups = level.get_node("Pickups")
-    var spawners(triggers.get_children().size(), 0, "Should be NO triggers in prod branch")
+    var spawners = level.get_node("Spawners")
     assert_eq(pickups.get_children().size(), 0, "Should be NO pickups in prod branch")
     assert_eq(triggers.get_children().size(), 0, "Should be NO triggers in prod branch")
     assert_eq(enemies.get_children().size(), 0, "Should be NO enemies in prod branch")
