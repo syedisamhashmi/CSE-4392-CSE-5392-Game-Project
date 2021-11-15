@@ -22,14 +22,14 @@ jobs:
       matrix:
         platform:
           [
-            Team_Hashmi_Godot_Game_Linux_x64,
-            Team_Hashmi_Godot_Game_Windows_x64,
-            Team_Hashmi_Godot_Game_OSX,
+            "Team_Hashmi_Godot_Game_Linux_x64",
+            "Team_Hashmi_Godot_Game_Windows_x64",
+            "Team_Hashmi_Godot_Game_OSX",
           ]
     steps:
       - uses: actions/checkout@v2
         with:
-          lfs: true   
+          lfs: true
       - name: godot-tester
         # You may pin to the exact commit or the version.
         # uses: croconut/godot-tester@c4a23e6bc4b4a2646686bdc391823ed6ef083206
@@ -43,20 +43,20 @@ jobs:
           test-timeout: 300
           minimum-pass: 1
           # Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it
-          max-fails: 0          
-      #- name: Build
-      #  id: build
-      #  uses: josephbmanley/build-godot-action@v1.4.1
-      #  with:
-      #    name: Team_Hashmi_Godot_Game.zip
-      #    preset: ${{ matrix.platform }}
-      #    debugMode: "true"
-      #    # Set true to output an artifact zip file
-      #    package: "true"
-      #    # Location of Godot project in repository
-      #    projectDir: "./Team_Hashmi_Project"
-      #- name: Upload Artifact
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: Client - ${{ matrix.platform }}
-      #    path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          max-fails: 0
+      - name: Build
+        id: build
+        uses: josephbmanley/build-godot-action@v1.4.1
+        with:
+          name: Team_Hashmi_Godot_Game.zip
+          preset: ${{ matrix.platform }}
+          debugMode: "true"
+          # Set true to output an artifact zip file
+          package: "true"
+          # Location of Godot project in repository
+          projectDir: "./Team_Hashmi_Project"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Client - ${{ matrix.platform }}
+          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
