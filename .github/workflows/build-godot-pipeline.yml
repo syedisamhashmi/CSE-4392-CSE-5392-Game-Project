@@ -66,7 +66,6 @@ jobs:
       GODOT_VERSION: 3.3.4
       EXPORT_NAME: Banana_Mania
       GITHUB_WORKSPACE: ${{ github.workspace }}
-      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Windows Export
     runs-on: ubuntu-latest
     container:
@@ -82,19 +81,19 @@ jobs:
       - name: Windows Build
         run: |
           cd ./Team_Hashmi_Project
-          godot -v --export "Team_Hashmi_Godot_Game_Windows_x64" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.exe
+          mkdir bin
+          godot -v --export "Team_Hashmi_Godot_Game_Windows_x64" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: windows
-          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
+          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
 
   export-linux:
     env:
       GODOT_VERSION: 3.3.4
       EXPORT_NAME: Banana_Mania
       GITHUB_WORKSPACE: ${{ github.workspace }}
-      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Linux Export
     runs-on: ubuntu-latest
     container:
@@ -110,19 +109,19 @@ jobs:
       - name: Linux Build
         run: |
           cd ./Team_Hashmi_Project
-          godot -v --export "Team_Hashmi_Godot_Game_Linux_x64" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.x86_64
+          mkdir bin
+          godot -v --export "Team_Hashmi_Godot_Game_Linux_x64" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.x86_64
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: linux
-          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
+          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
 
   export-mac:
     env:
       GODOT_VERSION: 3.3.4
       EXPORT_NAME: Banana_Mania
       GITHUB_WORKSPACE: ${{ github.workspace }}
-      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Mac Export
     runs-on: ubuntu-latest
     container:
@@ -138,9 +137,10 @@ jobs:
       - name: Mac Build
         run: |
           cd ./Team_Hashmi_Project
-          godot -v --export "Team_Hashmi_Godot_Game_OSX" $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT/$EXPORT_NAME.zip
+          mkdir bin
+          godot -v --export "Team_Hashmi_Godot_Game_OSX" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.zip
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: mac
-          path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
+          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
