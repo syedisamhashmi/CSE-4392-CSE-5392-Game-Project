@@ -83,12 +83,12 @@ jobs:
         run: |
           cd ./Team_Hashmi_Project
           mkdir bin
-          godot -v --export "Team_Hashmi_Godot_Game_Windows_x64" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.exe
+          godot -v --export "Team_Hashmi_Godot_Game_Windows_x64" ./bin/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: windows
-          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
+          path: ./Team_Hashmi_Project/bin
 
   export-linux:
     env:
@@ -112,12 +112,12 @@ jobs:
         run: |
           cd ./Team_Hashmi_Project
           mkdir bin
-          godot -v --export "Team_Hashmi_Godot_Game_Linux_x64" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.x86_64
+          godot -v --export "Team_Hashmi_Godot_Game_Linux_x64" ./bin/$EXPORT_NAME.x86_64
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: linux
-          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
+          path: ./Team_Hashmi_Project/bin
 
   export-mac:
     env:
@@ -141,9 +141,9 @@ jobs:
         run: |
           cd ./Team_Hashmi_Project
           mkdir bin
-          godot -v --export "Team_Hashmi_Godot_Game_OSX" $GITHUB_WORKSPACE/Team_Hashmi_Project/bin/$EXPORT_NAME.zip
+          godot -v --export "Team_Hashmi_Godot_Game_OSX" ./bin/$EXPORT_NAME.zip
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: mac
-          path: $GITHUB_WORKSPACE/Team_Hashmi_Project/bin
+          path: ./Team_Hashmi_Project/bin
