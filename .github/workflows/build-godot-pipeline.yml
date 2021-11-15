@@ -15,12 +15,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  GODOT_VERSION: 3.3.4
-  EXPORT_NAME: Banana_Mania
-  GITHUB_WORKSPACE: ${{ github.workspace }}
-  STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
-
 jobs:
   Godot:
     runs-on: ubuntu-latest
@@ -68,6 +62,11 @@ jobs:
       #     path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
 
   export-windows:
+    env:
+      GODOT_VERSION: 3.3.4
+      EXPORT_NAME: Banana_Mania
+      GITHUB_WORKSPACE: ${{ github.workspace }}
+      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Windows Export
     runs-on: ubuntu-latest
     container:
@@ -91,6 +90,11 @@ jobs:
           path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
 
   export-linux:
+    env:
+      GODOT_VERSION: 3.3.4
+      EXPORT_NAME: Banana_Mania
+      GITHUB_WORKSPACE: ${{ github.workspace }}
+      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Linux Export
     runs-on: ubuntu-latest
     container:
@@ -114,6 +118,11 @@ jobs:
           path: $GITHUB_WORKSPACE/$STEP_BUILD_OUTPUT
 
   export-mac:
+    env:
+      GODOT_VERSION: 3.3.4
+      EXPORT_NAME: Banana_Mania
+      GITHUB_WORKSPACE: ${{ github.workspace }}
+      STEPS_BUILD_OUTPUT: ${{ steps.build.outputs.build }}
     name: Mac Export
     runs-on: ubuntu-latest
     container:
