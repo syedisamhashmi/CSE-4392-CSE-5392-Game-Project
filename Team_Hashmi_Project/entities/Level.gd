@@ -104,15 +104,14 @@ func readMapData():
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer3.call_deferred("add_child", newText)
     
-    var tm = $World 
     # If we have level data.
     if levelData != null and levelData.tiles.size() != 0:
         # Empty out tile map so we can load level date into it
-        tm.clear()
+        $World .clear()
         # Loop over all the tiles in our save data
         for tile in levelData.tiles:
             # Set the appropriate cell from level data
-            tm.set_cell(
+            $World .set_cell(
                 # X coord in tilemap
                 tile.posX,
                 # Y coord in tilemap
@@ -244,7 +243,7 @@ func readMapData():
             toAdd.position.x = spawner.posX
             toAdd.position.y = spawner.posY
             $Spawners.call_deferred("add_child", toAdd)
-
+    levelData.queue_free()
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
     LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
@@ -305,19 +304,18 @@ func writeMapData():
         layer3.append(newLayerThreeImg)
     LevelData.layer3 = layer3
 
-    var tm = $World
     var tileInfo = []    
-    for position in tm.get_used_cells():
+    for position in $World.get_used_cells():
         var tile = getNewTile()
         print(position)
         tile.posX = position.x
         tile.posY = position.y
-        tile.index = tm.get_cell(position.x,position.y)
-        tile.tileCoordX = tm.get_cell_autotile_coord(position.x, position.y).x
-        tile.tileCoordY = tm.get_cell_autotile_coord(position.x, position.y).y
-        tile.flipX = tm.is_cell_x_flipped(position.x, position.y)
-        tile.flipY = tm.is_cell_y_flipped(position.x, position.y)
-        tile.transpose = tm.is_cell_transposed(position.x, position.y)
+        tile.index = $World.get_cell(position.x,position.y)
+        tile.tileCoordX = $World.get_cell_autotile_coord(position.x, position.y).x
+        tile.tileCoordY = $World.get_cell_autotile_coord(position.x, position.y).y
+        tile.flipX = $World.is_cell_x_flipped(position.x, position.y)
+        tile.flipY = $World.is_cell_y_flipped(position.x, position.y)
+        tile.transpose = $World.is_cell_transposed(position.x, position.y)
         tileInfo.append(tile)
     LevelData.tiles = tileInfo
     
