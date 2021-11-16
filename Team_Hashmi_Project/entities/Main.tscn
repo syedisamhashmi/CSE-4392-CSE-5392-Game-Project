@@ -1247,7 +1247,7 @@ deployed = true
 position = Vector2( 12, -1161 )
 rotation = 1.62084
 scale = Vector2( 0.408337, 0.408337 )
-id = "sb77"
+id = "sb134"
 dropsOnDifficulties = {
 "Bruise Me Plenty": false,
 "Can I Play, Daddy?": false,
