@@ -101,6 +101,7 @@ var credits = [
         {"txt":"        - Triggers Tests", "type": "s"},
         {"txt":"Integration Tests", "type": "c"},
         {"txt":"        - Pick-Up Tests", "type": "s"},
+        {"txt":"        - Level Data Tests", "type": "s"},
 
         {"txt":"Release Pipelines / Git Management", "type": "c"},
         {"txt":"This Credits Sequence", "type": "c"},
