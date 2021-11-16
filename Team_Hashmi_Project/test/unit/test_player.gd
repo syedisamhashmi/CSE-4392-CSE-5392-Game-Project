@@ -156,3 +156,32 @@ func test_assert_player_melee_ammo_NOT_changed():
     player.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
+
+func test_assert_player_default_animation_and_collision():
+    Globals.inGame = true
+    player = PLAYER.instance()
+    self.add_child(player)
+    assert_eq(player.get_node("BananaImage").get_animation(), player.IDLE, "Player should be idle")
+    assert_eq(player.get_node("RightArm").get_animation(), player.IDLE, "Player should be idle")
+    assert_eq(player.get_node("LeftArm").get_animation(), player.IDLE, "Player should be idle")
+    
+    assert_eq(player.get_node("BananaImage").flip_h, false, "Player should be facing right")
+    assert_eq(player.get_node("RightArm").flip_h, false, "Player should be facing right")
+    assert_eq(player.get_node("LeftArm").flip_h, false, "Player should be facing right")
+    
+    assert_eq(player.get_node("BananaBoundingBoxRight").disabled, false, "Player right box should be enabled")
+    assert_eq(player.get_node("RightPunchArea/Collider").disabled, true, "Player right punch box should be disabled")
+    assert_eq(player.get_node("LeftPunchArea/Collider").disabled, true, "Player left punch box should be disabled")
+
+    # Simulate pressing keypad enter to throw punch
+#    var ev = InputEventKey.new()
+#    ev.scancode = KEY_KP_ENTER
+#    ev.pressed = true
+#    get_tree().input_event(ev)
+#    var collider = double(player.get_node("RightPunchArea/Collider"))
+#    assert_called(collider, 'set_disabled', [false])
+#    yield(get_tree().create_timer(1), "timeout")
+#    assert_eq(player.stats.punchesThrown, 1, "Player stats should reflect punch thrown")
+#
+#    player.queue_free()
+#    yield(get_tree().create_timer(1), "timeout")
