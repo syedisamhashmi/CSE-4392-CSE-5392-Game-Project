@@ -6,6 +6,7 @@ var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 
 func before_each():
+    Globals.inGame = true
     gut.p("ran setup", 2)
 
 func after_each():
@@ -40,6 +41,12 @@ func test_assert_enemies_proper_types():
     spikes.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
+func test_assert_pause_damage_ignore():
+    Globals.inGame = false
+    test_assert_onion_take_damage()
+    test_assert_pineapple_take_damage()
+    test_assert_raddish_take_damage()
+    test_assert_spike_take_damage()
 
 func test_assert_onion_take_damage():
     var onion = ENEMY_BIG_ONION.instance()
@@ -76,5 +83,7 @@ func assert_enemy_take_damage(enemy, printName):
     var beforeHealth = enemy.health
     enemy.damage(10, 1)
     var afterHealth = enemy.health
-    assert_true(afterHealth < beforeHealth, printName +" should have taken damage")
-    
+    if Globals.inGame:
+        assert_true(afterHealth < beforeHealth, printName + " should have taken damage")
+    else:
+        assert_true(afterHealth == beforeHealth, printName + " should not have taken damage in pause")
