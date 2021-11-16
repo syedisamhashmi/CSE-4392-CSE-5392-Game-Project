@@ -238,7 +238,6 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(PUNCH)
-            stats.punchesThrown += 1
         if (
             save.currentWeapon == Weapons.BANANA_THROW and
             save.bananaThrowAmmo > 0
@@ -589,6 +588,8 @@ func _on_RightArm_animation_finished() -> void:
     $RightPunchArea/Collider.set_disabled(true)
     $LeftPunchArea/Collider.set_disabled(true)
     if $RightArm.get_animation() == PUNCH or $RightArm.get_animation() == BANANA_THROW:
+        if $RightArm.get_animation() == PUNCH:
+            stats.punchesThrown += 1
         if isMoving:
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
