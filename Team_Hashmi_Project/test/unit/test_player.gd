@@ -150,6 +150,8 @@ func test_assert_player_melee_ammo_NOT_changed():
     ev.scancode = KEY_KP_ENTER
     ev.pressed = true
     get_tree().input_event(ev)
+    ev.pressed = false
+    get_tree().input_event(ev)
     # Wait until punch is actually thrown.
     yield(get_tree().create_timer(1), "timeout")
     assert_eq(player.stats.punchesThrown, 1, "Player stats should reflect punch thrown")
