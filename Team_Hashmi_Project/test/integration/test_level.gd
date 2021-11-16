@@ -1,10 +1,8 @@
 extends "res://addons/gut/test.gd"
 
-#var PLAYER         = preload("res://entities/player/player.tscn")
+var LEVEL = preload("res://entities/Main.tscn")
 
-#var levels = [1]
-
-#var player
+var levels = [0, 1]
 
 func before_each():
     Globals.TESTS = false
@@ -29,10 +27,13 @@ func after_all():
     PlayerData.saveSlot = 0
     gut.p("ran run teardown", 2)
 
-func test_assert_level1_okay():
-    var levelStr = "Level" + str(1) + " data "
-    var levelData = Utils.loadDataFromFile("res://levels/level" + str(1) + ".tres", null, true, false)
-    print("test")
+func test_assert_levels_okay():
+    for level in levels:
+        assert_level_okay(level)
+
+func assert_level_okay(levelId):
+    var levelStr = "Level" + str(levelId) + " data "
+    var levelData = Utils.loadDataFromFile("res://levels/level" + str(levelId) + ".tres", null, true, false)
     var levelFields = [
         "backgroundMotionScaleX",
         "playerStartY",
@@ -98,7 +99,7 @@ func test_assert_level1_okay():
         if "deployed" in enemy:
             if enemy.type != EntityTypeEnums.ENEMY_TYPE.SPIKE:
                 fail_test("Enemy type for " + enemy.id + " set incorrectly")
-    assert_true(true, "Enemies for level " + str(1) + " ok.")
+    assert_true(true, "Enemies for level " + str(levelId) + " ok.")
         
     for layer in levelData.layer2:
         if !("imagePath" in layer):
@@ -115,7 +116,7 @@ func test_assert_level1_okay():
             fail_test("Layer2 missing sizeX")
         if !("sizeY" in layer):
             fail_test("Layer2 missing sizeY")
-    assert_true(true, "Layer2 for level " + str(1) + " ok.")
+    assert_true(true, "Layer2 for level " + str(levelId) + " ok.")
 
     for layer in levelData.layer3:
         if !("imagePath" in layer):
@@ -132,7 +133,7 @@ func test_assert_level1_okay():
             fail_test("Layer3 missing sizeX")
         if !("sizeY" in layer):
             fail_test("Layer3 missing sizeY")
-    assert_true(true, "Layer3 for level " + str(1) + " ok.")
+    assert_true(true, "Layer3 for level " + str(levelId) + " ok.")
 
     var pids = []
     for pickup in levelData.pickups:
@@ -149,8 +150,8 @@ func test_assert_level1_okay():
             fail_test(pickup.id + " missing type")
         if pickup.type == EntityTypeEnums.PICKUP_TYPE.NONE:
             fail_test(pickup.id + " has none type")
-    assert_true(true, "Pickups for level " + str(1) + " ok.")
-    
+    assert_true(true, "Pickups for level " + str(levelId) + " ok.")
+
     var sids = []
     for spawner in levelData.spawners:
         if !("id" in spawner):
@@ -170,7 +171,7 @@ func test_assert_level1_okay():
             fail_test(spawner.id + " missing type")
         if spawner.type == EntityTypeEnums.SPAWNER_TYPE.NONE:
             fail_test(spawner.id + " has none type")        
-    assert_true(true, "Spawners for level " + str(1) + " ok.")
+    assert_true(true, "Spawners for level " + str(levelId) + " ok.")
     
     for tile in levelData.tiles:
         if !("flipX" in tile):
@@ -189,7 +190,7 @@ func test_assert_level1_okay():
             fail_test("Tile missing tileCoordY")
         if !("transpose" in tile):
             fail_test("Tile missing transpose")
-    assert_true(true, "Tiles for level " + str(1) + " ok.")
+    assert_true(true, "Tiles for level " + str(levelId) + " ok.")
     
     var tids = []
     for trigger in levelData.triggers:
@@ -212,6 +213,30 @@ func test_assert_level1_okay():
             fail_test(trigger.triggerId + " missing text")
         if !("type" in trigger):
             fail_test(trigger.triggerId + " missing type")
-    assert_true(true, "Triggers for level " + str(1) + " ok.")
+    assert_true(true, "Triggers for level " + str(levelId) + " ok.")
     
     levelData.free()
+
+
+func test_assert_new_game_player_pos():
+    for levelId in levels:
+        gut.file_delete('user://player_save_999.tres')
+        gut.file_delete('user://player_stats_999.tres')
+        var level = LEVEL.instance()
+        add_child(level)
+        PlayerData.savedGame.levelNum = levelId
+        level._ready()
+        # Let everything load
+        yield(get_tree().create_timer(.5), "timeout")
+        var levelData = Utils.loadDataFromFile("res://levels/level" + str(levelId) + ".tres", null, true, false)
+        var banana = level.get_node("Banana")
+        var playerPos = banana.position
+        assert_almost_eq(int(playerPos.x), int(levelData.playerStartX), 1, "Player should start at x " + str(levelData.playerStartX))
+        assert_almost_eq(int(playerPos.y), int(levelData.playerStartY), 1, "Player should start at y " + str(levelData.playerStartY))
+        var index = level.get_index()
+        get_child(index).queue_free()
+        level.queue_free()
+        levelData.queue_free()
+        # Let everything free
+        yield(get_tree().create_timer(.7), "timeout")
+        print_stray_nodes()
