@@ -94,6 +94,14 @@ var credits = [
         {"txt":"Level Design Tools", "type": "c"},
 
         {"txt":"Unit Tests", "type": "c"},
+        {"txt":"        - Global Tests", "type": "s"},
+        {"txt":"        - Enemy Tests", "type": "s"},
+        {"txt":"        - Pick-Up Tests", "type": "s"},
+        {"txt":"        - Player Tests", "type": "s"},
+        {"txt":"        - Triggers Tests", "type": "s"},
+        {"txt":"Integration Tests", "type": "c"},
+        {"txt":"        - Pick-Up Tests", "type": "s"},
+        {"txt":"        - Level Data Tests", "type": "s"},
 
         {"txt":"Release Pipelines / Git Management", "type": "c"},
         {"txt":"This Credits Sequence", "type": "c"},
