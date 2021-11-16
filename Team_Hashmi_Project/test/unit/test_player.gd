@@ -155,6 +155,7 @@ func test_assert_player_melee_ammo_NOT_changed():
     # Wait until punch is actually thrown.
     yield(get_tree().create_timer(1), "timeout")
     assert_eq(player.stats.punchesThrown, 1, "Player stats should reflect punch thrown")
+    player.stats.punchesThrown = 0
     player.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
