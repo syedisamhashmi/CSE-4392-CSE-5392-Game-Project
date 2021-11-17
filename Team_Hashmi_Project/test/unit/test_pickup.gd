@@ -47,6 +47,14 @@ func test_assert_pickup_types():
     assert_eq(highJump.type, EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP, "HighJump type not set properly")
     assert_eq(spikeArmor.type, EntityTypeEnums.PICKUP_TYPE.SPIKE_ARMOR, "SpikeArmor type not set properly")
 
+    assert_ne(blaster.signalName, "insert-signal-name-here", "Blaster signal not set properly")
+    assert_ne(banana.signalName, "insert-signal-name-here", "Banana Throw signal not set properly")
+    assert_ne(bfg.signalName, "insert-signal-name-here", "BFG9000 signal not set properly")
+    assert_ne(gasMask.signalName, "insert-signal-name-here", "Gas Mask signal not set properly")
+    assert_ne(health.signalName, "insert-signal-name-here", "Health signal not set properly")
+    assert_ne(highJump.signalName, "insert-signal-name-here", "HighJump signal not set properly")
+    assert_ne(spikeArmor.signalName, "insert-signal-name-here", "SpikeArmor signal not set properly")
+
     blaster.queue_free()
     banana.queue_free()
     bfg.queue_free()
