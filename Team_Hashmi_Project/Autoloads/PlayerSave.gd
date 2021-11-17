@@ -27,8 +27,11 @@ var enemiesData             : Dictionary = {}
 var playerPosX              : float = -9999
 var playerPosY              : float = -9999
 
-func init(_difficulty: int):
-    self.difficulty = _difficulty
+func init(_difficulty: int = -1):
+    if difficulty == -1:
+        difficulty              = PlayerDefaults.DEFAULT_DIFFICULTY
+    else:
+        self.difficulty = _difficulty
     playerHealth            = PlayerDefaults.DEFAULT_PLAYER_HEALTH
     currentWeapon           = PlayerDefaults.DEFAULT_WEAPON  # Melee
     isMeleeUnlocked         = PlayerDefaults.IS_MELEE_UNLOCKED
@@ -39,7 +42,6 @@ func init(_difficulty: int):
     BFG9000Ammo             = 0
     isBananaBlasterUnlocked = PlayerDefaults.IS_BANANA_BLASTER_UNLOCKED
     bananaBlasterAmmo       = 0
-    difficulty              = PlayerDefaults.DEFAULT_DIFFICULTY
     playerMoveSpeed         = PlayerDefaults.PLAYER_MOVE_SPEED
     playerJumpHeight        = PlayerDefaults.PLAYER_JUMP_HEIGHT
     gasMaskUnlocked         = false

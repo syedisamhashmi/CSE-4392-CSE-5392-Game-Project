@@ -20,7 +20,7 @@ export var dropsOnDifficulties =  {
 
 # warning-ignore:unused_class_variable
 export var baseHealth = 0
-var hitOnPunchNum: int = 0
+var hitOnPunchNum: int = -1
 var health = 9999
 var velocity: Vector2 = Vector2.ZERO
 var gravity: float = 900.0

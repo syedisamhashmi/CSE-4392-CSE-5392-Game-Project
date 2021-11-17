@@ -13,6 +13,9 @@ var PICKUP_SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tsc
 var ENEMY_BIG_ONION       = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE       = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
+var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
+var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 # Triggers
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
@@ -172,6 +175,15 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.RADDISH:
                 newEnemy = ENEMY_RADDISH.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BROCCOLI:
+                newEnemy = ENEMY_BROCCOLI.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.POTATO:
+                newEnemy = ENEMY_POTATO.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BABY_ONION:
+                newEnemy = ENEMY_BABY_ONION.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BABY_ONION
             else:
                 continue
             newEnemy.health = enemyData.health
