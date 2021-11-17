@@ -13,7 +13,10 @@ enum ENEMY_TYPE {
     SPIKE      =  5,
     BIG_ONION  = 10,
     PINEAPPLE  = 20,
-    RADDISH    = 30
+    RADDISH    = 30,
+    BROCCOLI   = 40,
+    BABY_ONION = 50,
+    POTATO     = 60,
 }
 
 enum PICKUP_TYPE {
