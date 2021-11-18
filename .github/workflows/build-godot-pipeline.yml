@@ -18,14 +18,6 @@ on:
 jobs:
   RunTests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform:
-          [
-            Team_Hashmi_Godot_Game_Linux_x64,
-            Team_Hashmi_Godot_Game_Windows_x64,
-            Team_Hashmi_Godot_Game_OSX,
-          ]
     steps:
       - uses: actions/checkout@v2
         with:

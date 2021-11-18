@@ -13,11 +13,16 @@ var PICKUP_SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tsc
 var ENEMY_BIG_ONION       = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE       = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
+var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
+var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
+var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 # Triggers
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
 var NEXT_LEVEL_TRIGGER    = preload("res://entities/triggers/next-level-trigger/next-level-trigger.tscn")
+var MUSIC_TRIGGER         = preload("res://entities/triggers/music-trigger/music-trigger.tscn")
 # Spawners
 var SPAWNER_POISON        = preload("res://entities/spawners/poison-spawner.tscn")
 var SPAWNER_SPIKES        = preload("res://entities/spawners/spike-spawner.tscn")
@@ -39,6 +44,8 @@ func _enter_tree() -> void:
     Signals.connect("enemy_pickup_spawn", self, "addpickup")
     # warning-ignore:return_value_discarded
     Signals.connect("update_enemy", self, "update_enemy")
+    # warning-ignore:return_value_discarded
+    Signals.connect("music_trigger", self, "music_trigger")
 
 func _ready() -> void:
     readMapData()
@@ -103,16 +110,22 @@ func readMapData():
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer3.call_deferred("add_child", newText)
-    
-    var tm = $World 
+    if levelData.levelMusic != null and levelData.levelMusic != "":
+        var levelMusic = load(levelData.levelMusic)
+        if $Banana.save.currSong != "":
+            $Banana/LevelMusic.stream = load($Banana.save.currSong)
+        else:
+            $Banana/LevelMusic.stream = levelMusic
+        $Banana/LevelMusic.play(0)
+        $Banana/LevelMusic.playing = true    
     # If we have level data.
     if levelData != null and levelData.tiles.size() != 0:
         # Empty out tile map so we can load level date into it
-        tm.clear()
+        $World .clear()
         # Loop over all the tiles in our save data
         for tile in levelData.tiles:
             # Set the appropriate cell from level data
-            tm.set_cell(
+            $World .set_cell(
                 # X coord in tilemap
                 tile.posX,
                 # Y coord in tilemap
@@ -173,6 +186,18 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.RADDISH:
                 newEnemy = ENEMY_RADDISH.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BROCCOLI:
+                newEnemy = ENEMY_BROCCOLI.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.POTATO:
+                newEnemy = ENEMY_POTATO.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BABY_ONION:
+                newEnemy = ENEMY_BABY_ONION.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BABY_ONION
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CARROT:
+                newEnemy = ENEMY_CARROT.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CARROT
             else:
                 continue
             newEnemy.health = enemyData.health
@@ -185,6 +210,9 @@ func readMapData():
             newEnemy.itemDroptype = enemyData.itemDroptype
             newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
             newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
+            if (enemyData.onDeathPlaySong != null and enemyData.onDeathPlaySong != ""):
+                newEnemy.onDeathPlaySong = load(enemyData.onDeathPlaySong)
+            newEnemy.songTriggered = enemyData.songTriggered
             if enemyData.id in $Banana.save.enemiesData:
                 var saveEnemy = $Banana.save.enemiesData[enemyData.id]
                 if "deployed" in saveEnemy:
@@ -199,6 +227,7 @@ func readMapData():
                 newEnemy.scale.y = saveEnemy.scaleY
                 newEnemy.dropsOnDifficulties = saveEnemy.dropsOnDifficulties
                 newEnemy.itemDroptype = saveEnemy.itemDroptype
+                newEnemy.songTriggered = enemyData.songTriggered
             $Enemies.call_deferred("add_child", newEnemy)
                 
     if levelData != null and levelData.triggers != null:
@@ -219,6 +248,11 @@ func readMapData():
                 newTrigger           = NEXT_LEVEL_TRIGGER.instance()
                 newTrigger.type      = EntityTypeEnums.TRIGGER_TYPE.NEXT_LEVEL
                 newTrigger.goToLevel = trigger.levelId
+            elif trigger.type == EntityTypeEnums.TRIGGER_TYPE.MUSIC:
+                newTrigger           = MUSIC_TRIGGER.instance()
+                newTrigger.type      = EntityTypeEnums.TRIGGER_TYPE.MUSIC
+                if trigger.song != null and trigger.song != "":
+                    newTrigger.song      = load(trigger.song)
             else:
                 continue
             newTrigger.id         = trigger.triggerId
@@ -244,7 +278,7 @@ func readMapData():
             toAdd.position.x = spawner.posX
             toAdd.position.y = spawner.posY
             $Spawners.call_deferred("add_child", toAdd)
-
+    levelData.queue_free()
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
     LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
@@ -281,7 +315,8 @@ func writeMapData():
         newLayerTwoImg.scaleY    = img.get_scale().y
         layer2.append(newLayerTwoImg)
     LevelData.layer2 = layer2
-    
+    if $Banana/LevelMusic != null and $Banana/LevelMusic.get_stream() != null:
+        LevelData.levelMusic = $Banana/LevelMusic.get_stream().get_path()
     var layer3 = []
     var layerThree = $ParallaxBackground/ParallaxLayer3
     LevelData.layer3MotionScaleX = layerThree.motion_scale.x
@@ -305,19 +340,18 @@ func writeMapData():
         layer3.append(newLayerThreeImg)
     LevelData.layer3 = layer3
 
-    var tm = $World
     var tileInfo = []    
-    for position in tm.get_used_cells():
+    for position in $World.get_used_cells():
         var tile = getNewTile()
         print(position)
         tile.posX = position.x
         tile.posY = position.y
-        tile.index = tm.get_cell(position.x,position.y)
-        tile.tileCoordX = tm.get_cell_autotile_coord(position.x, position.y).x
-        tile.tileCoordY = tm.get_cell_autotile_coord(position.x, position.y).y
-        tile.flipX = tm.is_cell_x_flipped(position.x, position.y)
-        tile.flipY = tm.is_cell_y_flipped(position.x, position.y)
-        tile.transpose = tm.is_cell_transposed(position.x, position.y)
+        tile.index = $World.get_cell(position.x,position.y)
+        tile.tileCoordX = $World.get_cell_autotile_coord(position.x, position.y).x
+        tile.tileCoordY = $World.get_cell_autotile_coord(position.x, position.y).y
+        tile.flipX = $World.is_cell_x_flipped(position.x, position.y)
+        tile.flipY = $World.is_cell_y_flipped(position.x, position.y)
+        tile.transpose = $World.is_cell_transposed(position.x, position.y)
         tileInfo.append(tile)
     LevelData.tiles = tileInfo
     
@@ -346,6 +380,9 @@ func writeMapData():
         toAdd.itemDroptype = enemy.itemDroptype
         toAdd.dropsOnDifficulties = enemy.dropsOnDifficulties
         toAdd.alreadyDroppedItem = enemy.alreadyDroppedItem
+        if enemy.onDeathPlaySong != null:
+            toAdd.onDeathPlaySong = enemy.onDeathPlaySong.get_path()
+        toAdd.songTriggered = enemy.songTriggered
         toAdd.health = enemy.baseHealth
         toAdd.scaleX = enemy.scale.x
         toAdd.scaleY = enemy.scale.y
@@ -363,6 +400,8 @@ func writeMapData():
         toAdd.type      = trigger.type
         if "goToLevel" in trigger:
             toAdd.levelId = trigger.goToLevel
+        if "song" in trigger:
+            toAdd.song = trigger.song.get_path()
         if "dialogText" in trigger:
             toAdd.text    = trigger.dialogText
         toAdd.scaleX    = trigger.scale.x
@@ -620,3 +659,15 @@ func _on_Dialog_popup_hide() -> void:
 func _on_Resume_button_up() -> void:
     if !dead:
         showPauseMenu()
+
+func music_trigger(triggerId, song):
+    if triggerId in $Banana.save.completedTriggers:
+        return
+    $Banana.save.completedTriggers.append(triggerId)
+    $Banana.save.currSong = song.get_path()
+    $Banana/LevelMusic.stream = song
+    $Banana/LevelMusic.playing = true
+
+func _on_LevelMusic_finished() -> void:
+    $Banana/LevelMusic.play(0)
+    $Banana/LevelMusic.playing = true

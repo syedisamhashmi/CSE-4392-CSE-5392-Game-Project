@@ -5,6 +5,7 @@ enum TRIGGER_TYPE {
     DIALOG     =   1,
     CHECKPOINT =   2,
     SAVE       =  10,
+    MUSIC      =  20,
     NEXT_LEVEL = 100   
 }
 
@@ -13,7 +14,11 @@ enum ENEMY_TYPE {
     SPIKE      =  5,
     BIG_ONION  = 10,
     PINEAPPLE  = 20,
-    RADDISH    = 30
+    RADDISH    = 30,
+    BROCCOLI   = 40,
+    BABY_ONION = 50,
+    POTATO     = 60,
+    CARROT     = 70,
 }
 
 enum PICKUP_TYPE {

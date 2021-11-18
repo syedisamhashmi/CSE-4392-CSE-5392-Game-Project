@@ -99,6 +99,7 @@ __meta__ = {
 }
 
 [node name="NewGameCreation" type="ColorRect" parent="."]
+visible = false
 margin_left = 50.0
 margin_top = 20.0
 margin_right = 455.0
@@ -293,7 +294,6 @@ __meta__ = {
 }
 
 [node name="MainMenuSelection" type="ColorRect" parent="."]
-visible = false
 margin_left = 50.0
 margin_top = 20.0
 margin_right = 455.0
@@ -380,6 +380,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CreditsBG" type="ColorRect" parent="."]
+margin_left = 605.0
+margin_top = 148.0
+margin_right = 932.0
+margin_bottom = 223.0
+color = Color( 0.164706, 0.188235, 0.305882, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TileMap2" type="TileMap" parent="CreditsBG"]
+position = Vector2( -684.196, -138 )
+tile_set = SubResource( 14 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 4, 0, 4, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 5, 65540, 0, 65536, 65552, 0, 1, 131076, 0, 65536, 131088, 0, 1, 196612, 0, 65536, 196624, 0, 1, 262148, 0, 65536, 262160, 0, 1, 262165, 0, 4, 262166, 0, 0, 262167, 0, 0, 262168, 0, 0, 262169, 0, 0, 262170, 0, 0, 262171, 0, 0, 262172, 0, 0, 262173, 0, 0, 262174, 0, 0, 262175, 0, 5, 327684, 0, 65536, 327696, 0, 1, 327701, 0, 65536, 327711, 0, 1, 393220, 0, 65536, 393232, 0, 1, 393237, 0, 65540, 393238, 0, 65537, 393239, 0, 65537, 393240, 0, 65537, 393241, 0, 65537, 393242, 0, 65537, 393243, 0, 65537, 393244, 0, 65537, 393245, 0, 65537, 393246, 0, 65537, 393247, 0, 65541, 458756, 0, 65536, 458768, 0, 1, 524292, 0, 65536, 524304, 0, 1, 589828, 0, 65536, 589840, 0, 1, 655364, 0, 65536, 655376, 0, 1, 720900, 0, 65536, 720912, 0, 1, 786436, 0, 65536, 786448, 0, 1, 851972, 0, 65536, 851984, 0, 1, 917508, 0, 65536, 917520, 0, 1, 983044, 0, 65536, 983056, 0, 1, 1048580, 0, 65536, 1048592, 0, 1, 1114116, 0, 65540, 1114117, 0, 65537, 1114118, 0, 65537, 1114119, 0, 65537, 1114120, 0, 65537, 1114121, 0, 65537, 1114122, 0, 65537, 1114123, 0, 65537, 1114124, 0, 65537, 1114125, 0, 65537, 1114126, 0, 65537, 1114127, 0, 65537, 1114128, 0, 65541 )
+
+[node name="Credits" type="Button" parent="CreditsBG"]
+margin_left = 19.0
+margin_top = 22.0
+margin_right = 310.0
+margin_bottom = 59.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
+text = "View Credits (please)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2( -79.1959, 10 )
 tile_set = SubResource( 14 )
@@ -401,3 +431,4 @@ tile_data = PoolIntArray( 4, 0, 4, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 
 [connection signal="pressed" from="MainMenuSelection/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="confirmed" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_confirmed"]
 [connection signal="hide" from="MainMenuSelection/ExitConfirmation" to="." method="_on_ExitConfirmation_hide"]
+[connection signal="pressed" from="CreditsBG/Credits" to="." method="_on_Credits_pressed"]
