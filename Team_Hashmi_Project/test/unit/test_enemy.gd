@@ -8,7 +8,7 @@ var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onio
 var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflower.tscn")
-var ENEMY_CORN         = preload("res://entities/enemies/cabbage/cabbage.tscn")
+var ENEMY_CORN            = preload("res://entities/enemies/cabbage/cabbage.tscn")
 var ENEMY_CABBAGE         = preload("res://entities/enemies/cabbage/cabbage.tscn")
 func before_each():
 	Globals.inGame = true
@@ -104,9 +104,9 @@ func test_assert_enemies_defaults():
 	assert_eq(broccoli.get_node("Image").get_frame(), 0, "Broccoli image should be on frame 0")
 	assert_eq(baby_onion.get_node("Image").get_frame(), 0, "Baby Onion image should be on frame 0")
 	assert_eq(potato.get_node("Image").get_frame(), 0, "Potato image should be on frame 0")
-	assert_eq(corn.get_node("Image").get_frame(), 0, "Potato image should be on frame 0")
-	assert_eq(cabbage.get_node("Image").get_frame(), 0, "Potato image should be on frame 0")
-	assert_eq(cauliflower.get_node("Image").get_frame(), 0, "Potato image should be on frame 0")
+	assert_eq(corn.get_node("Image").get_frame(), 0, "Corn image should be on frame 0")
+	assert_eq(cabbage.get_node("Image").get_frame(), 0, "Cabbage image should be on frame 0")
+	assert_eq(cauliflower.get_node("Image").get_frame(), 0, "Cauliflower image should be on frame 0")
 	
 	onion.queue_free()
 	pineapple.queue_free()
@@ -179,7 +179,7 @@ func test_assert_potato_take_damage():
 func test_assert_corn_take_damage():
 	var corn = ENEMY_CORN.instance()
 	add_child(corn)
-	assert_enemy_take_damage(corn, "Potato")
+	assert_enemy_take_damage(corn, "corn")
 	yield(get_tree().create_timer(.7), "timeout")
 	corn.queue_free()
 	
