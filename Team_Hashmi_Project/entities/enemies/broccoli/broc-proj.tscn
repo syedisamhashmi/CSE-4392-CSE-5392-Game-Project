@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/images/enemies/babyonion_broccoli_raddish.png" type="Texture" id=1]
+[ext_resource path="res://entities/enemies/broccoli/broc-proj.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 320, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 320, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 320, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": false,
+"name": "shot",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 3, 8 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 3, 11 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 4, 12 )
+
+[node name="brocProj" type="Node2D"]
+position = Vector2( 10, -1 )
+scale = Vector2( 2, 2 )
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+frames = SubResource( 4 )
+animation = "shot"
+
+[node name="first" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="firstColl" type="CollisionShape2D" parent="first"]
+position = Vector2( -12, 5 )
+shape = SubResource( 5 )
+
+[node name="firstR" type="Area2D" parent="."]
+position = Vector2( 24.5, 0 )
+collision_layer = 0
+collision_mask = 3
+
+[node name="firstColl" type="CollisionShape2D" parent="firstR"]
+position = Vector2( -12, 5 )
+shape = SubResource( 5 )
+
+[node name="second" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="seccondColl" type="CollisionShape2D" parent="second"]
+position = Vector2( -6, 5 )
+shape = SubResource( 6 )
+disabled = true
+
+[node name="secondR" type="Area2D" parent="."]
+position = Vector2( 12, -0.5 )
+collision_layer = 0
+collision_mask = 3
+
+[node name="seccondColl" type="CollisionShape2D" parent="secondR"]
+position = Vector2( -6, 5 )
+shape = SubResource( 6 )
+disabled = true
+
+[node name="third" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="thirdColl" type="CollisionShape2D" parent="third"]
+position = Vector2( -2, 4 )
+shape = SubResource( 7 )
+disabled = true
+
+[node name="thirdR" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="thirdColl" type="CollisionShape2D" parent="thirdR"]
+position = Vector2( 1, 4.5 )
+shape = SubResource( 7 )
+disabled = true
+
+[connection signal="frame_changed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
+[connection signal="body_entered" from="first" to="." method="_on_ProjectileArea_body_entered"]
+[connection signal="body_entered" from="firstR" to="." method="_on_ProjectileArea_body_entered"]
+[connection signal="body_entered" from="second" to="." method="_on_ProjectileArea_body_entered"]
+[connection signal="body_entered" from="secondR" to="." method="_on_ProjectileArea_body_entered"]
+[connection signal="body_entered" from="third" to="." method="_on_ProjectileArea_body_entered"]
+[connection signal="body_entered" from="thirdR" to="." method="_on_ProjectileArea_body_entered"]

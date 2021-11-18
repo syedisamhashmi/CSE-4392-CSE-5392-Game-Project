@@ -238,7 +238,6 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(PUNCH)
-            stats.punchesThrown += 1
         if (
             save.currentWeapon == Weapons.BANANA_THROW and
             save.bananaThrowAmmo > 0
@@ -589,6 +588,8 @@ func _on_RightArm_animation_finished() -> void:
     $RightPunchArea/Collider.set_disabled(true)
     $LeftPunchArea/Collider.set_disabled(true)
     if $RightArm.get_animation() == PUNCH or $RightArm.get_animation() == BANANA_THROW:
+        if $RightArm.get_animation() == PUNCH:
+            stats.punchesThrown += 1
         if isMoving:
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
@@ -622,10 +623,10 @@ func _on_RightArm_frame_changed() -> void:
             currFrame <= 3
             )):
                 # Allow punch.
-                $RightPunchArea/Collider.set_disabled(false)
+                $RightPunchArea/Collider.set_deferred("disabled", false)
                 return
             # Otherwise disable the collision detection.
-            $RightPunchArea/Collider.set_disabled(true)
+            $RightPunchArea/Collider.set_deferred("disabled", true)
             return
         PlayerDirection.LEFT:
             if (
@@ -633,9 +634,9 @@ func _on_RightArm_frame_changed() -> void:
             currFrame >= 1 and 
             currFrame <= 3
             )):
-                $LeftPunchArea/Collider.set_disabled(false)
+                $LeftPunchArea/Collider.set_deferred("disabled", false)
                 return
-            $LeftPunchArea/Collider.set_disabled(true)
+            $LeftPunchArea/Collider.set_deferred("disabled", true)
             return
 
 var xKnockback = 0

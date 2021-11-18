@@ -239,4 +239,4 @@ func _on_JumpAttackBox_body_entered(body: Node) -> void:
         $JumpAttackBox/JumpParticles.set_emitting(false)
         return
     if body.has_method("damage"):
-      body.damage(JUMP_ATTACK_DAMAGE * -1 if $Image.flip_h else 1, 2)
+      body.damage(JUMP_ATTACK_DAMAGE * (-1 if $Image.flip_h else 1), 2)

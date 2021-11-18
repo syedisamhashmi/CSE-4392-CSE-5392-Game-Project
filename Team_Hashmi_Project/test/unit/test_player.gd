@@ -1,14 +1,6 @@
 extends "res://addons/gut/test.gd"
 
-var LEVEL          = preload("res://entities/Main.tscn")
 var PLAYER         = preload("res://entities/player/player.tscn")
-var BANANA_BLASTER = preload("res://entities/pickup_items/banana_blaster_item.tscn")
-var BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")
-var BFG9000_ITEM   = preload("res://entities/pickup_items/BFG9000_item.tscn")
-var GAS_MASK       = preload("res://entities/pickup_items/gas-mask.tscn")
-var HEALTH         = preload("res://entities/pickup_items/health.tscn")
-var HIGH_JUMP      = preload("res://entities/pickup_items/high-jump.tscn")
-var SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tscn")
 
 var player
 func before_each():
@@ -31,12 +23,6 @@ func after_all():
     Globals.TESTS = false
     PlayerData.saveSlot = 0
     gut.p("ran run teardown", 2)
-    
-func test_assert_not_in_game():
-    assert_eq(Globals.inGame, false, "Game should not be running by default")
-    
-func test_assert_triggers_display_off():
-    assert_eq(Globals.SHOW_TRIGGERS, false, "Triggers should not be displayed in prod")
 
 func test_assert_player_defaults():
     assert_eq(PlayerDefaults.DEFAULT_PLAYER_HEALTH, 100, "Player default health not 100")
@@ -122,52 +108,69 @@ func test_assert_player_over_damage_becomes_dead():
     player.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
-func test_assert_pickup_types():
+
+func test_assert_player_throw_ammo_change():
     Globals.inGame = true
-    var blaster = BANANA_BLASTER.instance()
-    var banana = BANANA_THROW.instance()
-    var bfg = BFG9000_ITEM.instance()
-    var gasMask = GAS_MASK.instance()
-    var health = HEALTH.instance()
-    var highJump = HIGH_JUMP.instance()
-    var spikeArmor = SPIKE_ARMOR.instance()
+    player = PLAYER.instance()
+    self.add_child(player)
+    player.save.isBananaThrowUnlocked = true
+    player.save.bananaThrowAmmo = 10
     
-    assert_eq(blaster.type, EntityTypeEnums.PICKUP_TYPE.BANANA_BLASTER, "Blaster type not set properly")
-    assert_eq(banana.type, EntityTypeEnums.PICKUP_TYPE.BANANA_THROW, "Banana Throw type not set properly")
-    assert_eq(bfg.type, EntityTypeEnums.PICKUP_TYPE.BFG9000, "BFG9000 type not set properly")
-    assert_eq(gasMask.type, EntityTypeEnums.PICKUP_TYPE.GAS_MASK, "Gas Mask type not set properly")
-    assert_eq(health.type, EntityTypeEnums.PICKUP_TYPE.HEALTH, "Health type not set properly")
-    assert_eq(highJump.type, EntityTypeEnums.PICKUP_TYPE.HIGH_JUMP, "HighJump type not set properly")
-    assert_eq(spikeArmor.type, EntityTypeEnums.PICKUP_TYPE.SPIKE_ARMOR, "SpikeArmor type not set properly")
-    #    self.add_child(blaster)
-    #    self.add_child(banana)
-    #    self.add_child(bfg)
-    #    self.add_child(gasMask)
-    #    self.add_child(health)
-    #    self.add_child(highJump)
-    #    self.add_child(spikeArmor)
-    blaster.queue_free()
-    banana.queue_free()
-    bfg.queue_free()
-    gasMask.queue_free()
-    health.queue_free()
-    highJump.queue_free()
-    spikeArmor.queue_free()
-    # Give some time for stuff to free up
+    watch_signals(Signals)
+    player.equipNextWeapon()
+    assert_signal_emitted_with_parameters(Signals, "player_weapon_changed", [player.Weapons.BANANA_THROW])
+    player.equipPreviousWeapon()
+    assert_signal_emitted_with_parameters(Signals, "player_weapon_changed", [player.Weapons.MELEE])
+    player.equipPreviousWeapon()
+    assert_signal_emitted_with_parameters(Signals, "player_weapon_changed", [player.Weapons.BANANA_THROW])
+    player.equipNextWeapon()
+    assert_signal_emitted_with_parameters(Signals, "player_weapon_changed", [player.Weapons.MELEE])
+    player.equipNextWeapon()
+
+    # Simulate pressing keypad enter to fire
+    var ev = InputEventKey.new()
+    ev.scancode = KEY_KP_ENTER
+    ev.pressed = true
+    get_tree().input_event(ev)
+    assert_signal_emitted_with_parameters(Signals, "player_ammo_changed", [9])
+    # Wait until banana is actually thrown.
+    yield(get_tree().create_timer(1), "timeout")
+    assert_eq(player.stats.bananasThrown, 1, "Player stats should reflect banana thrown")
+    
+    player.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
-func test_assert_level_empty_nodes():
+
+func test_assert_player_melee_ammo_NOT_changed():
     Globals.inGame = true
-    var level = LEVEL.instance()
-    self.add_child(level)
-    var triggers = level.get_node("Triggers")
-    var enemies = level.get_node("Enemies")
-    var pickups = level.get_node("Pickups")
-#    var spawners(triggers.get_children().size(), 0, "Should be NO triggers in prod branch")
-    assert_eq(pickups.get_children().size(), 0, "Should be NO pickups in prod branch")
-    assert_eq(triggers.get_children().size(), 0, "Should be NO triggers in prod branch")
-    assert_eq(enemies.get_children().size(), 0, "Should be NO enemies in prod branch")
-#    assert_eq(spawners.get_children().size(), 0, "Should be NO spawners in prod branch")
-    level.queue_free()
+    player = PLAYER.instance()
+    self.add_child(player)
+    # Simulate pressing keypad enter to fire
+    var ev = InputEventKey.new()
+    ev.scancode = KEY_KP_ENTER
+    ev.pressed = true
+    get_tree().input_event(ev)
+    # Wait until punch is actually thrown.
     yield(get_tree().create_timer(1), "timeout")
+    assert_eq(player.stats.punchesThrown, 1, "Player stats should reflect punch thrown")
+    player.queue_free()
+    yield(get_tree().create_timer(1), "timeout")
+
+
+func test_assert_player_default_animation_and_collision():
+    Globals.inGame = true
+    player = PLAYER.instance()
+    self.add_child(player)
+    assert_eq(player.get_node("BananaImage").get_animation(), player.IDLE, "Player should be idle")
+    assert_eq(player.get_node("RightArm").get_animation(), player.IDLE, "Player should be idle")
+    assert_eq(player.get_node("LeftArm").get_animation(), player.IDLE, "Player should be idle")
     
+    assert_eq(player.get_node("BananaImage").flip_h, false, "Player should be facing right")
+    assert_eq(player.get_node("RightArm").flip_h, false, "Player should be facing right")
+    assert_eq(player.get_node("LeftArm").flip_h, false, "Player should be facing right")
+    
+    assert_eq(player.get_node("BananaBoundingBoxRight").disabled, false, "Player right box should be enabled")
+    assert_eq(player.get_node("RightPunchArea/Collider").disabled, true, "Player right punch box should be disabled")
+    assert_eq(player.get_node("LeftPunchArea/Collider").disabled, true, "Player left punch box should be disabled")
+    player.queue_free()
+    yield(get_tree().create_timer(1), "timeout")

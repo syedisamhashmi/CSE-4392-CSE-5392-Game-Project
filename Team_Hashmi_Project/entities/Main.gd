@@ -24,6 +24,7 @@ func _ready() -> void:
     
     rng.randomize()
     $MainMenuSelection.set_visible(true)
+    $CreditsBG.set_visible(true)
     $NewGameCreation.set_visible(false)
     $NewGameCreation/SaveSlots.add_item("Save Slot 1", 0)
     $NewGameCreation/SaveSlots.add_item("Save Slot 2", 1)
@@ -45,6 +46,7 @@ func _on_Difficulties_item_selected(index: int) -> void:
         3: $NewGameCreation/DifficultyImage.set_texture(I_AM_BANANA_INCARNATE)
 
 func _on_Exit_pressed() -> void:
+    $CreditsBG/Credits.set_disabled(true)
     $MainMenuSelection/NewGame.set_disabled(true)
     $MainMenuSelection/LoadGame.set_disabled(true)
     $MainMenuSelection/Exit.set_disabled(true)
@@ -55,10 +57,12 @@ func _on_Exit_pressed() -> void:
 
 func _on_NewGame_pressed() -> void:
     $MainMenuSelection.set_visible(false)
+    $CreditsBG.set_visible(false)
     $NewGameCreation.set_visible(true)
 
 func _on_BackToMainMenu_pressed() -> void:
     $MainMenuSelection.set_visible(true)
+    $CreditsBG.set_visible(true)
     $NewGameCreation.set_visible(false)
     $LoadGame.set_visible(false)
 
@@ -70,6 +74,7 @@ func _on_ExitConfirmation_confirmed() -> void:
 func _on_ExitConfirmation_hide() -> void:
     $MainMenuSelection/NewGame.set_disabled(false)
     $MainMenuSelection/LoadGame.set_disabled(false)
+    $CreditsBG/Credits.set_disabled(false)
     $MainMenuSelection/Exit.set_disabled(false)
 
 func _on_SaveSlots_item_selected(index: int) -> void:
@@ -104,8 +109,7 @@ func _on_OverwriteGame_confirmed(newGame: bool) -> void:
         Globals.load_game()
         Globals.load_stats()
     Utils.goto_scene("res://entities/Main.tscn")
-
-
+    
 func _on_OverwriteGame_hide() -> void:
     $NewGameCreation/Start.set_disabled(false)
     $NewGameCreation/BackToMainMenu.set_disabled(false)
@@ -115,5 +119,10 @@ func _on_OverwriteGame_hide() -> void:
 
 func _on_LoadGame_pressed() -> void:
     $MainMenuSelection.set_visible(false)
+    $CreditsBG.set_visible(false)
     $NewGameCreation.set_visible(false)
     $LoadGame.set_visible(true)
+
+
+func _on_Credits_pressed() -> void:
+    Utils.goto_scene("res://entities/credits/credits.tscn")

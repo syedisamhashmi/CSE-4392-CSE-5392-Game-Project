@@ -13,6 +13,10 @@ var PICKUP_SPIKE_ARMOR    = preload("res://entities/pickup_items/spike-armor.tsc
 var ENEMY_BIG_ONION       = preload("res://entities/enemies/big_onion/big_onion.tscn")
 var ENEMY_PINEAPPLE       = preload("res://entities/enemies/pineapple/pineapple.tscn")
 var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn")
+var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
+var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
+var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
+var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 # Triggers
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
@@ -104,15 +108,14 @@ func readMapData():
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer3.call_deferred("add_child", newText)
     
-    var tm = $World 
     # If we have level data.
     if levelData != null and levelData.tiles.size() != 0:
         # Empty out tile map so we can load level date into it
-        tm.clear()
+        $World .clear()
         # Loop over all the tiles in our save data
         for tile in levelData.tiles:
             # Set the appropriate cell from level data
-            tm.set_cell(
+            $World .set_cell(
                 # X coord in tilemap
                 tile.posX,
                 # Y coord in tilemap
@@ -173,6 +176,18 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.RADDISH:
                 newEnemy = ENEMY_RADDISH.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BROCCOLI:
+                newEnemy = ENEMY_BROCCOLI.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.POTATO:
+                newEnemy = ENEMY_POTATO.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BROCCOLI
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BABY_ONION:
+                newEnemy = ENEMY_BABY_ONION.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BABY_ONION
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CARROT:
+                newEnemy = ENEMY_CARROT.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CARROT
             else:
                 continue
             newEnemy.health = enemyData.health
@@ -244,7 +259,7 @@ func readMapData():
             toAdd.position.x = spawner.posX
             toAdd.position.y = spawner.posY
             $Spawners.call_deferred("add_child", toAdd)
-
+    levelData.queue_free()
 func writeMapData():
     var backgroundLayer = $ParallaxBackground/ParallaxLayer
     LevelData.backgroundMotionScaleX = backgroundLayer.motion_scale.x
@@ -305,19 +320,18 @@ func writeMapData():
         layer3.append(newLayerThreeImg)
     LevelData.layer3 = layer3
 
-    var tm = $World
     var tileInfo = []    
-    for position in tm.get_used_cells():
+    for position in $World.get_used_cells():
         var tile = getNewTile()
         print(position)
         tile.posX = position.x
         tile.posY = position.y
-        tile.index = tm.get_cell(position.x,position.y)
-        tile.tileCoordX = tm.get_cell_autotile_coord(position.x, position.y).x
-        tile.tileCoordY = tm.get_cell_autotile_coord(position.x, position.y).y
-        tile.flipX = tm.is_cell_x_flipped(position.x, position.y)
-        tile.flipY = tm.is_cell_y_flipped(position.x, position.y)
-        tile.transpose = tm.is_cell_transposed(position.x, position.y)
+        tile.index = $World.get_cell(position.x,position.y)
+        tile.tileCoordX = $World.get_cell_autotile_coord(position.x, position.y).x
+        tile.tileCoordY = $World.get_cell_autotile_coord(position.x, position.y).y
+        tile.flipX = $World.is_cell_x_flipped(position.x, position.y)
+        tile.flipY = $World.is_cell_y_flipped(position.x, position.y)
+        tile.transpose = $World.is_cell_transposed(position.x, position.y)
         tileInfo.append(tile)
     LevelData.tiles = tileInfo
     
