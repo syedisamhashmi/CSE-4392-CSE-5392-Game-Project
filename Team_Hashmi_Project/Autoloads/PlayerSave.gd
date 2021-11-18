@@ -26,6 +26,7 @@ var completedTriggers       : Array = []
 var enemiesData             : Dictionary = {}
 var playerPosX              : float = -9999
 var playerPosY              : float = -9999
+var currSong                : String = ""
 
 func init(_difficulty: int = -1):
     if difficulty == -1:
@@ -52,5 +53,6 @@ func init(_difficulty: int = -1):
     enemiesData             = {}
     playerPosX              = -9999
     playerPosY              = -9999
+    currSong                = ""
     return self
 
