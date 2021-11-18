@@ -210,7 +210,10 @@ func readMapData():
             newEnemy.itemDroptype = enemyData.itemDroptype
             newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
             newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
-            if (enemyData.onDeathPlaySong != null and enemyData.onDeathPlaySong != ""):
+            if ("onDeathPlaySong" in enemyData and 
+                enemyData.onDeathPlaySong != null and 
+                enemyData.onDeathPlaySong != ""
+            ):
                 newEnemy.onDeathPlaySong = load(enemyData.onDeathPlaySong)
             newEnemy.songTriggered = enemyData.songTriggered
             if enemyData.id in $Banana.save.enemiesData:
