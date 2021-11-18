@@ -79,6 +79,9 @@ var credits = [
         {"txt":"    Potato", "type": "c"},
         {"txt":"            - Enemy Logic", "type": "s"},
         {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
+        {"txt":"    Carrot", "type": "c"},
+        {"txt":"            - Enemy Logic", "type": "s"},
+        {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
 
         {"txt":"Triggers", "type": "c"},
         {"txt":"        - Checkpoint", "type": "s"},

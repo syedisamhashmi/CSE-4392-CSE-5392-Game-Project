@@ -17,6 +17,7 @@ enum ENEMY_TYPE {
     BROCCOLI   = 40,
     BABY_ONION = 50,
     POTATO     = 60,
+    CARROT     = 70,
 }
 
 enum PICKUP_TYPE {
