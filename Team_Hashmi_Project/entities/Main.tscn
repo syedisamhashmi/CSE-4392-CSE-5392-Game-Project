@@ -2140,6 +2140,9 @@ baseHealth = 150
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 position = Vector2( -1953, 272 )
 
+[node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
+autoplay = true
+
 [node name="Pickups" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
@@ -2433,6 +2436,7 @@ margin_right = 967.0
 margin_bottom = 560.0
 text = "Resume"
 
+[connection signal="finished" from="Banana/LevelMusic" to="." method="_on_LevelMusic_finished"]
 [connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
 [connection signal="hide" from="HUD/Dialog" to="." method="_on_Dialog_hide"]
 [connection signal="popup_hide" from="HUD/Dialog" to="." method="_on_Dialog_popup_hide"]
