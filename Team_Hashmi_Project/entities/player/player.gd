@@ -244,20 +244,22 @@ func _input(event: InputEvent) -> void:
         ):
             if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
                 return
+            save.bananaThrowAmmo -= 1
+            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             $RightArm.set_animation(BANANA_THROW)
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
         ):
             save.BFG9000Ammo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
+            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
         ):
             save.bananaBlasterAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
+            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
             spawnPlayerBananaBlasterProjectile()
 
 
@@ -610,8 +612,6 @@ func _on_RightArm_frame_changed() -> void:
         return
     var currFrame: int = $RightArm.get_frame()
     if $RightArm.get_animation() == BANANA_THROW and currFrame == 3:
-        save.bananaThrowAmmo -= 1
-        Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
         spawnPlayerProjectile()
     match lastDir:
         PlayerDirection.RIGHT:
