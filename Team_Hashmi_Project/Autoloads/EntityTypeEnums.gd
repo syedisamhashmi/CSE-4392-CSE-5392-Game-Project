@@ -5,6 +5,7 @@ enum TRIGGER_TYPE {
     DIALOG     =   1,
     CHECKPOINT =   2,
     SAVE       =  10,
+    MUSIC      =  20,
     NEXT_LEVEL = 100   
 }
 

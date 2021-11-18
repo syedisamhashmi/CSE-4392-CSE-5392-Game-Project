@@ -94,6 +94,8 @@ func assert_level_okay(levelId):
             fail_test(enemy.id + " rotDeg should not be null")
         if !("type" in enemy):
             fail_test(enemy.id + " type should not be null")
+        if !("onDeathPlaySong" in enemy):
+            fail_test(enemy.id + " onDeathPlaySong should exist in data")
         if enemy.type == EntityTypeEnums.ENEMY_TYPE.NONE:
             fail_test("Enemy Type not set for " + enemy.id)
         if "deployed" in enemy:
