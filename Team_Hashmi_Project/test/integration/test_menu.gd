@@ -54,6 +54,7 @@ func test_assert_menu():
     assert_true(menu.get_node("MainMenuSelection/LoadGame").disabled, "Load button in main menu should be disabled")
     assert_true(menu.get_node("CreditsBG/Credits").disabled, "Credits area in main menu should be disabled")
     assert_true(menu.get_node("MainMenuSelection/Exit").disabled, "Exit button in main menu should be disabled")
+    assert_true(menu.get_node("MainMenuSelection/ExitConfirmation").visible, "Quit confirmation should be visible")
     # Cancel exit
     menu._on_ExitConfirmation_hide()
     # All buttons should be re-enabled
@@ -103,6 +104,21 @@ func test_assert_menu():
     yield(get_tree().create_timer(2), "timeout")
     var levelChild = get_tree().get_root().get_children()[get_tree().get_root().get_children().size() - 1]
     assert_true(levelChild.get_path() == "/root/Level", "Level should have spawned in")
+    assert_true(levelChild.get_node("Banana") != null, "Banana should exist")
+    assert_true(levelChild.get_node("Banana/LevelMusic") != null, "Level music should exist")
+    assert_true(levelChild.get_node("HUD") != null, "HUD should exist")
+    assert_true(levelChild.get_node("HUD/HUD_BG") != null, "HUD Background should exist")
+    assert_true(levelChild.get_node("HUD/HUD_BG").visible, "HUD Background should be visible")
+    
+    assert_true(levelChild.get_node("HUD/PauseMenu") != null, "HUD PauseMenu should exist")
+    assert_false(levelChild.get_node("HUD/PauseMenu").visible, "HUD PauseMenu should NOT be visible")
+    # Hide any dialogs
+    levelChild.get_node("HUD/Dialog").visible = false
+    levelChild.showPauseMenu()
+    assert_true(levelChild.get_node("HUD/PauseMenu").visible, "HUD PauseMenu should be visible")
+    assert_eq(levelChild.get_node("HUD/PauseMenu/GamePausedLabel").text, "Game Paused", "PauseMenu should say Game Pause")
+    assert_false(Globals.inGame, "InGame status should be false")
+    
     levelChild.queue_free()
     yield(get_tree().create_timer(2), "timeout")
     get_tree().set_current_scene(self)

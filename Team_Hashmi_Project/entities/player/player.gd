@@ -61,11 +61,13 @@ var isMoving:              bool    = false
 var save
 var stats
 func _enter_tree() -> void:
-    save = get_tree().get_root().get_node("/root/PlayerData").savedGame
-    stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
-func _exit_tree() -> void:
-    save.free()
-    stats.free()
+    self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
+    if self.get_node(self.save.get_path()) == null:
+        self.add_child(self.save)
+    self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
+    if self.get_node(self.stats.get_path()) == null:
+        self.add_child(self.stats)
+
 
 # TODO: Put this into save file, maybe upgrade it idk.
 var PUNCH_DAMAGE:          int     = 50
