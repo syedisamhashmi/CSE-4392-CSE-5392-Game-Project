@@ -60,13 +60,6 @@ enum Weapons {
 var isMoving:              bool    = false
 var save
 var stats
-func _enter_tree() -> void:
-    self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
-    if self.get_node(self.save.get_path()) == null:
-        self.add_child(self.save)
-    self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
-    if self.get_node(self.stats.get_path()) == null:
-        self.add_child(self.stats)
 
 
 # TODO: Put this into save file, maybe upgrade it idk.
@@ -442,6 +435,13 @@ func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
     Globals.load_game()
+    self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
+    
+    if !self.has_node("save"):
+        self.add_child(self.save, true)
+    self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
+    if !self.has_node("stats"):
+        self.add_child(self.stats, true)
     setLoadedData()
     healthPickupValue = BASE_HEALTH_PICKUP - (save.difficulty * BASE_HEALTH_PICKUP_HANDICAP)
     # Default play animations to start idle process.
@@ -552,7 +552,8 @@ func setLoadedData() -> void:
 
 func quicksave(id = null) -> void:
     # Don't allow quicksave if they're dead... Why would you?
-    if save.playerHealth <= 0:
+    # Or if they are on the credits, because.... well... no
+    if save.playerHealth <= 0 || save.levelNum == 9999:
         return
     if id != null:
         save.completedTriggers.append(id)
