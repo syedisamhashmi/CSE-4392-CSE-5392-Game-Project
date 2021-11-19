@@ -87,6 +87,7 @@ var credits = [
         {"txt":"        - Checkpoint", "type": "s"},
         {"txt":"        - Dialog", "type": "s"},
         {"txt":"        - Next Level", "type": "s"},
+        {"txt":"        - Music", "type": "s"},
         
         {"txt":"Entity Spawners", "type": "c"},
         {"txt":"        - Spikes", "type": "s"},
@@ -171,6 +172,17 @@ var credits = [
         {"txt": "253172__suntemple__retro-bonus-pickup-sfx", "type": "s"},
         {"txt": "        freesound.org/people/suntemple/sounds/253172", "type": "s"},
         {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "the-epic-2-by-rafael-krux.mp3", "type": "s"},
+        {"txt": "         The Epic 2 by Rafael Krux", "type": "s"},
+        {"txt": "         Link: https://filmmusic.io/song/5384-the-epic-2-", "type": "s"},
+        {"txt": "         License: http://creativecommons.org/licenses/by/4.0/", "type": "s"},
+        {"txt": "         Music promoted on https://www.chosic.com/free-music/all/", "type": "s"},
+        {"txt": "makai-symphony-dragon-slayer.mp3", "type": "s"},
+        {"txt": "         Dragon Slayer by Makai Symphony | https://soundcloud.com/makai-symphony", "type": "s"},
+        {"txt": "         Music promoted by https://www.chosic.com/free-music/all/", "type": "s"},
+        {"txt": "         Creative Commons Attribution-ShareAlike 3.0 Unported", "type": "s"},
+        {"txt": "         https://creativecommons.org/licenses/by-sa/3.0/", "type": "s"},
+        
                 
         {"txt": "Images", "type": "c"},
         {"txt": "explosion_01_strip13.png", "type": "s"},
@@ -261,7 +273,7 @@ func _process(delta):
         finish()
 
 func _ready():
-    Utils.current_scene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
+    Utils.current_scene = self
     Globals.load_stats()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))
