@@ -273,7 +273,7 @@ func _process(delta):
         finish()
 
 func _ready():
-    Utils.current_scene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
+    Utils.current_scene = self
     Globals.load_stats()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))

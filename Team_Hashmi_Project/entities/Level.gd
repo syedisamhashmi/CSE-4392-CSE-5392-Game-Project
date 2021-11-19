@@ -110,7 +110,7 @@ func readMapData():
         newText.set_scale(Vector2(obj.scaleX, obj.scaleY))
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer3.call_deferred("add_child", newText)
-    if levelData.levelMusic != null and levelData.levelMusic != "":
+    if "levelMusic" in levelData and levelData != null and levelData.levelMusic != "":
         var levelMusic = load(levelData.levelMusic)
         if $Banana.save.currSong != "":
             $Banana/LevelMusic.stream = load($Banana.save.currSong)
@@ -210,7 +210,10 @@ func readMapData():
             newEnemy.itemDroptype = enemyData.itemDroptype
             newEnemy.alreadyDroppedItem = enemyData.alreadyDroppedItem
             newEnemy.dropsOnDifficulties = enemyData.dropsOnDifficulties
-            if (enemyData.onDeathPlaySong != null and enemyData.onDeathPlaySong != ""):
+            if ("onDeathPlaySong" in enemyData and 
+                enemyData.onDeathPlaySong != null and 
+                enemyData.onDeathPlaySong != ""
+            ):
                 newEnemy.onDeathPlaySong = load(enemyData.onDeathPlaySong)
             newEnemy.songTriggered = enemyData.songTriggered
             if enemyData.id in $Banana.save.enemiesData:

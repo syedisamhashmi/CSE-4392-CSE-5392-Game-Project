@@ -37,7 +37,9 @@ func test_assert_banana_blaster_pick():
     var blaster = BANANA_BLASTER.instance()
     blaster.id = "testBlasterId"
     player = PLAYER.instance()
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
     add_child(blaster)
     checkPickupWorking(blaster, player, "isBananaBlasterUnlocked")
     player.queue_free()
@@ -48,7 +50,9 @@ func test_assert_banana_throw_pick():
     var banana = BANANA_THROW.instance()
     banana.id = "testBananaThrowId"
     player = PLAYER.instance()
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
     add_child(banana)
     checkPickupWorking(banana, player, "isBananaThrowUnlocked")
     player.queue_free()
@@ -59,7 +63,9 @@ func test_assert_BFG9000_pick():
     var bfg = BFG9000_ITEM.instance()
     bfg.id = "testBFG9000Id"
     player = PLAYER.instance()
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
     add_child(bfg)
     checkPickupWorking(bfg, player, "isBFG9000Unlocked")
     player.queue_free()
@@ -70,7 +76,9 @@ func test_assert_gas_mask_pick():
     var gasMask = GAS_MASK.instance()
     gasMask.id = "testGasMaskId"
     player = PLAYER.instance()
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
     add_child(gasMask)
     checkPickupWorking(gasMask, player, "gasMaskUnlocked")
     player.queue_free()
@@ -81,8 +89,10 @@ func test_assert_health_pick():
     var health = HEALTH.instance()
     health.id = "testHealthId"
     player = PLAYER.instance()
-    var beforeHealth = player.save.playerHealth
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
+    var beforeHealth = player.save.playerHealth
     add_child(health)
     checkPickupWorking(health, player, null)
     var afterHealth = player.save.playerHealth
@@ -95,8 +105,10 @@ func test_assert_high_jump_pick():
     var highJump = HIGH_JUMP.instance()
     highJump.id = "testHighJumpId"
     player = PLAYER.instance()
-    var beforeJumpHeight = player.save.playerJumpHeight
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
+    var beforeJumpHeight = player.save.playerJumpHeight
     add_child(highJump)
     checkPickupWorking(highJump, player, null)
     var afterJumpHeight = player.save.playerJumpHeight
@@ -109,7 +121,9 @@ func test_assert_spike_armor_pick():
     var spikeArmor = SPIKE_ARMOR.instance()
     spikeArmor.id = "testSpikeArmorId"
     player = PLAYER.instance()
+    assert_true(player != null, "Player should exist")
     add_child(player)
+    assert_true(player.save != null, "Player save should exist")
     add_child(spikeArmor)
     checkPickupWorking(spikeArmor, player, "spikeArmorUnlocked")
     player.queue_free()
