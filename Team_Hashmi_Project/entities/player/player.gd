@@ -58,8 +58,9 @@ enum Weapons {
 #region PlayerAttributes
 # Used to track what to do with the arms after animations complete.
 var isMoving:              bool    = false
-var save = PlayerData.savedGame
-var stats = PlayerData.playerStats
+var save
+var stats
+
 
 # TODO: Put this into save file, maybe upgrade it idk.
 var PUNCH_DAMAGE:          int     = 50
@@ -242,9 +243,9 @@ func _input(event: InputEvent) -> void:
             save.currentWeapon == Weapons.BANANA_THROW and
             save.bananaThrowAmmo > 0
         ):
-            save.bananaThrowAmmo -= 1
             if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
                 return
+            save.bananaThrowAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             $RightArm.set_animation(BANANA_THROW)
         if (
@@ -252,14 +253,14 @@ func _input(event: InputEvent) -> void:
             save.BFG9000Ammo > 0
         ):
             save.BFG9000Ammo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
+            Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
         ):
             save.bananaBlasterAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
+            Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
             spawnPlayerBananaBlasterProjectile()
 
 
@@ -434,6 +435,13 @@ func _ready() -> void:
     # Load player stats file
     Globals.load_stats()
     Globals.load_game()
+    self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
+    
+    if !self.has_node("save"):
+        self.add_child(self.save, true)
+    self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
+    if !self.has_node("stats"):
+        self.add_child(self.stats, true)
     setLoadedData()
     healthPickupValue = BASE_HEALTH_PICKUP - (save.difficulty * BASE_HEALTH_PICKUP_HANDICAP)
     # Default play animations to start idle process.
@@ -544,7 +552,8 @@ func setLoadedData() -> void:
 
 func quicksave(id = null) -> void:
     # Don't allow quicksave if they're dead... Why would you?
-    if save.playerHealth <= 0:
+    # Or if they are on the credits, because.... well... no
+    if save.playerHealth <= 0 || save.levelNum == 9999:
         return
     if id != null:
         save.completedTriggers.append(id)
