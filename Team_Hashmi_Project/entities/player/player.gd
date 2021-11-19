@@ -58,8 +58,14 @@ enum Weapons {
 #region PlayerAttributes
 # Used to track what to do with the arms after animations complete.
 var isMoving:              bool    = false
-var save = PlayerData.savedGame
-var stats = PlayerData.playerStats
+var save
+var stats
+func _enter_tree() -> void:
+    save = get_tree().get_root().get_node("/root/PlayerData").savedGame
+    stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
+func _exit_tree() -> void:
+    save.free()
+    stats.free()
 
 # TODO: Put this into save file, maybe upgrade it idk.
 var PUNCH_DAMAGE:          int     = 50
