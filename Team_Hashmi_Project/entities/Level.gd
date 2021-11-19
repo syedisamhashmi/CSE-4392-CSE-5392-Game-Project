@@ -1,5 +1,7 @@
 extends Node2D
 
+const GAME_OVER_FX = preload("res://assets/Sounds/GameOverSound.tscn")
+
 export var IS_BUILDING = false
 # Pickups
 var PICKUP_BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")
@@ -556,6 +558,10 @@ func player_death():
     Globals.save_stats()
     dead = true
     showPauseMenu(true)
+    $BackgroundMusic.playing = false
+    var game_over_fx = GAME_OVER_FX.instance()
+    get_parent().add_child(game_over_fx)
+    
 func showPauseMenu(isDead = false):
     if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
         Globals.inGame = !Globals.inGame
@@ -634,3 +640,4 @@ func _on_Dialog_popup_hide() -> void:
 func _on_Resume_button_up() -> void:
     if !dead:
         showPauseMenu()
+        $BackgroundMusic.play()

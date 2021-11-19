@@ -1,6 +1,11 @@
 extends KinematicBody2D
 
+const PUNCH_SOUND_EFFECT = preload("res://assets/Sounds/PunchSoundEffect.tscn")
+const JUMP_SOUND_EFFECT = preload("res://assets/Sounds/JumpSoundEffect.tscn")
+const FALL_SOUND_EFFECT = preload("res://assets/Sounds/FallSoundEffect.tscn")
+
 var stuff = false
+var can_play_fall_sound = true
 
 
 #region PRELOAD
@@ -101,6 +106,9 @@ func _physics_process(delta: float) -> void:
         # I know... weird... just go with it. It works.
         (Input.is_action_just_pressed("jump") and !is_on_floor() and velocity.y < 16)
     ):
+        var jump_sound_effect = JUMP_SOUND_EFFECT.instance()
+        get_parent().add_child(jump_sound_effect)
+        
         # Increase player data for jump count
         stats.jumpCount += 1
         velocity.y = -acceleration.y
@@ -222,6 +230,15 @@ func _physics_process(delta: float) -> void:
     save.playerPosX  = position.x
     save.playerPosY = position.y
     
+    
+    if velocity.y > 0 and can_play_fall_sound == true:
+        var fall_sound_effect = FALL_SOUND_EFFECT.instance()
+        get_parent().add_child(fall_sound_effect)
+        can_play_fall_sound = false
+        
+    if is_on_floor():
+        can_play_fall_sound = true
+    
 func _input(event: InputEvent) -> void:
     if !Globals.inGame:
         return
@@ -238,6 +255,9 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(PUNCH)
+            var punch_sound_effect = PUNCH_SOUND_EFFECT.instance()
+            get_parent().add_child(punch_sound_effect)
+            
         if (
             save.currentWeapon == Weapons.BANANA_THROW and
             save.bananaThrowAmmo > 0
