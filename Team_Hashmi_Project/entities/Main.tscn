@@ -433,6 +433,9 @@ baseHealth = 60
 
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 
+[node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
+autoplay = true
+
 [node name="Pickups" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
@@ -655,6 +658,7 @@ text = "Resume"
 [node name="raddish" parent="." instance=ExtResource( 3 )]
 position = Vector2( 6360, -240 )
 
+[connection signal="finished" from="Banana/LevelMusic" to="." method="_on_LevelMusic_finished"]
 [connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
 [connection signal="hide" from="HUD/Dialog" to="." method="_on_Dialog_hide"]
 [connection signal="popup_hide" from="HUD/Dialog" to="." method="_on_Dialog_popup_hide"]
