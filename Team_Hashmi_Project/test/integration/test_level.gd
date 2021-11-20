@@ -2,7 +2,7 @@ extends "res://addons/gut/test.gd"
 
 var LEVEL = preload("res://entities/Main.tscn")
 
-var levels = [0, 1]
+var levels = [1, 2]
 
 func before_each():
     Globals.TESTS = false
