@@ -39,6 +39,8 @@ var credits = [
         {"txt":"     - Main Menu", "type": "s"},
         {"txt":"    - Pause Menu", "type": "s"},
         
+        {"txt":"Intro Scene (Integration)", "type": "c"},
+        
         {"txt":"Player Development", "type": "c"},
         {"txt":"    Movement Integration", "type": "c"},
         {"txt":"    Animation Integration", "type": "c"},
@@ -130,6 +132,7 @@ var credits = [
         {"txt":"Animation", "type": "c"},
         {"txt":"        - Banana-man", "type": "s"},
         {"txt":"        - Pineapple", "type": "s"},
+        {"txt":"        - Intro Scene", "type": "s"},
         
         {"txt":"Art", "type": "c"},
         {"txt":"        - Level 1 Background", "type": "s"},
@@ -182,6 +185,11 @@ var credits = [
         {"txt": "         Music promoted by https://www.chosic.com/free-music/all/", "type": "s"},
         {"txt": "         Creative Commons Attribution-ShareAlike 3.0 Unported", "type": "s"},
         {"txt": "         https://creativecommons.org/licenses/by-sa/3.0/", "type": "s"},
+        {"txt": "John_Bartmann_-_14_-_Serial_Killer.mp3", "type": "s"},
+        {"txt": "         You are free to use this music in your projects with no required crediting.", "type": "s"},
+        {"txt": "         However, linking back is greatly appreciated.", "type": "s"},
+        {"txt": "         You can use the following text:", "type": "s"},
+        {"txt": "         Music: https://www.chosic.com/free-music/all/", "type": "s"},
         
                 
         {"txt": "Images", "type": "c"},
