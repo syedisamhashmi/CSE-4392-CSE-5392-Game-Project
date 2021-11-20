@@ -103,6 +103,13 @@ func test_assert_menu():
         menu.queue_free()
     yield(get_tree().create_timer(2), "timeout")
     var levelChild = get_tree().get_root().get_children()[get_tree().get_root().get_children().size() - 1]
+    assert_true(levelChild.get_path() == "/root/intro-scene", "Intro Scene should have spawned in")
+    yield(get_tree().create_timer(10), "timeout")
+    assert_not_null(levelChild.get_node("Continue"), "Continue button should exist")
+    assert_true(levelChild.get_node("Continue").visible, "Continue button should be visible at this point")
+    levelChild._on_Continue_pressed()
+    yield(get_tree().create_timer(2), "timeout")
+    levelChild = get_tree().get_root().get_children()[get_tree().get_root().get_children().size() - 1]
     assert_true(levelChild.get_path() == "/root/Level", "Level should have spawned in")
     assert_true(levelChild.get_node("Banana") != null, "Banana should exist")
     assert_true(levelChild.get_node("Banana/LevelMusic") != null, "Level music should exist")

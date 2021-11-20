@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/John_Bartmann_-_14_-_Serial_Killer.mp3-3ac3fb9efbb70ffec5f7e42382cfd763.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/John_Bartmann_-_14_-_Serial_Killer.mp3"
+dest_files=[ "res://.import/John_Bartmann_-_14_-_Serial_Killer.mp3-3ac3fb9efbb70ffec5f7e42382cfd763.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
