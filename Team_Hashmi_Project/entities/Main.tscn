@@ -247,7 +247,7 @@ baseHealth = 60
 [node name="big_onion4" parent="Enemies" instance=ExtResource( 11 )]
 position = Vector2( 17608, -280 )
 scale = Vector2( 9, 9 )
-id = "bo4"
+id = "bo3"
 dropsOnDifficulties = {
 "Bruise Me Plenty": false,
 "Can I Play, Daddy?": false,
