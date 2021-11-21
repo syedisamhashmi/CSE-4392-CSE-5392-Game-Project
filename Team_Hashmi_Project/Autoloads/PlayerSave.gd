@@ -20,8 +20,7 @@ var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 var gasMaskUnlocked         : bool  = false
 var spikeArmorUnlocked      : bool  = false
-# warning-ignore:unused_class_variable
-var levelNum                : int   = 1
+var levelNum                : int   = 2
 var retrievedPickups        : Array = []
 var completedTriggers       : Array = []
 var enemiesData             : Dictionary = {}
