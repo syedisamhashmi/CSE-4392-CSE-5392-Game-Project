@@ -207,6 +207,10 @@ var credits = [
         {"txt": "        opengameart.org/content/energy-icon", "type": "s"},
         {"txt": "        Creative Commons - BY 4.0", "type": "s"},
         {"txt": "        Attribution: https://opengameart.org/users/santoniche", "type": "s"},
+        {"txt": "BananaMan.png", "type": "s"},
+        {"txt": "        https://hildemuz.itch.io/banana-man", "type": "s"},
+        {"txt": "        You can use it in your games freely if you download from here", "type": "s"},
+        {"txt": "        and provide information about me in your game.", "type": "s"},
         
         {"txt": "Pixel Art Vegetable Monsters Sprite Pack", "type": "s"},
         {"txt": "        elthen.itch.io/2d-pixel-art-vegetable-monsters-sprite-pack", "type": "s"},
@@ -283,6 +287,7 @@ func _process(delta):
 func _ready():
     Utils.current_scene = self
     Globals.load_stats()
+    Globals.load_game()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))
     $stats/bananasThrownCount.set_text(str(stats.bananasThrown))
@@ -351,4 +356,7 @@ func _unhandled_input(event):
 
 
 func _on_exitToMenuButton_button_up() -> void:
-    Utils.goto_scene("res://entities/MainMenu.tscn")
+    if Globals.showPost == true:
+        Utils.goto_scene("res://entities/post-credits/post-credits.tscn")
+    else:
+        Utils.goto_scene("res://entities/MainMenu.tscn")
