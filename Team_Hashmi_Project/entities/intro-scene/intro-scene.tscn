@@ -54,7 +54,6 @@ scale = Vector2( 3.2, 3.4 )
 
 [node name="BG" type="AnimatedSprite" parent="ScaledCont"]
 position = Vector2( 10, 10.5882 )
-scale = Vector2( 1, 1 )
 frames = SubResource( 9 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

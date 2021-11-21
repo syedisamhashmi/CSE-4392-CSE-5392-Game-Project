@@ -476,6 +476,8 @@ func _ready() -> void:
     Signals.connect("player_weapon_changed", self, "player_weapon_changed")
 
 func next_level_trigger(levelId):
+    if levelId == 9999:
+        Globals.showPost = true
     save.levelNum = levelId
     save.playerPosX = -9999
     save.playerPosY = -9999
