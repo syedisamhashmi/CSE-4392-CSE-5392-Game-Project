@@ -63,6 +63,9 @@ func test_assert_enemies_proper_types():
     baby_onion.queue_free()
     potato.queue_free()
     carrot.queue_free()
+    corn.queue_free()
+    cauliflower.queue_free()
+    cabbage.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
 func test_assert_enemies_defaults():
@@ -189,6 +192,27 @@ func test_assert_carrot_take_damage():
     assert_enemy_take_damage(carrot, "Carrot")
     yield(get_tree().create_timer(.7), "timeout")
     carrot.queue_free()
+    
+func test_assert_corn_take_damage():
+    var corn = ENEMY_CORN.instance()
+    add_child(corn)
+    assert_enemy_take_damage(corn, "Corn")
+    yield(get_tree().create_timer(.7), "timeout")
+    corn.queue_free()
+
+func test_assert_cabbage_take_damage():
+    var cabbage = ENEMY_CABBAGE.instance()
+    add_child(cabbage)
+    assert_enemy_take_damage(cabbage, "Cabbage")
+    yield(get_tree().create_timer(.7), "timeout")
+    cabbage.queue_free()
+
+func test_assert_cauliflower_take_damage():
+    var cauliflower = ENEMY_CAULIFLOWER.instance()
+    add_child(cauliflower)
+    assert_enemy_take_damage(cauliflower, "Cauliflower")
+    yield(get_tree().create_timer(.7), "timeout")
+    cauliflower.queue_free()
 
 func test_assert_spike_take_damage():
     var spike = ENEMY_SPIKE.instance()
