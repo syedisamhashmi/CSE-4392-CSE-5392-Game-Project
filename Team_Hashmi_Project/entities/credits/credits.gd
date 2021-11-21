@@ -153,7 +153,7 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "Natraj Hullikunte", "type": "t"},
-        {"txt":"Level 2 ramp tile", "type": "c"},
+        {"txt":"        - Level 2 ramp tile", "type": "s"},
     ],
     [
         {"txt": "", "type": "t"},
