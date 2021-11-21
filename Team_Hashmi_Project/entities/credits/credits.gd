@@ -139,24 +139,15 @@ var credits = [
         {"txt":"        - Level 1 Tilemap", "type": "s"},
         {"txt":"        - Banana Blaster", "type": "s"},
         {"txt":"        - BFG9000", "type": "s"},
+
+        {"txt":"Damage Effect Shader", "type": "c"},
+        
     ],[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "Balamurale Balusamy Siva", "type": "t"},
-        #TODO: Balamurale Balusamy Siva
-    ],[
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "Natraj Hullikunte", "type": "t"},
-        #TODO: Natraj Hullikunte
-    ],[
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "Sundeep Kumar Gurrapusala", "type": "t"},
-        #TODO: Sundeep Kumar Gurrapusala
+        {"txt":"        - Add a background to the main menu", "type": "s"},
     ],
     [
         {"txt": "", "type": "t"},
