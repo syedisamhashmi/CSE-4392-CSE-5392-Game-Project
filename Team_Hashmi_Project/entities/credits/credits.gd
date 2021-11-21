@@ -107,7 +107,8 @@ var credits = [
         {"txt":"        - Spike Obstacles", "type": "s"},
         {"txt":"        - Destructible Tiles", "type": "s"},
         
-        {"txt":"Level Design Tools", "type": "c"},
+        {"txt":"Level Design Process and Organization", "type": "c"},
+        {"txt":"Level 2 Design", "type": "c"},
 
         {"txt":"Unit Tests", "type": "c"},
         {"txt":"        - Global Tests", "type": "s"},
@@ -139,7 +140,6 @@ var credits = [
         {"txt":"        - Level 1 Tilemap", "type": "s"},
         {"txt":"        - Banana Blaster", "type": "s"},
         {"txt":"        - BFG9000", "type": "s"},
-
         {"txt":"Damage Effect Shader", "type": "c"},
         
     ],[
@@ -148,6 +148,12 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "Balamurale Balusamy Siva", "type": "t"},
         {"txt":"        - Add a background to the main menu", "type": "s"},
+    ],[
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "", "type": "t"},
+        {"txt": "Natraj Hullikunte", "type": "t"},
+        {"txt":"Level 2 ramp tile", "type": "c"},
     ],
     [
         {"txt": "", "type": "t"},
