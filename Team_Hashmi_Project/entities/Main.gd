@@ -10,8 +10,7 @@ var I_AM_BANANA_INCARNATE = preload("res://assets/images/Menu/difficulties/IAmBa
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
-    var root = get_tree().get_root()
-    Utils.current_scene = root.get_child(root.get_child_count() - 1)
+    Utils.current_scene = self
     PlayerData.saveSlot = 0
     PlayerData.savedGame = PlayerSave.init(1)
     PlayerData.playerStats = PlayerStats.init()

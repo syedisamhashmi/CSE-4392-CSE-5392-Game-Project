@@ -7,7 +7,8 @@ export var id: String = "-1"
 # warning-ignore:unused_class_variable
 export(EntityTypeEnums.ENEMY_TYPE) var type = EntityTypeEnums.ENEMY_TYPE.NONE
 export(EntityTypeEnums.PICKUP_TYPE) var itemDroptype = EntityTypeEnums.PICKUP_TYPE.NONE
-
+export(AudioStream) var onDeathPlaySong: AudioStream
+var songTriggered = false
 export var alreadyDroppedItem: bool = false
 # warning-ignore:unused_class_variable
 export var dropsOnDifficulties =  {
@@ -89,6 +90,7 @@ func updateEnemyDetails(_id):
     enemyDetails.alreadyDroppedItem = self.alreadyDroppedItem
     enemyDetails.dropsOnDifficulties = self.dropsOnDifficulties
     enemyDetails.itemDroptype = self.itemDroptype
+    enemyDetails.songTriggered = self.songTriggered
     if ("deployed" in self):
         enemyDetails.deployed = self.deployed
     Signals.emit_signal("update_enemy", enemyDetails)
@@ -96,6 +98,10 @@ func updateEnemyDetails(_id):
 
 func checkAlive():
     if (health <= 0):
+        if !songTriggered:
+            if self.onDeathPlaySong != null:
+                Signals.emit_signal("music_trigger", self.id, onDeathPlaySong)
+                songTriggered = true
         if (!alreadyDroppedItem):
             if dropsOnDifficulties.get(Strings.DIFFICULTIES_STR[PlayerData.savedGame.difficulty]):
                 if (itemDroptype == null or itemDroptype == EntityTypeEnums.PICKUP_TYPE.NONE):

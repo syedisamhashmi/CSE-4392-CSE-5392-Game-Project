@@ -20,12 +20,14 @@ var playerMoveSpeed         : float = PlayerDefaults.PLAYER_MOVE_SPEED
 var playerJumpHeight        : float = PlayerDefaults.PLAYER_JUMP_HEIGHT
 var gasMaskUnlocked         : bool  = false
 var spikeArmorUnlocked      : bool  = false
-var levelNum                : int   = 0
+# warning-ignore:unused_class_variable
+var levelNum                : int   = 1
 var retrievedPickups        : Array = []
 var completedTriggers       : Array = []
 var enemiesData             : Dictionary = {}
 var playerPosX              : float = -9999
 var playerPosY              : float = -9999
+var currSong                : String = ""
 
 func init(_difficulty: int = -1):
     if difficulty == -1:
@@ -46,11 +48,12 @@ func init(_difficulty: int = -1):
     playerJumpHeight        = PlayerDefaults.PLAYER_JUMP_HEIGHT
     gasMaskUnlocked         = false
     spikeArmorUnlocked      = false
-    levelNum                = 0
+    levelNum                = 1
     retrievedPickups        = []
     completedTriggers       = []
     enemiesData             = {}
     playerPosX              = -9999
     playerPosY              = -9999
+    currSong                = ""
     return self
 

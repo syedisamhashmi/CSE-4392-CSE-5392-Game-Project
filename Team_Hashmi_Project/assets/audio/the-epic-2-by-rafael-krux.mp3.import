@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/the-epic-2-by-rafael-krux.mp3-af9b1ea9928912ee5b5eae1c147bedb3.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/the-epic-2-by-rafael-krux.mp3"
+dest_files=[ "res://.import/the-epic-2-by-rafael-krux.mp3-af9b1ea9928912ee5b5eae1c147bedb3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
