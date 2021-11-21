@@ -182,33 +182,13 @@ func test_assert_potato_take_damage():
     yield(get_tree().create_timer(.7), "timeout")
     potato.queue_free()
 
+
 func test_assert_carrot_take_damage():
     var carrot = ENEMY_CARROT.instance()
     add_child(carrot)
     assert_enemy_take_damage(carrot, "Carrot")
     yield(get_tree().create_timer(.7), "timeout")
     carrot.queue_free()
-
-func test_assert_corn_take_damage():
-    var corn = ENEMY_CORN.instance()
-    add_child(corn)
-    assert_enemy_take_damage(corn, "corn")
-    yield(get_tree().create_timer(.7), "timeout")
-    corn.queue_free()
-    
-func test_assert_cabbage_take_damage():
-    var cabbage = ENEMY_CABBAGE.instance()
-    add_child(cabbage)
-    assert_enemy_take_damage(cabbage, "Cabbage")
-    yield(get_tree().create_timer(.7), "timeout")
-    cabbage.queue_free()
-
-func test_assert_cauliflower_take_damage():
-    var cauliflower = ENEMY_CAULIFLOWER.instance()
-    add_child(cauliflower)
-    assert_enemy_take_damage(cauliflower,"cauliflower")
-    yield(get_tree().create_timer(.7), "timeout")
-    cauliflower.queue_free()
 
 func test_assert_spike_take_damage():
     var spike = ENEMY_SPIKE.instance()
