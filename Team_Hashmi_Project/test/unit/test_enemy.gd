@@ -6,6 +6,7 @@ var ENEMY_RADDISH         = preload("res://entities/enemies/raddish/raddish.tscn
 var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
 var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
 var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
+var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflower.tscn")
 var ENEMY_CORN            = preload("res://entities/enemies/cabbage/cabbage.tscn")
@@ -38,7 +39,8 @@ func test_assert_enemies_proper_types():
     var spikes     = ENEMY_SPIKE.instance()
     var broccoli   = ENEMY_BROCCOLI.instance()
     var baby_onion = ENEMY_BABY_ONION.instance()
-    var potato     = ENEMY_POTATO.instance()	
+    var potato     = ENEMY_POTATO.instance()
+    var carrot     = ENEMY_CARROT.instance()
     var cauliflower = ENEMY_CAULIFLOWER.instance()
     var corn        = ENEMY_CORN.instance()
     var cabbage     =ENEMY_CABBAGE.instance()
@@ -49,10 +51,10 @@ func test_assert_enemies_proper_types():
     assert_eq(broccoli.type, EntityTypeEnums.ENEMY_TYPE.BROCCOLI, "Broccoli type should be set properly")
     assert_eq(baby_onion.type, EntityTypeEnums.ENEMY_TYPE.BABY_ONION, "Baby Onion type should be set properly")
     assert_eq(potato.type, EntityTypeEnums.ENEMY_TYPE.POTATO, "Potato type should be set properly")
+    assert_eq(carrot.type, EntityTypeEnums.ENEMY_TYPE.CARROT, "Carrot type should be set properly")
     assert_eq(cauliflower.type, EntityTypeEnums.ENEMY_TYPE.CAULIFLOWER, "Cauliflower type should be set properly")
     assert_eq(corn.type, EntityTypeEnums.ENEMY_TYPE.CORN, "Corn type should be set properly")
     assert_eq(cabbage.type, EntityTypeEnums.ENEMY_TYPE.CABBAGE, "Cabbage type should be set properly")
-    
     onion.queue_free()
     pineapple.queue_free()
     raddish.queue_free()
@@ -60,6 +62,7 @@ func test_assert_enemies_proper_types():
     broccoli.queue_free()
     baby_onion.queue_free()
     potato.queue_free()
+    carrot.queue_free()
     yield(get_tree().create_timer(1), "timeout")
 
 func test_assert_enemies_defaults():
@@ -71,6 +74,7 @@ func test_assert_enemies_defaults():
     var broccoli   = ENEMY_BROCCOLI.instance()
     var baby_onion = ENEMY_BABY_ONION.instance()
     var potato     = ENEMY_POTATO.instance()
+    var carrot     = ENEMY_CARROT.instance()
     var cauliflower = ENEMY_CAULIFLOWER.instance()
     var corn        = ENEMY_CORN.instance()
     var cabbage     =ENEMY_CABBAGE.instance()
@@ -81,10 +85,10 @@ func test_assert_enemies_defaults():
     assert_eq(broccoli.get_node("Image").get_animation(), broccoli.IDLE, "Broccoli should be idle")
     assert_eq(baby_onion.get_node("Image").get_animation(), baby_onion.IDLE, "Baby Onion should be idle")
     assert_eq(potato.get_node("Image").get_animation(), potato.IDLE, "Potato should be idle")
+    assert_eq(carrot.get_node("Image").get_animation(), carrot.IDLE, "Carrot should be idle")
     assert_eq(cauliflower.get_node("Image").get_animation(), cauliflower.IDLE, "Cauliflower should be idle")
     assert_eq(corn.get_node("Image").get_animation(), corn.IDLE, "Corn should be idle")
     assert_eq(cabbage.get_node("Image").get_animation(), cabbage.IDLE, "Cabbage should be idle")
-    
     
     assert_eq(onion.get_node("Image").playing, false, "Onion image should not be playing ")
     assert_eq(pineapple.get_node("Image").playing, false, "Pineapple image should not be playing")
@@ -93,10 +97,10 @@ func test_assert_enemies_defaults():
     assert_eq(broccoli.get_node("Image").playing, false, "Broccoli image should not be playing")
     assert_eq(baby_onion.get_node("Image").playing, false, "Baby Onion image should not be playing")
     assert_eq(potato.get_node("Image").playing, false, "Potato image should not be playing")
+    assert_eq(carrot.get_node("Image").playing, false, "Carrot image should not be playing")
     assert_eq(corn.get_node("Image").playing, false, "Corn image should not be playing")
     assert_eq(cabbage.get_node("Image").playing, false, "Cabbage image should not be playing")
     assert_eq(cauliflower.get_node("Image").playing, false, "Cauliflower image should not be playing")
-    
     assert_eq(onion.get_node("Image").get_frame(), 0, "Onion image should be on frame 0")
     assert_eq(pineapple.get_node("Image").get_frame(), 0, "Pineapple image should be on frame 0")
     assert_eq(raddish.get_node("Image").get_frame(), 0, "Raddish image should be on frame 0")
@@ -104,10 +108,10 @@ func test_assert_enemies_defaults():
     assert_eq(broccoli.get_node("Image").get_frame(), 0, "Broccoli image should be on frame 0")
     assert_eq(baby_onion.get_node("Image").get_frame(), 0, "Baby Onion image should be on frame 0")
     assert_eq(potato.get_node("Image").get_frame(), 0, "Potato image should be on frame 0")
+    assert_eq(carrot.get_node("Image").get_frame(), 0, "Carrot image should be on frame 0")
     assert_eq(corn.get_node("Image").get_frame(), 0, "Corn image should be on frame 0")
     assert_eq(cabbage.get_node("Image").get_frame(), 0, "Cabbage image should be on frame 0")
     assert_eq(cauliflower.get_node("Image").get_frame(), 0, "Cauliflower image should be on frame 0")
-    
     onion.queue_free()
     pineapple.queue_free()
     raddish.queue_free()
@@ -115,6 +119,7 @@ func test_assert_enemies_defaults():
     broccoli.queue_free()
     baby_onion.queue_free()
     potato.queue_free()
+    carrot.queue_free()
     corn.queue_free()
     cauliflower.queue_free()
     cabbage.queue_free()
@@ -128,6 +133,7 @@ func test_assert_pause_damage_ignore():
     test_assert_broccoli_take_damage()
     test_assert_baby_onion_take_damage()
     test_assert_potato_take_damage()
+    test_assert_carrot_take_damage()
     test_assert_spike_take_damage()
     test_assert_corn_take_damage()
     test_assert_cabbage_take_damage()
@@ -175,6 +181,13 @@ func test_assert_potato_take_damage():
     assert_enemy_take_damage(potato, "Potato")
     yield(get_tree().create_timer(.7), "timeout")
     potato.queue_free()
+
+func test_assert_carrot_take_damage():
+    var carrot = ENEMY_CARROT.instance()
+    add_child(carrot)
+    assert_enemy_take_damage(carrot, "Carrot")
+    yield(get_tree().create_timer(.7), "timeout")
+    carrot.queue_free()
 
 func test_assert_corn_take_damage():
     var corn = ENEMY_CORN.instance()

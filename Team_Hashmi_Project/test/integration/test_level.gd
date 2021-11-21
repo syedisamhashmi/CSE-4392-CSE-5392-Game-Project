@@ -2,7 +2,7 @@ extends "res://addons/gut/test.gd"
 
 var LEVEL = preload("res://entities/Main.tscn")
 
-var levels = [0, 1]
+var levels = [1, 2]
 
 func before_each():
     Globals.TESTS = false
@@ -94,6 +94,14 @@ func assert_level_okay(levelId):
             fail_test(enemy.id + " rotDeg should not be null")
         if !("type" in enemy):
             fail_test(enemy.id + " type should not be null")
+        if (
+            "onDeathPlaySong" in enemy and
+            (
+                enemy.onDeathPlaySong == null or
+                enemy.onDeathPlaySong == ""
+            )
+        ):
+            fail_test(enemy.id + " onDeathPlaySong exists in data but has no value")
         if enemy.type == EntityTypeEnums.ENEMY_TYPE.NONE:
             fail_test("Enemy Type not set for " + enemy.id)
         if "deployed" in enemy:

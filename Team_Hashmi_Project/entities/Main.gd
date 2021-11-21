@@ -10,8 +10,7 @@ var I_AM_BANANA_INCARNATE = preload("res://assets/images/Menu/difficulties/IAmBa
 var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
-    var root = get_tree().get_root()
-    Utils.current_scene = root.get_child(root.get_child_count() - 1)
+    Utils.current_scene = self
     PlayerData.saveSlot = 0
     PlayerData.savedGame = PlayerSave.init(1)
     PlayerData.playerStats = PlayerStats.init()
@@ -108,8 +107,10 @@ func _on_OverwriteGame_confirmed(newGame: bool) -> void:
     else:
         Globals.load_game()
         Globals.load_stats()
-    Utils.goto_scene("res://entities/Main.tscn")
-    
+    if newGame:
+        Utils.goto_scene("res://entities/intro-scene/intro-scene.tscn")
+    else:
+        Utils.goto_scene("res://entities/Main.tscn")
 func _on_OverwriteGame_hide() -> void:
     $NewGameCreation/Start.set_disabled(false)
     $NewGameCreation/BackToMainMenu.set_disabled(false)
