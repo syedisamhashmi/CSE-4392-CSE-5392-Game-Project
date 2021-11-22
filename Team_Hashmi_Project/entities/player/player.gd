@@ -245,8 +245,6 @@ func _input(event: InputEvent) -> void:
         ):
             if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
                 return
-            save.bananaThrowAmmo -= 1
-            Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
             $RightArm.set_animation(BANANA_THROW)
         if (
             save.currentWeapon == Weapons.BFG9000 and
@@ -355,6 +353,8 @@ func spawnPlayerProjectile() -> void:
         return
     # Increase player data for shots fired
     stats.bananasThrown += 1
+    save.bananaThrowAmmo -= 1
+    Signals.emit_signal("player_ammo_changed", save.bananaThrowAmmo)
     var projectile_instance = PLAYER_PROJECTILE.instance()
     var projectile_speed_to_use = projectile_speed
     # Add some of the players velocity to the projectile
@@ -476,6 +476,8 @@ func _ready() -> void:
     Signals.connect("player_weapon_changed", self, "player_weapon_changed")
 
 func next_level_trigger(levelId):
+    if levelId == 9999:
+        Globals.showPost = true
     save.levelNum = levelId
     save.playerPosX = -9999
     save.playerPosY = -9999
@@ -622,6 +624,7 @@ func _on_RightArm_frame_changed() -> void:
     var currFrame: int = $RightArm.get_frame()
     if $RightArm.get_animation() == BANANA_THROW and currFrame == 3:
         spawnPlayerProjectile()
+        return
     match lastDir:
         PlayerDirection.RIGHT:
             # If the right arm is punching, and 
