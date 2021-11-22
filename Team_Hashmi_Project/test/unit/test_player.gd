@@ -132,9 +132,9 @@ func test_assert_player_throw_ammo_change():
     ev.scancode = KEY_KP_ENTER
     ev.pressed = true
     get_tree().input_event(ev)
-    assert_signal_emitted_with_parameters(Signals, "player_ammo_changed", [9])
     # Wait until banana is actually thrown.
     yield(get_tree().create_timer(.5), "timeout")
+    assert_signal_emitted_with_parameters(Signals, "player_ammo_changed", [9])
     assert_eq(player.stats.bananasThrown, 1, "Player stats should reflect banana thrown")
     
     player.queue_free()
