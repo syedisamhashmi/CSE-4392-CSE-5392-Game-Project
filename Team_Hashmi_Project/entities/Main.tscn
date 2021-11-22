@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/enemies/cauliflower/cauliflower.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://theme.tres" type="Theme" id=5]
 [ext_resource path="res://entities/Level.gd" type="Script" id=6]
+[ext_resource path="res://entities/enemies/corn/corn.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/enemies/cabbage/cabbage.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
@@ -212,6 +215,15 @@ margin_top = 525.0
 margin_right = 967.0
 margin_bottom = 560.0
 text = "Resume"
+
+[node name="cauliflower" parent="." instance=ExtResource( 3 )]
+position = Vector2( 94.5136, -35.0666 )
+
+[node name="corn" parent="." instance=ExtResource( 7 )]
+position = Vector2( 658.534, -28.6259 )
+
+[node name="cabbage" parent="." instance=ExtResource( 8 )]
+position = Vector2( 467.154, -31.3862 )
 
 [connection signal="finished" from="Banana/LevelMusic" to="." method="_on_LevelMusic_finished"]
 [connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
