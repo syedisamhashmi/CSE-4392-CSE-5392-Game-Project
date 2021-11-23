@@ -282,7 +282,7 @@ id = "sp29"
 deployed = true
 
 [node name="carrot2" parent="Enemies" instance=ExtResource( 13 )]
-position = Vector2( 8532.54, 341.068 )
+position = Vector2( 8672.55, 336.825 )
 scale = Vector2( 9, 9 )
 id = "c1"
 itemDroptype = 10
