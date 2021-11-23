@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/travel-through-the-universe-9102.mp3-fce666b45acdf6a9783bc0c226e23d5b.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/travel-through-the-universe-9102.mp3"
+dest_files=[ "res://.import/travel-through-the-universe-9102.mp3-fce666b45acdf6a9783bc0c226e23d5b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

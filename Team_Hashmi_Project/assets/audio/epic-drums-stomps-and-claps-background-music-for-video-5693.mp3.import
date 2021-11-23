@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/epic-drums-stomps-and-claps-background-music-for-video-5693.mp3-4b6f22db93bf4e6e4cc08c79152d7a8e.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/epic-drums-stomps-and-claps-background-music-for-video-5693.mp3"
+dest_files=[ "res://.import/epic-drums-stomps-and-claps-background-music-for-video-5693.mp3-4b6f22db93bf4e6e4cc08c79152d7a8e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
