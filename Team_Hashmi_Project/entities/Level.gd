@@ -18,6 +18,7 @@ var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.ts
 var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
 var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
+var ENEMY_BANANA_DUDE     = preload("res://entities/enemies/banana-person/banana-person.tscn")
 # Triggers
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
@@ -198,6 +199,10 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CARROT:
                 newEnemy = ENEMY_CARROT.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CARROT
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BANANA_MAN:
+                newEnemy = ENEMY_BANANA_DUDE.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BANANA_MAN
+                
             else:
                 continue
             newEnemy.health = enemyData.health

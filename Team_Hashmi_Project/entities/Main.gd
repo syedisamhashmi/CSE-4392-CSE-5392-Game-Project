@@ -107,8 +107,10 @@ func _on_OverwriteGame_confirmed(newGame: bool) -> void:
     else:
         Globals.load_game()
         Globals.load_stats()
-    Utils.goto_scene("res://entities/Main.tscn")
-    
+    if newGame:
+        Utils.goto_scene("res://entities/intro-scene/intro-scene.tscn")
+    else:
+        Utils.goto_scene("res://entities/Main.tscn")
 func _on_OverwriteGame_hide() -> void:
     $NewGameCreation/Start.set_disabled(false)
     $NewGameCreation/BackToMainMenu.set_disabled(false)
