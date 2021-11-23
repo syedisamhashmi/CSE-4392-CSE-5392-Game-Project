@@ -59,15 +59,27 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="grocery-store-shelf" type="Sprite" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2( 1992, -40 )
-scale = Vector2( 15.5778, 15.5778 )
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+margin_left = 1597.0
+margin_top = -525.0
+margin_right = 2382.0
+margin_bottom = 433.0
 texture = ExtResource( 17 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="grocery-store-shelf2" type="Sprite" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2( 5248.81, -40 )
-scale = Vector2( 15.5778, 15.5778 )
+[node name="TextureRect2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+margin_left = 4870.0
+margin_top = -523.0
+margin_right = 5659.0
+margin_bottom = 419.0
 texture = ExtResource( 17 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.8, 0.8 )
@@ -75,20 +87,38 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="grocery-store-banana-stand" type="Sprite" parent="ParallaxBackground/ParallaxLayer3"]
-position = Vector2( -552, 150 )
-scale = Vector2( 15, 15 )
-texture = ExtResource( 16 )
-
-[node name="grocery-store-pineapple-stand" type="Sprite" parent="ParallaxBackground/ParallaxLayer3"]
-position = Vector2( 4000, 150 )
-scale = Vector2( 15, 15 )
+[node name="TextureRect3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = 3605.0
+margin_top = -254.0
+margin_right = 4407.0
+margin_bottom = 548.0
 texture = ExtResource( 19 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="grocery-store-tomato-stand" type="Sprite" parent="ParallaxBackground/ParallaxLayer3"]
-position = Vector2( 2000, 175 )
-scale = Vector2( 15, 15 )
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = -952.0
+margin_top = -252.0
+margin_right = -141.0
+margin_bottom = 559.0
+texture = ExtResource( 16 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+margin_left = 1598.0
+margin_top = -187.414
+margin_right = 2385.0
+margin_bottom = 526.586
 texture = ExtResource( 18 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="World" parent="." instance=ExtResource( 1 )]
 position = Vector2( 273.918, 422.25 )
@@ -294,6 +324,7 @@ baseHealth = 30
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 
 [node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
+stream = ExtResource( 15 )
 volume_db = -10.0
 autoplay = true
 
