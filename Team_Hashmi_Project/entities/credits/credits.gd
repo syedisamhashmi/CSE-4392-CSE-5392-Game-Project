@@ -107,7 +107,8 @@ var credits = [
         {"txt":"        - Spike Obstacles", "type": "s"},
         {"txt":"        - Destructible Tiles", "type": "s"},
         
-        {"txt":"Level Design Tools", "type": "c"},
+        {"txt":"Level Design Process and Organization", "type": "c"},
+        {"txt":"Level 2 Design", "type": "c"},
 
         {"txt":"Unit Tests", "type": "c"},
         {"txt":"        - Global Tests", "type": "s"},
@@ -139,24 +140,20 @@ var credits = [
         {"txt":"        - Level 1 Tilemap", "type": "s"},
         {"txt":"        - Banana Blaster", "type": "s"},
         {"txt":"        - BFG9000", "type": "s"},
+        {"txt":"Damage Effect Shader", "type": "c"},
+        
     ],[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "Balamurale Balusamy Siva", "type": "t"},
-        #TODO: Balamurale Balusamy Siva
+        {"txt":"        - Add a background to the main menu", "type": "s"},
     ],[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
         {"txt": "Natraj Hullikunte", "type": "t"},
-        #TODO: Natraj Hullikunte
-    ],[
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "", "type": "t"},
-        {"txt": "Sundeep Kumar Gurrapusala", "type": "t"},
-        #TODO: Sundeep Kumar Gurrapusala
+        {"txt":"        - Level 2 ramp tile", "type": "s"},
     ],
     [
         {"txt": "", "type": "t"},
@@ -207,6 +204,10 @@ var credits = [
         {"txt": "        opengameart.org/content/energy-icon", "type": "s"},
         {"txt": "        Creative Commons - BY 4.0", "type": "s"},
         {"txt": "        Attribution: https://opengameart.org/users/santoniche", "type": "s"},
+        {"txt": "BananaMan.png", "type": "s"},
+        {"txt": "        https://hildemuz.itch.io/banana-man", "type": "s"},
+        {"txt": "        You can use it in your games freely if you download from here", "type": "s"},
+        {"txt": "        and provide information about me in your game.", "type": "s"},
         
         {"txt": "Pixel Art Vegetable Monsters Sprite Pack", "type": "s"},
         {"txt": "        elthen.itch.io/2d-pixel-art-vegetable-monsters-sprite-pack", "type": "s"},
@@ -283,6 +284,7 @@ func _process(delta):
 func _ready():
     Utils.current_scene = self
     Globals.load_stats()
+    Globals.load_game()
     var stats = PlayerData.playerStats
     $stats/punchesThrownCount.set_text(str(stats.punchesThrown))
     $stats/bananasThrownCount.set_text(str(stats.bananasThrown))
@@ -351,4 +353,7 @@ func _unhandled_input(event):
 
 
 func _on_exitToMenuButton_button_up() -> void:
-    Utils.goto_scene("res://entities/MainMenu.tscn")
+    if Globals.showPost == true:
+        Utils.goto_scene("res://entities/post-credits/post-credits.tscn")
+    else:
+        Utils.goto_scene("res://entities/MainMenu.tscn")
