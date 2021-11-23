@@ -187,6 +187,16 @@ var credits = [
         {"txt": "         However, linking back is greatly appreciated.", "type": "s"},
         {"txt": "         You can use the following text:", "type": "s"},
         {"txt": "         Music: https://www.chosic.com/free-music/all/", "type": "s"},
+        {"txt": "Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3", "type": "s"},
+        {"txt": "         You are free to use this music in your projects with no required crediting.", "type": "s"},
+        {"txt": "         However, linking back is greatly appreciated.", "type": "s"},
+        {"txt": "         You can use the following text:", "type": "s"},
+        {"txt": "         Music: https://www.chosic.com/free-music/all/", "type": "s"},
+        {"txt": "Komiku_-_02_-_Boss_4__Cobblestone_in_their_face.mp3", "type": "s"},
+        {"txt": "         You are free to use this music in your projects with no required crediting.", "type": "s"},
+        {"txt": "         However, linking back is greatly appreciated.", "type": "s"},
+        {"txt": "         You can use the following text:", "type": "s"},
+        {"txt": "         Music: https://www.chosic.com/free-music/all/", "type": "s"},
         
                 
         {"txt": "Images", "type": "c"},
