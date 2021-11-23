@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
@@ -14,12 +14,13 @@
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-background.png" type="Texture" id=12]
 [ext_resource path="res://entities/enemies/carrot/carrot.tscn" type="PackedScene" id=13]
 [ext_resource path="res://entities/enemies/potato/potato.tscn" type="PackedScene" id=14]
+[ext_resource path="res://assets/audio/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3" type="AudioStream" id=15]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-banana-stand.png" type="Texture" id=16]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-shelf.png" type="Texture" id=17]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-tomato-stand.png" type="Texture" id=18]
 [ext_resource path="res://assets/images/backgrounds/level_1/grocery-store-pineapple-stand.png" type="Texture" id=19]
 [ext_resource path="res://entities/pickup_items/health.tscn" type="PackedScene" id=20]
-[ext_resource path="res://assets/audio/travel-through-the-universe-9102.mp3" type="AudioStream" id=21]
+[ext_resource path="res://assets/audio/Komiku_-_02_-_Boss_4__Cobblestone_in_their_face.mp3" type="AudioStream" id=21]
 [ext_resource path="res://entities/triggers/music-trigger/music-trigger.tscn" type="PackedScene" id=22]
 [ext_resource path="res://entities/enemies/big_onion/big_onion.tscn" type="PackedScene" id=24]
 
@@ -100,6 +101,7 @@ z_index = -1
 [node name="big_onion" parent="Enemies" instance=ExtResource( 24 )]
 position = Vector2( 17799, -207 )
 id = "bo0"
+onDeathPlaySong = ExtResource( 15 )
 baseHealth = 110
 
 [node name="carrot" parent="Enemies" instance=ExtResource( 13 )]
@@ -254,6 +256,7 @@ position = Vector2( 8532.54, 341.068 )
 scale = Vector2( 9, 9 )
 id = "c1"
 itemDroptype = 10
+onDeathPlaySong = ExtResource( 15 )
 dropsOnDifficulties = {
 "Bruise Me Plenty": true,
 "Can I Play, Daddy?": true,
@@ -291,7 +294,6 @@ baseHealth = 30
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 
 [node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
-stream = ExtResource( 21 )
 volume_db = -10.0
 autoplay = true
 
@@ -307,6 +309,14 @@ id = "b0"
 [node name="health" parent="Pickups" instance=ExtResource( 20 )]
 position = Vector2( 8512, -304 )
 id = "h0"
+
+[node name="health5" parent="Pickups" instance=ExtResource( 20 )]
+position = Vector2( 8511.37, -379.595 )
+id = "h4"
+
+[node name="health9" parent="Pickups" instance=ExtResource( 20 )]
+position = Vector2( 8513.26, -235.964 )
+id = "h8"
 
 [node name="banana_item6" parent="Pickups" instance=ExtResource( 4 )]
 position = Vector2( 7918.27, 333.421 )
@@ -325,7 +335,7 @@ position = Vector2( 9648.54, -50.1189 )
 id = "h3"
 
 [node name="health6" parent="Pickups" instance=ExtResource( 20 )]
-position = Vector2( 16368, -440 )
+position = Vector2( 16374.7, -443.367 )
 id = "h5"
 
 [node name="health7" parent="Pickups" instance=ExtResource( 20 )]
@@ -343,6 +353,10 @@ id = "bt1"
 [node name="banana_item3" parent="Pickups" instance=ExtResource( 4 )]
 position = Vector2( 15247.7, -369.558 )
 id = "bt2"
+
+[node name="health10" parent="Pickups" instance=ExtResource( 20 )]
+position = Vector2( 12339.7, -579.765 )
+id = "h9"
 
 [node name="Triggers" type="Node2D" parent="."]
 __meta__ = {
@@ -389,10 +403,12 @@ dialogText = "Use A and D to move Left and Right!"
 position = Vector2( 8496, -536 )
 scale = Vector2( 4.12004, 0.239998 )
 id = "mt0"
+song = ExtResource( 21 )
 
 [node name="musicTrigger2" parent="Triggers" instance=ExtResource( 22 )]
 position = Vector2( 16760, -480 )
 id = "mt1"
+song = ExtResource( 21 )
 
 [node name="checkpointTrigger" parent="Triggers" instance=ExtResource( 11 )]
 position = Vector2( 8099.61, -701.29 )
