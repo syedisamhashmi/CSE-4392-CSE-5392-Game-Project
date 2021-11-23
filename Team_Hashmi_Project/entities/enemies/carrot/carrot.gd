@@ -39,7 +39,7 @@ func _ready() -> void:
     if health == 9999:
         health = baseHealth
         maxHealth = baseHealth
-        type = EntityTypeEnums.ENEMY_TYPE.RADDISH
+        type = EntityTypeEnums.ENEMY_TYPE.CARROT
         health += (HEALTH_HANDICAP * difficulty)
         maxHealth += (HEALTH_HANDICAP * difficulty)
     MOVEMENT_SPEED += MOVEMENT_SPEED_HANDICAP * (difficulty - 1)
