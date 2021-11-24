@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/audio/mixkit-player-jumping-in-a-video-game-2043.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/audio/zapsplat_cartoon_frog_jump_26526.wav" type="AudioStream" id=1]
 
 [node name="Jump" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )

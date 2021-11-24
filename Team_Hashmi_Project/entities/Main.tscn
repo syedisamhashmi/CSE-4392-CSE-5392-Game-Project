@@ -2,7 +2,7 @@
 
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/audio/background_music.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio/music_zapsplat_game_music_action_fast_paced_elelctro_sonic_011.mp3" type="AudioStream" id=3]
 [ext_resource path="res://assets/fonts/AreaKilometer50-ow3xB.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://theme.tres" type="Theme" id=5]
 [ext_resource path="res://entities/Level.gd" type="Script" id=6]
@@ -54,6 +54,10 @@ position = Vector2( 273.918, 422.25 )
 z_index = -1
 
 [node name="Banana" parent="." instance=ExtResource( 2 )]
+
+[node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
+stream = ExtResource( 3 )
+autoplay = true
 
 [node name="Pickups" type="Node2D" parent="."]
 __meta__ = {
@@ -211,10 +215,7 @@ margin_right = 967.0
 margin_bottom = 560.0
 text = "Resume"
 
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 3 )
-autoplay = true
-
+[connection signal="finished" from="Banana/LevelMusic" to="." method="_on_LevelMusic_finished"]
 [connection signal="confirmed" from="HUD/Dialog" to="." method="_on_Dialog_confirmed"]
 [connection signal="hide" from="HUD/Dialog" to="." method="_on_Dialog_hide"]
 [connection signal="popup_hide" from="HUD/Dialog" to="." method="_on_Dialog_popup_hide"]

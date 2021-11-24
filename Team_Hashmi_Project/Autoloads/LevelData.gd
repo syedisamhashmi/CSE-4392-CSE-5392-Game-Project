@@ -22,7 +22,8 @@ var backgroundPosY: float = 0
 var backgroundSizeX: float = 0
 # warning-ignore:unused_class_variable
 var backgroundSizeY: float = 0
-
+# warning-ignore:unused_class_variable
+var levelMusic: String = ""
 # warning-ignore:unused_class_variable
 var layer2MotionScaleX: float = 0
 # warning-ignore:unused_class_variable

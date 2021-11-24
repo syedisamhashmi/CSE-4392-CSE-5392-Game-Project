@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/music_zapsplat_game_music_action_fast_paced_elelctro_sonic_011.mp3-74c1975554ff904782b3df24b2a8de18.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music_zapsplat_game_music_action_fast_paced_elelctro_sonic_011.mp3"
+dest_files=[ "res://.import/music_zapsplat_game_music_action_fast_paced_elelctro_sonic_011.mp3-74c1975554ff904782b3df24b2a8de18.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
