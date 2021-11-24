@@ -31,7 +31,7 @@ var credits = [
     ],
     [
         {"txt": "Team H for Hashmi", "type": "t"},
-        {"txt":"Best Times", "type": "c"},
+        {"txt":"Best Times - I am Banana Incarnate", "type": "c"},
         {"txt":"00:03:13.416 - Isam", "type": "s"},
         {"txt":"00:03:24.200 - Isam", "type": "s"},
         {"txt": "", "type": "t"},
