@@ -86,6 +86,7 @@ func _physics_process(delta: float) -> void:
         $LeftArm.playing = true
         $BananaImage.playing = true
         $RightArm.playing = true
+        stats.gameTime += delta
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
     # used to allow shorter jumps if jump button is released quickly
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
@@ -436,7 +437,6 @@ func _ready() -> void:
     Globals.load_stats()
     Globals.load_game()
     self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
-    
     if !self.has_node("save"):
         self.add_child(self.save, true)
     self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
@@ -481,6 +481,7 @@ func next_level_trigger(levelId):
     save.levelNum = levelId
     save.playerPosX = -9999
     save.playerPosY = -9999
+    save.currSong = ""
     quicksave()
     if levelId == 9999: #Credits has 'levelId' 9999 (not really a level but idc)
         Utils.goto_scene("res://entities/credits/credits.tscn")
@@ -547,22 +548,23 @@ func player_damage_dealt(amount):
 func setLoadedData() -> void:
     save = PlayerData.savedGame
     stats = PlayerData.playerStats
+    player_weapon_changed(save.currentWeapon)
     Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
     acceleration   = Vector2(save.playerMoveSpeed, 
                              save.playerJumpHeight)
 
 func quicksave(id = null) -> void:
+    if id != null:
+        save.completedTriggers.append(id)
+    PlayerData.playerStats = stats
+    Globals.save_stats()
     # Don't allow quicksave if they're dead... Why would you?
     # Or if they are on the credits, because.... well... no
     if save.playerHealth <= 0 || save.levelNum == 9999:
         return
-    if id != null:
-        save.completedTriggers.append(id)
     PlayerData.savedGame = save
-    PlayerData.playerStats = stats
     Globals.save_game()
-    Globals.save_stats()
 
 func handleArmAnimation() -> void:
     if !Globals.inGame:
