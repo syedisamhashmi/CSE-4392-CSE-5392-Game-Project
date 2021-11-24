@@ -76,10 +76,13 @@ func readMapData():
         var bgTextToUse = ImageTexture.new()
         bgImgToUse.lock()
         bgTextToUse.create_from_image(bgImgToUse, 0)
+        bgImgToUse.unlock()
         bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
         background.texture = bgTextToUse
         background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
     
+    for child in $ParallaxBackground/ParallaxLayer2.get_children():
+        child.queue_free()
     var layer2 = $ParallaxBackground/ParallaxLayer2
     layer2.motion_scale.x = levelData.layer2MotionScaleX
     layer2.motion_scale.y = levelData.layer2MotionScaleY
@@ -96,6 +99,8 @@ func readMapData():
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer2.call_deferred("add_child", newText)
         
+    for child in $ParallaxBackground/ParallaxLayer3.get_children():
+        child.queue_free()
     var layer3 = $ParallaxBackground/ParallaxLayer3
     layer3.motion_scale.x = levelData.layer3MotionScaleX
     layer3.motion_scale.y = levelData.layer3MotionScaleY
@@ -271,6 +276,8 @@ func readMapData():
             $Triggers.call_deferred("add_child", newTrigger)
 
     if levelData != null and levelData.spawners != null:
+        for child in $Spawners.get_children():
+            child.queue_free()
         for spawner in levelData.spawners:
             var toAdd
             if spawner.type == EntityTypeEnums.SPAWNER_TYPE.POISON:
