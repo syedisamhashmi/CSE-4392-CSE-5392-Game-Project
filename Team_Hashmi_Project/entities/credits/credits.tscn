@@ -63,15 +63,17 @@ __meta__ = {
 
 [node name="punchesThrown" type="Label" parent="stats"]
 margin_left = 48.0
+margin_top = 48.0
 margin_right = 256.0
-margin_bottom = 32.0
+margin_bottom = 80.0
 text = "Punches Thrown:"
 valign = 1
 
 [node name="punchesThrownCount" type="Label" parent="stats"]
-margin_left = 216.0
-margin_right = 344.0
-margin_bottom = 32.0
+margin_left = 210.0
+margin_top = 48.0
+margin_right = 338.0
+margin_bottom = 80.0
 text = "1234567890"
 valign = 1
 __meta__ = {
@@ -80,9 +82,9 @@ __meta__ = {
 
 [node name="bananaThrown" type="Label" parent="stats"]
 margin_left = 48.0
-margin_top = 64.0
+margin_top = 104.0
 margin_right = 256.0
-margin_bottom = 96.0
+margin_bottom = 136.0
 text = "Bananas Thrown:"
 valign = 1
 __meta__ = {
@@ -90,18 +92,18 @@ __meta__ = {
 }
 
 [node name="bananasThrownCount" type="Label" parent="stats"]
-margin_left = 216.0
-margin_top = 64.0
-margin_right = 344.0
-margin_bottom = 96.0
+margin_left = 212.0
+margin_top = 104.0
+margin_right = 340.0
+margin_bottom = 136.0
 text = "1234567890"
 valign = 1
 
 [node name="bfgShotsFired" type="Label" parent="stats"]
 margin_left = 48.0
-margin_top = 128.0
+margin_top = 160.0
 margin_right = 256.0
-margin_bottom = 160.0
+margin_bottom = 192.0
 text = "BFG9000 Shots Fired:"
 valign = 1
 __meta__ = {
@@ -109,10 +111,10 @@ __meta__ = {
 }
 
 [node name="bfgShotsFiredCount" type="Label" parent="stats"]
-margin_left = 248.0
-margin_top = 128.0
-margin_right = 376.0
-margin_bottom = 160.0
+margin_left = 249.0
+margin_top = 160.0
+margin_right = 377.0
+margin_bottom = 192.0
 text = "1234567890"
 valign = 1
 __meta__ = {
@@ -121,41 +123,41 @@ __meta__ = {
 
 [node name="jump" type="Label" parent="stats"]
 margin_left = 48.0
-margin_top = 192.0
+margin_top = 216.0
 margin_right = 256.0
-margin_bottom = 224.0
+margin_bottom = 248.0
 text = "Jump Count:"
 valign = 1
 
 [node name="jumpCount" type="Label" parent="stats"]
 margin_left = 168.0
-margin_top = 192.0
+margin_top = 216.0
 margin_right = 296.0
-margin_bottom = 224.0
+margin_bottom = 248.0
 text = "1234567890"
 valign = 1
 
 [node name="damageReceived" type="Label" parent="stats"]
 margin_left = 48.0
-margin_top = 256.0
+margin_top = 271.0
 margin_right = 256.0
-margin_bottom = 288.0
+margin_bottom = 303.0
 text = "Damage Received:"
 valign = 1
 
 [node name="damageReceivedCount" type="Label" parent="stats"]
 margin_left = 208.0
-margin_top = 256.0
+margin_top = 272.0
 margin_right = 336.0
-margin_bottom = 288.0
+margin_bottom = 304.0
 text = "1234567890"
 valign = 1
 
 [node name="damageDealt" type="Label" parent="stats"]
 margin_left = 48.0
-margin_top = 320.0
+margin_top = 327.0
 margin_right = 256.0
-margin_bottom = 352.0
+margin_bottom = 359.0
 text = "Damage Dealt:"
 valign = 1
 __meta__ = {
@@ -164,9 +166,9 @@ __meta__ = {
 
 [node name="damageDealtCount" type="Label" parent="stats"]
 margin_left = 184.0
-margin_top = 320.0
+margin_top = 328.0
 margin_right = 312.0
-margin_bottom = 352.0
+margin_bottom = 360.0
 text = "1234567890"
 valign = 1
 
@@ -186,6 +188,28 @@ margin_top = 384.0
 margin_right = 296.0
 margin_bottom = 404.0
 text = "1234567890"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gameTime" type="Label" parent="stats"]
+margin_left = 48.0
+margin_top = -9.0
+margin_right = 200.0
+margin_bottom = 23.0
+text = "Game Time:"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gameTimeCount" type="Label" parent="stats"]
+margin_left = 151.0
+margin_top = -8.0
+margin_right = 311.0
+margin_bottom = 25.0
+text = "59:59:59:999"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
