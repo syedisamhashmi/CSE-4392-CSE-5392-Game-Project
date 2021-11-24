@@ -42,6 +42,7 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_vertical_guides_": [  ]
 }
+IS_BUILDING = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -2108,7 +2109,7 @@ dropsOnDifficulties = {
 baseHealth = 200
 
 [node name="banana-dude4" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6642.91, -5044.82 )
+position = Vector2( 7323.84, -5044.82 )
 scale = Vector2( 2.51929, 2.51929 )
 id = "thankGodIDidAllTheWork"
 dropsOnDifficulties = {
@@ -2130,7 +2131,7 @@ dropsOnDifficulties = {
 }
 
 [node name="banana-dude3" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6812.69, -5079.21 )
+position = Vector2( 7387.99, -5091.52 )
 scale = Vector2( 8.01839, 8.01839 )
 id = "wellDone"
 dropsOnDifficulties = {
@@ -2141,7 +2142,7 @@ dropsOnDifficulties = {
 }
 
 [node name="banana-dude5" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6752.48, -5085.31 )
+position = Vector2( 7087.82, -5081.21 )
 scale = Vector2( 8.01839, 8.01839 )
 id = "iWantToSleep"
 dropsOnDifficulties = {
@@ -2152,7 +2153,7 @@ dropsOnDifficulties = {
 }
 
 [node name="banana-dude6" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6773.06, -5058.63 )
+position = Vector2( 6993.54, -5053.5 )
 scale = Vector2( 4.26642, 4.26642 )
 id = "almostDone"
 dropsOnDifficulties = {
@@ -2163,7 +2164,7 @@ dropsOnDifficulties = {
 }
 
 [node name="banana-dude7" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6712.84, -5052.53 )
+position = Vector2( 7276.86, -5057.66 )
 scale = Vector2( 4.26642, 4.26642 )
 id = "thisIsPrettyMuchIt"
 dropsOnDifficulties = {
@@ -2174,7 +2175,7 @@ dropsOnDifficulties = {
 }
 
 [node name="banana-dude" parent="Enemies" instance=ExtResource( 11 )]
-position = Vector2( 6848.68, -5033.23 )
+position = Vector2( 7176.84, -5047.59 )
 scale = Vector2( 3.09074, 3.09074 )
 id = "congrats"
 
@@ -2303,8 +2304,8 @@ position = Vector2( -601, -1782 )
 id = "beforeJump"
 
 [node name="nextLevelTrigger" parent="Triggers" instance=ExtResource( 22 )]
-position = Vector2( 6837.13, -7984.81 )
-scale = Vector2( 2.05372, 12.6801 )
+position = Vector2( 7288.89, -11170.5 )
+scale = Vector2( 3.05347, 18.8527 )
 id = "endOfLevel1"
 goToLevel = 9999
 
