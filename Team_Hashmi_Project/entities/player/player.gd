@@ -548,6 +548,7 @@ func player_damage_dealt(amount):
 func setLoadedData() -> void:
     save = PlayerData.savedGame
     stats = PlayerData.playerStats
+    player_weapon_changed(save.currentWeapon)
     Signals.emit_signal("player_health_changed", save.playerHealth)
     handleWeaponUI()
     acceleration   = Vector2(save.playerMoveSpeed, 
