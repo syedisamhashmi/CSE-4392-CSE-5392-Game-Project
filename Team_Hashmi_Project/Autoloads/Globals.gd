@@ -3,7 +3,8 @@ extends Node
 var TESTS = false
 # warning-ignore:unused_class_variable
 var SHOW_TRIGGERS = false
-
+# warning-ignore:unused_class_variable
+var showPost = false
 # warning-ignore:unused_class_variable
 var inGame = false
 #region Filenames and Extension constants
