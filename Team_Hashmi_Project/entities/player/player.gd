@@ -86,6 +86,7 @@ func _physics_process(delta: float) -> void:
         $LeftArm.playing = true
         $BananaImage.playing = true
         $RightArm.playing = true
+        stats.gameTime += delta
     var leftToRightRatio: float =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
     # used to allow shorter jumps if jump button is released quickly
     var isJumpInterrupted: bool = Input.is_action_just_released("jump") and velocity.y < 0.0
@@ -436,7 +437,6 @@ func _ready() -> void:
     Globals.load_stats()
     Globals.load_game()
     self.save = get_tree().get_root().get_node("/root/PlayerData").savedGame
-    
     if !self.has_node("save"):
         self.add_child(self.save, true)
     self.stats = get_tree().get_root().get_node("/root/PlayerData").playerStats
@@ -555,16 +555,16 @@ func setLoadedData() -> void:
                              save.playerJumpHeight)
 
 func quicksave(id = null) -> void:
+    if id != null:
+        save.completedTriggers.append(id)
+    PlayerData.playerStats = stats
+    Globals.save_stats()
     # Don't allow quicksave if they're dead... Why would you?
     # Or if they are on the credits, because.... well... no
     if save.playerHealth <= 0 || save.levelNum == 9999:
         return
-    if id != null:
-        save.completedTriggers.append(id)
     PlayerData.savedGame = save
-    PlayerData.playerStats = stats
     Globals.save_game()
-    Globals.save_stats()
 
 func handleArmAnimation() -> void:
     if !Globals.inGame:

@@ -28,6 +28,23 @@ var MUSIC_TRIGGER         = preload("res://entities/triggers/music-trigger/music
 var SPAWNER_POISON        = preload("res://entities/spawners/poison-spawner.tscn")
 var SPAWNER_SPIKES        = preload("res://entities/spawners/spike-spawner.tscn")
 
+func _process(_delta: float):
+    var msecs = int($Banana.stats.gameTime * 1000) % 1000
+    var secs = $Banana.stats.gameTime
+    var mins = secs / 60
+    var hrs = mins / 60
+    var timeStr = ""
+    if hrs > 1:
+        var hrStr = int(hrs) % 60
+        timeStr += "{hours}:".format({"hours": "%02.0f"%hrStr})
+    if mins > 1:
+        var minStr = int(mins) % 60
+        timeStr += "{mins}:".format({"mins": "%02.0f"%minStr})
+    var secStr = int(secs) % 60
+    timeStr += "{secs}".format({"secs": "%02.0f"%secStr})    
+    timeStr += ".{msecs}".format({"msecs": "%03.0f"%msecs})    
+    $HUD/HUD_BG/TimeValue.text = str(timeStr)
+    
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
