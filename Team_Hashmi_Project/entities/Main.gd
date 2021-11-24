@@ -30,10 +30,14 @@ func _ready() -> void:
     $NewGameCreation/SaveSlots.add_item("Save Slot 3", 2)
     $NewGameCreation/SaveSlots.add_item("Save Slot 4", 3)
     
-    $LoadGame/LoadSlots.add_item("Save Slot 1", 0)
-    $LoadGame/LoadSlots.add_item("Save Slot 2", 1)
-    $LoadGame/LoadSlots.add_item("Save Slot 3", 2)
-    $LoadGame/LoadSlots.add_item("Save Slot 4", 3)
+    if Utils.doesFileExist(Globals.getPlayerSaveFileNameSlot(0)):
+        $LoadGame/LoadSlots.add_item("Save Slot 1", 0)
+    if Utils.doesFileExist(Globals.getPlayerSaveFileNameSlot(1)):
+        $LoadGame/LoadSlots.add_item("Save Slot 2", 1)
+    if Utils.doesFileExist(Globals.getPlayerSaveFileNameSlot(2)):
+        $LoadGame/LoadSlots.add_item("Save Slot 3", 2)
+    if Utils.doesFileExist(Globals.getPlayerSaveFileNameSlot(3)):
+        $LoadGame/LoadSlots.add_item("Save Slot 4", 3)
 
 func _on_Difficulties_item_selected(index: int) -> void:
     $NewGameCreation/DifficultyDescription.set_text(Strings.DIFFICULTIES_DESCRIPTIONS[index])

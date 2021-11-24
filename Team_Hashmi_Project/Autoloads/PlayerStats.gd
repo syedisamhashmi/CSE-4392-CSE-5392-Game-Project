@@ -12,6 +12,8 @@ var jumpCount               : int   = 0
 var playerDamageReceived    : float = 0
 var playerDamageDealt       : float = 0
 var playerDeathCount        : int   = 0
+var gameTime                : float = 0
+
 
 func init():
     punchesThrown           = 0
@@ -22,4 +24,5 @@ func init():
     playerDamageReceived    = 0
     playerDamageDealt       = 0
     playerDeathCount        = 0
+    gameTime                = 0
     return self
