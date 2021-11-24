@@ -145,6 +145,7 @@ func readMapData():
             )
     #Set player start from saved level information
     $Banana.position = Vector2(levelData.playerStartX, levelData.playerStartY)
+    $Banana.setLoadedData()
     # If the position in the save file isn't default, use that.
     if (
         PlayerData.savedGame.playerPosX != -9999 and
@@ -542,9 +543,19 @@ func displayDialog(dialogText, _id, _isOverride = false):
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
-    
+
 func playerWeaponChanged(weaponId) -> void:
-    $HUD/HUD_BG/CurrentWeaponValue.set_text(str(weaponId))
+    var weaponText = ""
+    if weaponId == 0:
+        weaponText = "Melee"
+    if weaponId == 1:
+        weaponText = "Banana Throw"
+    if weaponId == 2:
+        weaponText = "Banana Blaster"
+    if weaponId == 3:
+        weaponText = "Banana Flinging Gun 9000"
+    
+    $HUD/HUD_BG/CurrentWeaponValue.set_text(weaponText)
 
 func playerAmmoChanged(ammo) -> void:
     $HUD/HUD_BG/AmmoValue.set_text(str(ammo))
@@ -674,7 +685,7 @@ func _on_Dialog_popup_hide() -> void:
 func _on_Resume_button_up() -> void:
     if !dead:
         showPauseMenu()
-
+    $Banana.handleWeaponUI()
 func music_trigger(triggerId, song):
     if triggerId in $Banana.save.completedTriggers:
         return
