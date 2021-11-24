@@ -481,6 +481,7 @@ func next_level_trigger(levelId):
     save.levelNum = levelId
     save.playerPosX = -9999
     save.playerPosY = -9999
+    save.currSong = ""
     quicksave()
     if levelId == 9999: #Credits has 'levelId' 9999 (not really a level but idc)
         Utils.goto_scene("res://entities/credits/credits.tscn")
