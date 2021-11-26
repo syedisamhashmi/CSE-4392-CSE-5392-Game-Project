@@ -4,6 +4,7 @@ const PUNCH_SOUND_EFFECT = preload("res://assets/Sounds/PunchSoundEffect.tscn")
 const JUMP_SOUND_EFFECT = preload("res://assets/Sounds/JumpSoundEffect.tscn")
 const FALL_SOUND_EFFECT = preload("res://assets/Sounds/FallSoundEffect.tscn")
 const THROW_SOUND_EFFECT = preload("res://assets/Sounds/ThrowSoundEffect.tscn")
+const BLASTER_SOUND_EFFECT = preload("res://assets/Sounds/BlasterSoundEffect.tscn")
 var stuff = false
 var can_play_fall_sound = true
 
@@ -283,7 +284,8 @@ func _input(event: InputEvent) -> void:
             save.bananaBlasterAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
             spawnPlayerBananaBlasterProjectile()
-
+            var blaster_sound_effect = BLASTER_SOUND_EFFECT.instance()
+            get_parent().add_child(blaster_sound_effect)
 
 #region Weapon Management
 func equipNextWeapon() -> void:
