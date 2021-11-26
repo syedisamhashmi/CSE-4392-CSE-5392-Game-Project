@@ -28,6 +28,23 @@ var MUSIC_TRIGGER         = preload("res://entities/triggers/music-trigger/music
 var SPAWNER_POISON        = preload("res://entities/spawners/poison-spawner.tscn")
 var SPAWNER_SPIKES        = preload("res://entities/spawners/spike-spawner.tscn")
 
+func _process(_delta: float):
+    var msecs = int($Banana.stats.gameTime * 1000) % 1000
+    var secs = $Banana.stats.gameTime
+    var mins = secs / 60
+    var hrs = mins / 60
+    var timeStr = ""
+    if hrs > 1:
+        var hrStr = int(hrs) % 60
+        timeStr += "{hours}:".format({"hours": "%02.0f"%hrStr})
+    if mins > 1:
+        var minStr = int(mins) % 60
+        timeStr += "{mins}:".format({"mins": "%02.0f"%minStr})
+    var secStr = int(secs) % 60
+    timeStr += "{secs}".format({"secs": "%02.0f"%secStr})    
+    timeStr += ".{msecs}".format({"msecs": "%03.0f"%msecs})    
+    $HUD/HUD_BG/TimeValue.text = str(timeStr)
+    
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
@@ -145,6 +162,7 @@ func readMapData():
             )
     #Set player start from saved level information
     $Banana.position = Vector2(levelData.playerStartX, levelData.playerStartY)
+    $Banana.setLoadedData()
     # If the position in the save file isn't default, use that.
     if (
         PlayerData.savedGame.playerPosX != -9999 and
@@ -542,9 +560,19 @@ func displayDialog(dialogText, _id, _isOverride = false):
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
-    
+
 func playerWeaponChanged(weaponId) -> void:
-    $HUD/HUD_BG/CurrentWeaponValue.set_text(str(weaponId))
+    var weaponText = ""
+    if weaponId == 0:
+        weaponText = "Melee"
+    if weaponId == 1:
+        weaponText = "Banana Throw"
+    if weaponId == 2:
+        weaponText = "Banana Blaster"
+    if weaponId == 3:
+        weaponText = "Banana Flinging Gun 9000"
+    
+    $HUD/HUD_BG/CurrentWeaponValue.set_text(weaponText)
 
 func playerAmmoChanged(ammo) -> void:
     $HUD/HUD_BG/AmmoValue.set_text(str(ammo))
@@ -674,7 +702,7 @@ func _on_Dialog_popup_hide() -> void:
 func _on_Resume_button_up() -> void:
     if !dead:
         showPauseMenu()
-
+    $Banana.handleWeaponUI()
 func music_trigger(triggerId, song):
     if triggerId in $Banana.save.completedTriggers:
         return

@@ -19,8 +19,9 @@ var finished := false
 
 var section
 var section_next := true
-var section_timer := 0.0
-var line_timer := 0.0
+# Starts credits immediately due to it being at 2.0
+var section_timer := 2.0 
+var line_timer := 0.5
 var curr_line := 0
 var lines := []
 
@@ -30,6 +31,10 @@ var credits = [
     ],
     [
         {"txt": "Team H for Hashmi", "type": "t"},
+        {"txt":"Best Times - I am Banana Incarnate", "type": "c"},
+        {"txt":"00:03:13.416 - Isam", "type": "s"},
+        {"txt":"00:03:24.200 - Isam", "type": "s"},
+        {"txt": "", "type": "t"},
     ],
     [
         {"txt": "Syed Isam Hashmi", "type": "t"},
@@ -303,7 +308,22 @@ func _ready():
     $stats/damageReceivedCount.set_text(str(stats.playerDamageReceived))
     $stats/damageDealtCount.set_text(str(stats.playerDamageDealt))
     $stats/deathCount.set_text(str(stats.playerDeathCount))
-
+    # Yeah yeah, copy paste, I know, idc anymore
+    var msecs = int(stats.gameTime * 1000) % 1000
+    var secs = stats.gameTime
+    var mins = secs / 60
+    var hrs = mins / 60
+    var timeStr = ""
+    if hrs > 1:
+        var hrStr = int(hrs) % 60
+        timeStr += "{hours}:".format({"hours": "%02.0f"%hrStr})
+    if mins > 1:
+        var minStr = int(mins) % 60
+        timeStr += "{mins}:".format({"mins": "%02.0f"%minStr})
+    var secStr = int(secs) % 60
+    timeStr += "{secs}".format({"secs": "%02.0f"%secStr})    
+    timeStr += ".{msecs}".format({"msecs": "%03.0f"%msecs})    
+    $stats/gameTimeCount.set_text(timeStr)
 
 func finish():
     if not finished:
