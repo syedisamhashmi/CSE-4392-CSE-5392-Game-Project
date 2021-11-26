@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/zapsplat_cartoon_boomerange_throw_spin_whooshes_001_69678 (1).wav-e03a16a6e0759c70c9260a8b205cd64d.sample"
+
+[deps]
+
+source_file="res://assets/audio/zapsplat_cartoon_boomerange_throw_spin_whooshes_001_69678 (1).wav"
+dest_files=[ "res://.import/zapsplat_cartoon_boomerange_throw_spin_whooshes_001_69678 (1).wav-e03a16a6e0759c70c9260a8b205cd64d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
