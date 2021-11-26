@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/zapsplat_cartoon_frog_jump_26526.wav-0793096870886c5ff7649d1b28753760.sample"
+
+[deps]
+
+source_file="res://assets/audio/zapsplat_cartoon_frog_jump_26526.wav"
+dest_files=[ "res://.import/zapsplat_cartoon_frog_jump_26526.wav-0793096870886c5ff7649d1b28753760.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
