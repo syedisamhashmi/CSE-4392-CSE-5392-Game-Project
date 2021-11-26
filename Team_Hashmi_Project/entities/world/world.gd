@@ -2,7 +2,8 @@ extends TileMap
 
 var breakableTiles = [
     # This is found using the index, coordX, and coordY that is printed 
-    "100" 
+    "100",
+    "800"
 ]
 
 func on_tile_hit(proj, collision_position):
