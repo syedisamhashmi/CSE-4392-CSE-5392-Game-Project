@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/audio/87535__whiprealgood__splat.wav" type="AudioStream" id=4]
 
 [sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
 shader = ExtResource( 3 )
 shader_param/intensity = null
 
@@ -27,67 +28,67 @@ region = Rect2( 96, 192, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 224, 32, 32 )
+region = Rect2( 0, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 224, 32, 32 )
+region = Rect2( 32, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 224, 32, 32 )
+region = Rect2( 64, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 224, 32, 32 )
+region = Rect2( 96, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 224, 32, 32 )
+region = Rect2( 128, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
-region = Rect2( 160, 224, 32, 32 )
+region = Rect2( 160, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 1 )
-region = Rect2( 192, 224, 32, 32 )
+region = Rect2( 192, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
-region = Rect2( 224, 224, 32, 32 )
+region = Rect2( 224, 288, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 288, 32, 32 )
+region = Rect2( 0, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 288, 32, 32 )
+region = Rect2( 32, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 288, 32, 32 )
+region = Rect2( 64, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 288, 32, 32 )
+region = Rect2( 96, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 288, 32, 32 )
+region = Rect2( 128, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
-region = Rect2( 160, 288, 32, 32 )
+region = Rect2( 160, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 1 )
-region = Rect2( 192, 288, 32, 32 )
+region = Rect2( 192, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 1 )
-region = Rect2( 224, 288, 32, 32 )
+region = Rect2( 224, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
@@ -130,12 +131,12 @@ animations = [ {
 }, {
 "frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
 "loop": true,
-"name": "walk",
+"name": "attack",
 "speed": 10.0
 }, {
 "frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ) ],
 "loop": true,
-"name": "attack",
+"name": "walk",
 "speed": 10.0
 }, {
 "frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ) ],
