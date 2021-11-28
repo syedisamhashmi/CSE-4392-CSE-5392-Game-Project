@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/audio/Game_Over_2.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/audio/zapsplat_human_male_voice_says_game_over_002_15727.wav" type="AudioStream" id=1]
 
 [node name="GameOver" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )

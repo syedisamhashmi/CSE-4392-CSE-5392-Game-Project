@@ -5,6 +5,7 @@ const JUMP_SOUND_EFFECT = preload("res://assets/Sounds/JumpSoundEffect.tscn")
 const FALL_SOUND_EFFECT = preload("res://assets/Sounds/FallSoundEffect.tscn")
 const THROW_SOUND_EFFECT = preload("res://assets/Sounds/ThrowSoundEffect.tscn")
 const BLASTER_SOUND_EFFECT = preload("res://assets/Sounds/BlasterSoundEffect.tscn")
+const BFG9000_SOUND_EFFECT = preload("res://assets/Sounds/BFG9000SoundEffect.tscn")
 var stuff = false
 var can_play_fall_sound = true
 
@@ -234,7 +235,7 @@ func _physics_process(delta: float) -> void:
     save.playerPosY = position.y
     
     
-    if velocity.y > 0 and can_play_fall_sound == true:
+    if velocity.y > 700 and can_play_fall_sound == true:
         var fall_sound_effect = FALL_SOUND_EFFECT.instance()
         get_parent().add_child(fall_sound_effect)
         can_play_fall_sound = false
@@ -277,6 +278,8 @@ func _input(event: InputEvent) -> void:
             save.BFG9000Ammo -= 1
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
+            var bfg9000_sound_effect = BFG9000_SOUND_EFFECT.instance()
+            get_parent().add_child(bfg9000_sound_effect)
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
