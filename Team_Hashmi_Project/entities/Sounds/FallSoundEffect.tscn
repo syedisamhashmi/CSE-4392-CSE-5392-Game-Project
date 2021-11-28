@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/audio/zapsplat_cartoon_descend_whistle_air_001_28921.wav" type="AudioStream" id=1]
-[ext_resource path="res://assets/Sounds/FallSoundEffect.gd" type="Script" id=2]
+[ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
 
 [node name="FallSoundEffect" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/audio/zapsplat_warfare_gun_rifles_single_shot_designed_71743.wav" type="AudioStream" id=1]
-[ext_resource path="res://assets/Sounds/BlasterSoundEffect.gd" type="Script" id=2]
+[ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
 
 [node name="Blaster" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
