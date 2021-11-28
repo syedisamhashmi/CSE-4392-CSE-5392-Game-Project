@@ -1,5 +1,5 @@
 extends Node2D
-const GAME_OVER_FX = preload("res://assets/Sounds/GameOverSound.tscn")
+const GAME_OVER_FX = preload("res://entities/Sounds/GameOverSound.tscn")
 export var IS_BUILDING = false
 # Pickups
 var PICKUP_BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")

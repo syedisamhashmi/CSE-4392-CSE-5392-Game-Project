@@ -1,11 +1,11 @@
 extends KinematicBody2D
 
-const PUNCH_SOUND_EFFECT = preload("res://assets/Sounds/PunchSoundEffect.tscn")
-const JUMP_SOUND_EFFECT = preload("res://assets/Sounds/JumpSoundEffect.tscn")
-const FALL_SOUND_EFFECT = preload("res://assets/Sounds/FallSoundEffect.tscn")
-const THROW_SOUND_EFFECT = preload("res://assets/Sounds/ThrowSoundEffect.tscn")
-const BLASTER_SOUND_EFFECT = preload("res://assets/Sounds/BlasterSoundEffect.tscn")
-const BFG9000_SOUND_EFFECT = preload("res://assets/Sounds/BFG9000SoundEffect.tscn")
+const PUNCH_SOUND_EFFECT = preload("res://entities/Sounds/PunchSoundEffect.tscn")
+const JUMP_SOUND_EFFECT = preload("res://entities/Sounds/JumpSoundEffect.tscn")
+const FALL_SOUND_EFFECT = preload("res://entities/Sounds/FallSoundEffect.tscn")
+const THROW_SOUND_EFFECT = preload("res://entities/Sounds/ThrowSoundEffect.tscn")
+const BLASTER_SOUND_EFFECT = preload("res://entities/Sounds/BlasterSoundEffect.tscn")
+const BFG9000_SOUND_EFFECT = preload("res://entities/Sounds/BFG9000SoundEffect.tscn")
 var stuff = false
 var can_play_fall_sound = true
 
