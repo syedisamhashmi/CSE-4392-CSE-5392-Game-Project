@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/audio/zapsplat_foley_clothing_body_hit_punch_72693.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/Sounds/PunchSoundEffect.gd" type="Script" id=2]
 
 [node name="PunchSoundEffect" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
 autoplay = true
+script = ExtResource( 2 )
+
+[connection signal="finished" from="." to="." method="_on_PunchSoundEffect_finished"]
