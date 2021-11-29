@@ -1,8 +1,9 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://assets/images/enemies/carrot_onion.png" type="Texture" id=1]
 [ext_resource path="res://entities/enemies/potato/potato.gd" type="Script" id=2]
 [ext_resource path="res://entities/damage_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://assets/audio/87535__whiprealgood__splat.wav" type="AudioStream" id=4]
 
 [sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
@@ -177,6 +178,8 @@ position = Vector2( 0, 9 )
 shape = SubResource( 31 )
 
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -20.0
 
 [node name="RightAttack" type="Area2D" parent="."]
 collision_layer = 0
