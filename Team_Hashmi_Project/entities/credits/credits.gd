@@ -148,6 +148,14 @@ var credits = [
         {"txt": "", "type": "t"},
         {"txt": "Balamurale Balusamy Siva", "type": "t"},
         {"txt":"        - Add a background to the main menu", "type": "s"},
+        {"txt":"Enemies", "type": "c"},
+        {"txt":"    Cabbage", "type": "c"},
+        {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
+        {"txt":"    Cauliflower", "type": "c"},
+        {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
+        {"txt":"    Corn", "type": "c"},
+        {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
+        
     ],[
         {"txt": "", "type": "t"},
         {"txt": "", "type": "t"},
