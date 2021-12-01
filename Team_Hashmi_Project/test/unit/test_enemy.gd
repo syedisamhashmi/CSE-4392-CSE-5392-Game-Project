@@ -9,7 +9,7 @@ var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
 var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflower.tscn")
-var ENEMY_CORN            = preload("res://entities/enemies/cabbage/cabbage.tscn")
+var ENEMY_CORN            = preload("res://entities/enemies/corn/corn.tscn")
 var ENEMY_CABBAGE         = preload("res://entities/enemies/cabbage/cabbage.tscn")
 func before_each():
     Globals.inGame = true
