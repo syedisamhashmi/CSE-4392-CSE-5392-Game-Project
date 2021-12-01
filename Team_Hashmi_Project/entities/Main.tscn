@@ -97,8 +97,8 @@ __meta__ = {
 }
 
 [node name="CurrentWeaponLabel" type="Label" parent="HUD/HUD_BG"]
-margin_left = 312.0
-margin_right = 424.0
+margin_left = 88.0
+margin_right = 200.0
 margin_bottom = 50.0
 text = "Current Weapon:"
 align = 1
@@ -108,8 +108,8 @@ __meta__ = {
 }
 
 [node name="CurrentWeaponValue" type="Label" parent="HUD/HUD_BG"]
-margin_left = 424.0
-margin_right = 568.0
+margin_left = 208.0
+margin_right = 373.0
 margin_bottom = 50.0
 valign = 1
 __meta__ = {
@@ -117,8 +117,8 @@ __meta__ = {
 }
 
 [node name="AmmoLabel" type="Label" parent="HUD/HUD_BG"]
-margin_left = 744.0
-margin_right = 792.0
+margin_left = 424.0
+margin_right = 472.0
 margin_bottom = 50.0
 text = "Ammo:"
 align = 1
@@ -128,14 +128,31 @@ __meta__ = {
 }
 
 [node name="AmmoValue" type="Label" parent="HUD/HUD_BG"]
-margin_left = 792.0
-margin_right = 944.0
+margin_left = 480.0
+margin_right = 632.0
 margin_bottom = 50.0
 rect_pivot_offset = Vector2( 315, 5 )
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TimeLabel" type="Label" parent="HUD/HUD_BG"]
+margin_left = 688.0
+margin_right = 792.0
+margin_bottom = 50.0
+text = "Time:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeValue" type="Label" parent="HUD/HUD_BG"]
+margin_left = 792.0
+margin_right = 1024.0
+margin_bottom = 50.0
+valign = 1
 
 [node name="Dialog" type="AcceptDialog" parent="HUD"]
 margin_left = 340.0
