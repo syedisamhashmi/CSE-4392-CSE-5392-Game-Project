@@ -193,6 +193,7 @@ baseHealth = 175
 
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
+volume_db = -20.0
 
 [node name="Image" type="AnimatedSprite" parent="."]
 material = SubResource( 1 )
