@@ -17,9 +17,14 @@ func _ready() -> void:
     pass
 
 func getPlayerStatsFileName():
-    return player_stats_file + str(PlayerData.saveSlot) + TRES_EXTENSION
+    return getPlayerStatsFileNameSlot(PlayerData.saveSlot)
 func getPlayerSaveFileName():
-    return player_save_file + str(PlayerData.saveSlot) + TRES_EXTENSION
+    return getPlayerSaveFileNameSlot(PlayerData.saveSlot)
+
+func getPlayerSaveFileNameSlot(slot: int):
+    return player_save_file + str(slot) + TRES_EXTENSION
+func getPlayerStatsFileNameSlot(slot: int):
+    return player_stats_file + str(slot) + TRES_EXTENSION
 
 #region Stats
 func load_stats() -> void:

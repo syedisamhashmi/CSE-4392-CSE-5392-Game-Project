@@ -17,6 +17,9 @@ var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
 var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
 var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
 var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
+var ENEMY_CORN            = preload("res://entities/enemies/corn/corn.tscn")
+var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflower.tscn")
+var ENEMY_CABBAGE         = preload("res://entities/enemies/cabbage/cabbage.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_BANANA_DUDE     = preload("res://entities/enemies/banana-person/banana-person.tscn")
 # Triggers
@@ -28,6 +31,23 @@ var MUSIC_TRIGGER         = preload("res://entities/triggers/music-trigger/music
 var SPAWNER_POISON        = preload("res://entities/spawners/poison-spawner.tscn")
 var SPAWNER_SPIKES        = preload("res://entities/spawners/spike-spawner.tscn")
 
+func _process(_delta: float):
+    var msecs = int($Banana.stats.gameTime * 1000) % 1000
+    var secs = $Banana.stats.gameTime
+    var mins = secs / 60
+    var hrs = mins / 60
+    var timeStr = ""
+    if hrs > 1:
+        var hrStr = int(hrs) % 60
+        timeStr += "{hours}:".format({"hours": "%02.0f"%hrStr})
+    if mins > 1:
+        var minStr = int(mins) % 60
+        timeStr += "{mins}:".format({"mins": "%02.0f"%minStr})
+    var secStr = int(secs) % 60
+    timeStr += "{secs}".format({"secs": "%02.0f"%secStr})    
+    timeStr += ".{msecs}".format({"msecs": "%03.0f"%msecs})    
+    $HUD/HUD_BG/TimeValue.text = str(timeStr)
+    
 func _enter_tree() -> void:
     # warning-ignore:return_value_discarded
     Signals.connect("player_health_changed", self, "playerHealthChanged")
@@ -76,10 +96,13 @@ func readMapData():
         var bgTextToUse = ImageTexture.new()
         bgImgToUse.lock()
         bgTextToUse.create_from_image(bgImgToUse, 0)
+        bgImgToUse.unlock()
         bgTextToUse.set_size_override(Vector2(levelData.backgroundSizeX, levelData.backgroundSizeY))
         background.texture = bgTextToUse
         background.set_position(Vector2(levelData.backgroundPosX, levelData.backgroundPosY))
     
+    for child in $ParallaxBackground/ParallaxLayer2.get_children():
+        child.queue_free()
     var layer2 = $ParallaxBackground/ParallaxLayer2
     layer2.motion_scale.x = levelData.layer2MotionScaleX
     layer2.motion_scale.y = levelData.layer2MotionScaleY
@@ -96,6 +119,8 @@ func readMapData():
         newText.set_position(Vector2(obj.positionX, obj.positionY))
         layer2.call_deferred("add_child", newText)
         
+    for child in $ParallaxBackground/ParallaxLayer3.get_children():
+        child.queue_free()
     var layer3 = $ParallaxBackground/ParallaxLayer3
     layer3.motion_scale.x = levelData.layer3MotionScaleX
     layer3.motion_scale.y = levelData.layer3MotionScaleY
@@ -140,6 +165,7 @@ func readMapData():
             )
     #Set player start from saved level information
     $Banana.position = Vector2(levelData.playerStartX, levelData.playerStartY)
+    $Banana.setLoadedData()
     # If the position in the save file isn't default, use that.
     if (
         PlayerData.savedGame.playerPosX != -9999 and
@@ -202,7 +228,19 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BANANA_MAN:
                 newEnemy = ENEMY_BANANA_DUDE.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BANANA_MAN
-                
+
+
+
+
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CORN:
+                 newEnemy = ENEMY_CORN.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CORN
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CAULIFLOWER:
+                 newEnemy = ENEMY_CAULIFLOWER.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CAULIFLOWER
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CABBAGE:
+                 newEnemy = ENEMY_CABBAGE.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CABBAGE
             else:
                 continue
             newEnemy.health = enemyData.health
@@ -271,6 +309,8 @@ func readMapData():
             $Triggers.call_deferred("add_child", newTrigger)
 
     if levelData != null and levelData.spawners != null:
+        for child in $Spawners.get_children():
+            child.queue_free()
         for spawner in levelData.spawners:
             var toAdd
             if spawner.type == EntityTypeEnums.SPAWNER_TYPE.POISON:
@@ -535,9 +575,19 @@ func displayDialog(dialogText, _id, _isOverride = false):
 
 func playerHealthChanged(health) -> void:
     $HUD/HUD_BG/HPValue.set_text(str(health))
-    
+
 func playerWeaponChanged(weaponId) -> void:
-    $HUD/HUD_BG/CurrentWeaponValue.set_text(str(weaponId))
+    var weaponText = ""
+    if weaponId == 0:
+        weaponText = "Melee"
+    if weaponId == 1:
+        weaponText = "Banana Throw"
+    if weaponId == 2:
+        weaponText = "Banana Blaster"
+    if weaponId == 3:
+        weaponText = "Banana Flinging Gun 9000"
+    
+    $HUD/HUD_BG/CurrentWeaponValue.set_text(weaponText)
 
 func playerAmmoChanged(ammo) -> void:
     $HUD/HUD_BG/AmmoValue.set_text(str(ammo))
@@ -667,7 +717,7 @@ func _on_Dialog_popup_hide() -> void:
 func _on_Resume_button_up() -> void:
     if !dead:
         showPauseMenu()
-
+    $Banana.handleWeaponUI()
 func music_trigger(triggerId, song):
     if triggerId in $Banana.save.completedTriggers:
         return

@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/images/enemies/carrot_onion.png" type="Texture" id=5]
 
 [sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/intensity = null
 
