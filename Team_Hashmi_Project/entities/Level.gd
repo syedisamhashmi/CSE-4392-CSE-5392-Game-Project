@@ -17,6 +17,9 @@ var ENEMY_CARROT          = preload("res://entities/enemies/carrot/carrot.tscn")
 var ENEMY_BROCCOLI        = preload("res://entities/enemies/broccoli/broccoli.tscn")
 var ENEMY_BABY_ONION      = preload("res://entities/enemies/baby_onion/baby_onion.tscn")
 var ENEMY_POTATO          = preload("res://entities/enemies/potato/potato.tscn")
+var ENEMY_CORN            = preload("res://entities/enemies/corn/corn.tscn")
+var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflower.tscn")
+var ENEMY_CABBAGE         = preload("res://entities/enemies/cabbage/cabbage.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_BANANA_DUDE     = preload("res://entities/enemies/banana-person/banana-person.tscn")
 # Triggers
@@ -225,7 +228,19 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BANANA_MAN:
                 newEnemy = ENEMY_BANANA_DUDE.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BANANA_MAN
-                
+
+
+
+
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CORN:
+                 newEnemy = ENEMY_CORN.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CORN
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CAULIFLOWER:
+                 newEnemy = ENEMY_CAULIFLOWER.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CAULIFLOWER
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.CABBAGE:
+                 newEnemy = ENEMY_CABBAGE.instance()
+                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.CABBAGE
             else:
                 continue
             newEnemy.health = enemyData.health
