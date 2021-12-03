@@ -92,35 +92,35 @@ region = Rect2( 224, 224, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 384, 32, 32 )
+region = Rect2( 0, 352, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 384, 32, 32 )
+region = Rect2( 32, 352, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=24]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 384, 32, 32 )
+region = Rect2( 64, 352, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 384, 32, 32 )
+region = Rect2( 96, 352, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 352, 32, 32 )
+region = Rect2( 0, 384, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=27]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 352, 32, 32 )
+region = Rect2( 32, 384, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 352, 32, 32 )
+region = Rect2( 64, 384, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=29]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 352, 32, 32 )
+region = Rect2( 96, 384, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=30]
 animations = [ {
@@ -140,13 +140,13 @@ animations = [ {
 "speed": 10.0
 }, {
 "frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ) ],
-"loop": false,
-"name": "DEATH",
+"loop": true,
+"name": "damage",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
-"loop": true,
-"name": "damage",
+"loop": false,
+"name": "DEATH",
 "speed": 5.0
 } ]
 
@@ -163,7 +163,7 @@ baseHealth = 150
 
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
-volume_db = -10.0
+volume_db = -6.0
 
 [node name="Image" type="AnimatedSprite" parent="."]
 material = SubResource( 1 )

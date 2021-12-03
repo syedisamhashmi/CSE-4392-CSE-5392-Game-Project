@@ -58,6 +58,7 @@ frames = SubResource( 9 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
+volume_db = -7.0
 
 [node name="Text" type="Label" parent="."]
 margin_left = -429.0
