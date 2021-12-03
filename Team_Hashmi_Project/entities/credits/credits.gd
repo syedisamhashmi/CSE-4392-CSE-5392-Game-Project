@@ -136,16 +136,23 @@ var credits = [
         {"txt": "Edward Kressler", "type": "t"},
 
         {"txt":"Animation", "type": "c"},
-        {"txt":"        - Banana-man", "type": "s"},
-        {"txt":"        - Pineapple", "type": "s"},
-        {"txt":"        - Intro Scene", "type": "s"},
+        {"txt":"    Banana-man", "type": "c"},
+        {"txt":"            - Idle, Run, Slide, Punch, Throw", "type": "s"},
+        {"txt":"    Pineapple", "type": "c"},
+        {"txt":"            - Idle, Walk, Jump Attack, Chest Bump, Take Damage", "type": "s"},
+        {"txt":"    Intro Cutscene", "type": "c"},
         
         {"txt":"Art", "type": "c"},
-        {"txt":"        - Level 1 Background", "type": "s"},
+        {"txt":"        - Level 1 Background (excluding art seen through windows)", "type": "s"},
         {"txt":"        - Level 1 Tilemap", "type": "s"},
-        {"txt":"        - Banana Blaster", "type": "s"},
-        {"txt":"        - BFG9000", "type": "s"},
+
         {"txt":"Damage Effect Shader", "type": "c"},
+
+        {"txt":"Weapons", "type": "c"},
+        {"txt":"        - Banana Blaster Art and Integration", "type": "s"},
+        {"txt":"        - BFG9000 Art and Integration", "type": "s"},
+
+        {"txt":"Level 1 Design", "type": "c"},
         
     ],[
         {"txt": "", "type": "t"},
