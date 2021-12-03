@@ -6,8 +6,9 @@ const FALL_SOUND_EFFECT = preload("res://entities/Sounds/FallSoundEffect.tscn")
 const THROW_SOUND_EFFECT = preload("res://entities/Sounds/ThrowSoundEffect.tscn")
 const BLASTER_SOUND_EFFECT = preload("res://entities/Sounds/BlasterSoundEffect.tscn")
 const BFG9000_SOUND_EFFECT = preload("res://entities/Sounds/BFG9000SoundEffect.tscn")
+const FOOTSTEPS_SOUND_EFFECT = preload("res://entities/Sounds/FootstepsSoundEffect.tscn")
 var stuff = false
-var can_play_fall_sound = true
+var landing = true
 
 
 #region PRELOAD
@@ -173,6 +174,7 @@ func _physics_process(delta: float) -> void:
         else:
             $BananaImage/ParticleSlideLeft.emitting = false
             $BananaImage.set_animation(RUN)
+            
         applyAllImageFlips(true)
         updatePlayerBoundingBox()
 
@@ -234,14 +236,15 @@ func _physics_process(delta: float) -> void:
     save.playerPosX  = position.x
     save.playerPosY = position.y
     
-    
-    if velocity.y > 700 and can_play_fall_sound == true:
-        var fall_sound_effect = FALL_SOUND_EFFECT.instance()
-        get_parent().add_child(fall_sound_effect)
-        can_play_fall_sound = false
-        
+    #Landing Sound
     if is_on_floor():
-        can_play_fall_sound = true
+      if landing and stats.jumpCount > 0:
+         var fall_sound_effect = FALL_SOUND_EFFECT.instance()
+         get_parent().add_child(fall_sound_effect)
+         landing = false
+    else:
+      if !landing:
+          landing = true
     
 func _input(event: InputEvent) -> void:
     if !Globals.inGame:
@@ -631,6 +634,8 @@ func _on_RightArm_animation_finished() -> void:
         if $RightArm.get_animation() == PUNCH:
             stats.punchesThrown += 1
         if isMoving:
+            #var foot = FOOTSTEPS_SOUND_EFFECT.instance()
+            
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
             $LeftArm.set_frame(0)
