@@ -20,6 +20,9 @@ enum ENEMY_TYPE {
     POTATO     = 60,
     CARROT     = 70,
     BANANA_MAN = 80,
+    CABBAGE    = 90,
+    CORN       = 100,
+    CAULIFLOWER= 110
 }
 
 enum PICKUP_TYPE {
