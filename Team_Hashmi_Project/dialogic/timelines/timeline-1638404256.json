@@ -1,0 +1,19 @@
+{
+	"events": [
+		{
+			"character": "character-1638404174.json",
+			"event_id": "dialogic_001",
+			"portrait": "",
+			"text": "Hello stranger! I have something that will help you with your journey. Use it wisely!"
+		},
+		{
+			"event_id": "dialogic_022",
+			"transition_duration": 1
+		}
+	],
+	"metadata": {
+		"dialogic-version": "1.3",
+		"file": "timeline-1638404256.json",
+		"name": "timeline-1"
+	}
+}
