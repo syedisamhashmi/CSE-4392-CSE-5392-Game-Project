@@ -55,7 +55,6 @@ z_index = -1
 [node name="Banana" parent="." instance=ExtResource( 2 )]
 
 [node name="LevelMusic" type="AudioStreamPlayer2D" parent="Banana"]
-visible = false
 autoplay = true
 
 [node name="Pickups" type="Node2D" parent="."]

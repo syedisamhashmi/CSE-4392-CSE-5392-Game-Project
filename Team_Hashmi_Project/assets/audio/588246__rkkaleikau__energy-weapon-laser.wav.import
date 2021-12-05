@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/588246__rkkaleikau__energy-weapon-laser.wav-39ed950175542dee37df67e7692af121.sample"
+
+[deps]
+
+source_file="res://assets/audio/588246__rkkaleikau__energy-weapon-laser.wav"
+dest_files=[ "res://.import/588246__rkkaleikau__energy-weapon-laser.wav-39ed950175542dee37df67e7692af121.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
