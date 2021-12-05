@@ -1,10 +1,12 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/audio/zapsplat_warfare_gun_rifles_single_shot_designed_71743.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/audio/382735__schots__gun-shot.wav" type="AudioStream" id=1]
 [ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
 
 [node name="Blaster" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
+volume_db = -4.024
+pitch_scale = 0.78
 autoplay = true
 script = ExtResource( 2 )
 

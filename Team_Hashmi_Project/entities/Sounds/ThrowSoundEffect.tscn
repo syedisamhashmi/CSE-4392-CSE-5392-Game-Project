@@ -1,10 +1,12 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/audio/zapsplat_heavy_axe_throw.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/audio/60013__qubodup__whoosh.wav" type="AudioStream" id=1]
 [ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
 
 [node name="Throw" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
+volume_db = -4.039
+pitch_scale = 1.7
 autoplay = true
 script = ExtResource( 2 )
 

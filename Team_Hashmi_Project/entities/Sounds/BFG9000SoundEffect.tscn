@@ -1,11 +1,12 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=1]
-[ext_resource path="res://assets/audio/trial-zapsplat_warfare_missile_small_launch_designed_001_62887.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/audio/588246__rkkaleikau__energy-weapon-laser.wav" type="AudioStream" id=2]
 
 [node name="BFG9000" type="AudioStreamPlayer"]
 stream = ExtResource( 2 )
-pitch_scale = 1.1
+volume_db = 2.019
+pitch_scale = 0.87
 autoplay = true
 script = ExtResource( 1 )
 

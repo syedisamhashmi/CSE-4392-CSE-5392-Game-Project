@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/561646__mattruthsound__hit-punch-cloth-pillow-bedding-004.wav-da2d1513d225a7fdd7bf420399a6cc7f.sample"
+
+[deps]
+
+source_file="res://assets/audio/561646__mattruthsound__hit-punch-cloth-pillow-bedding-004.wav"
+dest_files=[ "res://.import/561646__mattruthsound__hit-punch-cloth-pillow-bedding-004.wav-da2d1513d225a7fdd7bf420399a6cc7f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
