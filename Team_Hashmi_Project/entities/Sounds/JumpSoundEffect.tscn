@@ -5,7 +5,7 @@
 
 [node name="Jump" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
-volume_db = -12.117
+volume_db = -28.272
 pitch_scale = 0.66
 autoplay = true
 script = ExtResource( 2 )
