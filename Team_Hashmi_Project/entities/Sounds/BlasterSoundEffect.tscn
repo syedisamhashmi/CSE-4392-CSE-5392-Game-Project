@@ -5,7 +5,7 @@
 
 [node name="Blaster" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
-volume_db = -4.024
+volume_db = -17.152
 pitch_scale = 0.78
 autoplay = true
 script = ExtResource( 2 )

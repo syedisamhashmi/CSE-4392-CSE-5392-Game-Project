@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/audio/232358__richerlandtv__heavy-impacts-trial.wav" type="AudioStream" id=1]
+[ext_resource path="res://assets/audio/232358__richerlandtv__heavy-impacts.wav" type="AudioStream" id=1]
 [ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
 
 [node name="FallSoundEffect" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
-volume_db = 2.495
+volume_db = -8.227
 pitch_scale = 0.91
 autoplay = true
 script = ExtResource( 2 )
