@@ -5,7 +5,7 @@
 
 [node name="PunchSoundEffect" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
-volume_db = 12.894
+volume_db = 1.787
 pitch_scale = 0.83
 autoplay = true
 script = ExtResource( 2 )

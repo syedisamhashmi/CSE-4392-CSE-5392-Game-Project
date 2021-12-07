@@ -5,7 +5,7 @@
 
 [node name="BFG9000" type="AudioStreamPlayer"]
 stream = ExtResource( 2 )
-volume_db = 2.019
+volume_db = -12.117
 pitch_scale = 0.87
 autoplay = true
 script = ExtResource( 1 )
