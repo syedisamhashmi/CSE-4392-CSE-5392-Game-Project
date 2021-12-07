@@ -6,7 +6,7 @@ const FALL_SOUND_EFFECT = preload("res://entities/Sounds/FallSoundEffect.tscn")
 const THROW_SOUND_EFFECT = preload("res://entities/Sounds/ThrowSoundEffect.tscn")
 const BLASTER_SOUND_EFFECT = preload("res://entities/Sounds/BlasterSoundEffect.tscn")
 const BFG9000_SOUND_EFFECT = preload("res://entities/Sounds/BFG9000SoundEffect.tscn")
-const FOOTSTEPS_SOUND_EFFECT = preload("res://entities/Sounds/FootstepsSoundEffect.tscn")
+
 var stuff = false
 var landing = true
 
@@ -634,7 +634,7 @@ func _on_RightArm_animation_finished() -> void:
         if $RightArm.get_animation() == PUNCH:
             stats.punchesThrown += 1
         if isMoving:
-            #var foot = FOOTSTEPS_SOUND_EFFECT.instance()
+            
             
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
