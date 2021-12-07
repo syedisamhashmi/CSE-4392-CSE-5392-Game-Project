@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/audio/561646__mattruthsound__hit-punch-cloth-pillow-bedding-004.wav" type="AudioStream" id=1]
+[ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
+
+[node name="PunchSoundEffect" type="AudioStreamPlayer"]
+stream = ExtResource( 1 )
+volume_db = -0.232
+pitch_scale = 0.83
+autoplay = true
+script = ExtResource( 2 )
+
+[connection signal="finished" from="." to="." method="_on_PunchSoundEffect_finished"]

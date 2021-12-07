@@ -1,6 +1,14 @@
 extends KinematicBody2D
 
+const PUNCH_SOUND_EFFECT = preload("res://entities/Sounds/PunchSoundEffect.tscn")
+const JUMP_SOUND_EFFECT = preload("res://entities/Sounds/JumpSoundEffect.tscn")
+const FALL_SOUND_EFFECT = preload("res://entities/Sounds/FallSoundEffect.tscn")
+const THROW_SOUND_EFFECT = preload("res://entities/Sounds/ThrowSoundEffect.tscn")
+const BLASTER_SOUND_EFFECT = preload("res://entities/Sounds/BlasterSoundEffect.tscn")
+const BFG9000_SOUND_EFFECT = preload("res://entities/Sounds/BFG9000SoundEffect.tscn")
+
 var stuff = false
+var landing = true
 
 
 #region PRELOAD
@@ -103,6 +111,9 @@ func _physics_process(delta: float) -> void:
         # I know... weird... just go with it. It works.
         (Input.is_action_just_pressed("jump") and !is_on_floor() and velocity.y < 16)
     ):
+        var jump_sound_effect = JUMP_SOUND_EFFECT.instance()
+        get_parent().add_child(jump_sound_effect)
+        
         # Increase player data for jump count
         stats.jumpCount += 1
         velocity.y = -acceleration.y
@@ -163,6 +174,7 @@ func _physics_process(delta: float) -> void:
         else:
             $BananaImage/ParticleSlideLeft.emitting = false
             $BananaImage.set_animation(RUN)
+            
         applyAllImageFlips(true)
         updatePlayerBoundingBox()
 
@@ -224,6 +236,16 @@ func _physics_process(delta: float) -> void:
     save.playerPosX  = position.x
     save.playerPosY = position.y
     
+    #Landing Sound
+    if is_on_floor():
+      if landing and stats.jumpCount > 0:
+         var fall_sound_effect = FALL_SOUND_EFFECT.instance()
+         get_parent().add_child(fall_sound_effect)
+         landing = false
+    else:
+      if !landing:
+          landing = true
+    
 func _input(event: InputEvent) -> void:
     if !Globals.inGame:
         return
@@ -240,6 +262,9 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == PUNCH and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(PUNCH)
+            var punch_sound_effect = PUNCH_SOUND_EFFECT.instance()
+            get_parent().add_child(punch_sound_effect)
+            
         if (
             save.currentWeapon == Weapons.BANANA_THROW and
             save.bananaThrowAmmo > 0
@@ -247,6 +272,8 @@ func _input(event: InputEvent) -> void:
             if ($RightArm.get_animation() == BANANA_THROW and $RightArm.is_playing()):
                 return
             $RightArm.set_animation(BANANA_THROW)
+            var throw_sound_effect = THROW_SOUND_EFFECT.instance()
+            get_parent().add_child(throw_sound_effect)
         if (
             save.currentWeapon == Weapons.BFG9000 and
             save.BFG9000Ammo > 0
@@ -254,6 +281,8 @@ func _input(event: InputEvent) -> void:
             save.BFG9000Ammo -= 1
             Signals.emit_signal("player_ammo_changed", save.BFG9000Ammo)
             spawnPlayerBFG9000Projectile()
+            var bfg9000_sound_effect = BFG9000_SOUND_EFFECT.instance()
+            get_parent().add_child(bfg9000_sound_effect)
         if (
             save.currentWeapon == Weapons.BANANA_BLASTER and
             save.bananaBlasterAmmo > 0
@@ -261,7 +290,8 @@ func _input(event: InputEvent) -> void:
             save.bananaBlasterAmmo -= 1
             Signals.emit_signal("player_ammo_changed", save.bananaBlasterAmmo)
             spawnPlayerBananaBlasterProjectile()
-
+            var blaster_sound_effect = BLASTER_SOUND_EFFECT.instance()
+            get_parent().add_child(blaster_sound_effect)
 
 #region Weapon Management
 func equipNextWeapon() -> void:
@@ -604,6 +634,8 @@ func _on_RightArm_animation_finished() -> void:
         if $RightArm.get_animation() == PUNCH:
             stats.punchesThrown += 1
         if isMoving:
+            
+            
             $RightArm.set_animation(RUN)
             $LeftArm.set_animation(RUN)
             $LeftArm.set_frame(0)
