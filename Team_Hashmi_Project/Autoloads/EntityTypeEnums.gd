@@ -23,7 +23,7 @@ enum ENEMY_TYPE {
     CABBAGE    = 90,
     CORN       = 100,
     CAULIFLOWER= 110,
-    TOMATO = 120
+    NPC = 120
 }
 
 enum PICKUP_TYPE {
