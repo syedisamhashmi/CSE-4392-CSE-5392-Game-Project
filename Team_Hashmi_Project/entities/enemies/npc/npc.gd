@@ -7,7 +7,7 @@ extends "res://entities/enemies/enemy_base/enemy_base.gd"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  type = EntityTypeEnums.ENEMY_TYPE.TOMATO# Replace with function body.
+  type = EntityTypeEnums.ENEMY_TYPE.NPC# Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
