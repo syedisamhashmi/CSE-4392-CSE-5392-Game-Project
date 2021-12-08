@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tomato_projectile.png-c141e8dce38451481ca836494c60e57e.stex"
+path="res://.import/tomato_animation_flipped3.png-36a064aed63df78f07ba1bedb0843634.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/enemies/tomato_projectile.png"
-dest_files=[ "res://.import/tomato_projectile.png-c141e8dce38451481ca836494c60e57e.stex" ]
+source_file="res://assets/images/enemies/tomato_animation_flipped3.png"
+dest_files=[ "res://.import/tomato_animation_flipped3.png-36a064aed63df78f07ba1bedb0843634.stex" ]
 
 [params]
 
