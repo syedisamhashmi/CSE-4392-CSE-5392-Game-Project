@@ -22,6 +22,7 @@ var ENEMY_CAULIFLOWER     = preload("res://entities/enemies/cauliflower/cauliflo
 var ENEMY_CABBAGE         = preload("res://entities/enemies/cabbage/cabbage.tscn")
 var ENEMY_SPIKE           = preload("res://entities/enemies/spikes/spikes.tscn")
 var ENEMY_BANANA_DUDE     = preload("res://entities/enemies/banana-person/banana-person.tscn")
+var ENEMY_NPC             = preload("res://entities/enemies/npc/npc.tscn")
 # Triggers
 var DIALOG_TRIGGER        = preload("res://entities/triggers/dialog-trigger/dialog-trigger.tscn")
 var CHECKPOINT_TRIGGER    = preload("res://entities/triggers/checkpoint-trigger/checkpoint-trigger.tscn")
@@ -228,6 +229,9 @@ func readMapData():
             elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.BANANA_MAN:
                 newEnemy = ENEMY_BANANA_DUDE.instance()
                 newEnemy.type = EntityTypeEnums.ENEMY_TYPE.BANANA_MAN
+            elif enemyData.type == EntityTypeEnums.ENEMY_TYPE.NPC:
+                newEnemy = ENEMY_NPC.instance()
+                newEnemy.type = EntityTypeEnums.ENEMY_TYPE.NPC
 
 
 

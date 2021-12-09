@@ -22,7 +22,8 @@ enum ENEMY_TYPE {
     BANANA_MAN = 80,
     CABBAGE    = 90,
     CORN       = 100,
-    CAULIFLOWER= 110
+    CAULIFLOWER= 110,
+    NPC = 120
 }
 
 enum PICKUP_TYPE {
