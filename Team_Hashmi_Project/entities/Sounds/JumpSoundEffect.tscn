@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/audio/341247__sharesynth__jump01.wav" type="AudioStream" id=1]
+[ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=2]
+
+[node name="Jump" type="AudioStreamPlayer"]
+stream = ExtResource( 1 )
+volume_db = -28.272
+pitch_scale = 0.66
+autoplay = true
+script = ExtResource( 2 )
+
+[connection signal="finished" from="." to="." method="_on_Jump_finished"]

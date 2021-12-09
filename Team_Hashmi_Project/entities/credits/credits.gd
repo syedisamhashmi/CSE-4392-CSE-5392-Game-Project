@@ -136,16 +136,23 @@ var credits = [
         {"txt": "Edward Kressler", "type": "t"},
 
         {"txt":"Animation", "type": "c"},
-        {"txt":"        - Banana-man", "type": "s"},
-        {"txt":"        - Pineapple", "type": "s"},
-        {"txt":"        - Intro Scene", "type": "s"},
+        {"txt":"    Banana-man", "type": "c"},
+        {"txt":"            - Idle, Run, Slide, Punch, Throw", "type": "s"},
+        {"txt":"    Pineapple", "type": "c"},
+        {"txt":"            - Idle, Walk, Jump Attack, Chest Bump, Take Damage", "type": "s"},
+        {"txt":"    Intro Cutscene", "type": "c"},
         
         {"txt":"Art", "type": "c"},
-        {"txt":"        - Level 1 Background", "type": "s"},
+        {"txt":"        - Level 1 Background (excluding art seen through windows)", "type": "s"},
         {"txt":"        - Level 1 Tilemap", "type": "s"},
-        {"txt":"        - Banana Blaster", "type": "s"},
-        {"txt":"        - BFG9000", "type": "s"},
+
         {"txt":"Damage Effect Shader", "type": "c"},
+
+        {"txt":"Weapons", "type": "c"},
+        {"txt":"        - Banana Blaster Art and Integration", "type": "s"},
+        {"txt":"        - BFG9000 Art and Integration", "type": "s"},
+
+        {"txt":"Level 1 Design", "type": "c"},
         
     ],[
         {"txt": "", "type": "t"},
@@ -160,6 +167,14 @@ var credits = [
         {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
         {"txt":"    Corn", "type": "c"},
         {"txt":"            - Animation Integration (Engine Work)", "type": "s"},
+        {"txt":"Sound Effects", "type": "c"},
+        {"txt":"        - Jump", "type": "s"},
+        {"txt":"        - Fall or Landing", "type": "s"},
+        {"txt":"        - Banana Throw", "type": "s"},
+        {"txt":"        - Punch", "type": "s"},
+        {"txt":"        - Blaster", "type": "s"},
+        {"txt":"        - BFG9000", "type": "s"},
+        {"txt":"        - Game Over", "type": "s"},
         
     ],[
         {"txt": "", "type": "t"},
@@ -184,6 +199,27 @@ var credits = [
         {"txt": "        Creative Commons License 0", "type": "s"},
         {"txt": "253172__suntemple__retro-bonus-pickup-sfx", "type": "s"},
         {"txt": "        freesound.org/people/suntemple/sounds/253172", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "60013__qubodup__whoosh", "type": "s"},
+        {"txt": "        https://freesound.org/people/qubodup/sounds/60013/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "382735__schots__gun-shot", "type": "s"},
+        {"txt": "        https://freesound.org/people/schots/sounds/382735/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "588246__rkkaleikau__energy-weapon-laser", "type": "s"},
+        {"txt": "        https://freesound.org/people/rkkaleikau/sounds/588246/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "561646__mattruthsound__hit-punch-cloth-pillow-bedding-004", "type": "s"},
+        {"txt": "        https://freesound.org/people/MattRuthSound/sounds/561646/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "232358__richerlandtv__heavy-impacts", "type": "s"},
+        {"txt": "        https://freesound.org/people/RICHERlandTV/sounds/232358/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "341247__sharesynth__jump01", "type": "s"},
+        {"txt": "        https://freesound.org/people/sharesynth/sounds/341247/", "type": "s"},
+        {"txt": "        Creative Commons License 0", "type": "s"},
+        {"txt": "433644__dersuperanton__game-over-sound", "type": "s"},
+        {"txt": "        https://freesound.org/people/dersuperanton/sounds/433644/", "type": "s"},
         {"txt": "        Creative Commons License 0", "type": "s"},
         {"txt": "the-epic-2-by-rafael-krux.mp3", "type": "s"},
         {"txt": "         The Epic 2 by Rafael Krux", "type": "s"},
@@ -210,6 +246,7 @@ var credits = [
         {"txt": "         However, linking back is greatly appreciated.", "type": "s"},
         {"txt": "         You can use the following text:", "type": "s"},
         {"txt": "         Music: https://www.chosic.com/free-music/all/", "type": "s"},
+        
         
                 
         {"txt": "Images", "type": "c"},

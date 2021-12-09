@@ -1,6 +1,6 @@
 extends Node2D
-
-export var IS_BUILDING = true
+const GAME_OVER_FX = preload("res://entities/Sounds/GameOverSound.tscn")
+export var IS_BUILDING = false
 # Pickups
 var PICKUP_BANANA_THROW   = preload("res://entities/pickup_items/banana_item.tscn")
 var BFG9000_PICKUP        = preload("res://entities/pickup_items/BFG9000_item.tscn")
@@ -639,6 +639,9 @@ func player_death():
     Globals.save_stats()
     dead = true
     showPauseMenu(true)
+    var game_over_fx = GAME_OVER_FX.instance()
+    get_parent().add_child(game_over_fx)
+
 func showPauseMenu(isDead = false):
     if !$HUD/Dialog.visible and !$HUD/PauseMenu/ExitConfirmationDialog.visible:
         Globals.inGame = !Globals.inGame

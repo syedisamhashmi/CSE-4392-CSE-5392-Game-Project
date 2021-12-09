@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/Sounds/base_sfx.gd" type="Script" id=1]
+[ext_resource path="res://assets/audio/588246__rkkaleikau__energy-weapon-laser.wav" type="AudioStream" id=2]
+
+[node name="BFG9000" type="AudioStreamPlayer"]
+stream = ExtResource( 2 )
+volume_db = -14.136
+pitch_scale = 0.87
+autoplay = true
+script = ExtResource( 1 )
+
+[connection signal="finished" from="." to="." method="_on_BFG9000_finished"]
