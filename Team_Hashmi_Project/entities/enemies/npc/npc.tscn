@@ -38,6 +38,7 @@ animations = [ {
 
 [node name="npc" type="KinematicBody2D"]
 script = ExtResource( 1 )
+type = 120
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
