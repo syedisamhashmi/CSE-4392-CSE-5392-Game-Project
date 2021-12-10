@@ -459,6 +459,7 @@ dropsOnDifficulties = {
 
 [node name="spikes" parent="Enemies" instance=ExtResource( 5 )]
 position = Vector2( 20944.5, -389.092 )
+id = "nat4"
 
 [node name="spikes2" parent="Enemies" instance=ExtResource( 5 )]
 position = Vector2( 23263.8, -581.782 )
@@ -578,6 +579,11 @@ position = Vector2( 7982.13, -720.714 )
 id = "switch_weapons"
 dialogText = "Use the scroll wheel to switch weapons! Alternatively, use Q and E!"
 
+[node name="dialogTrigger7" parent="Triggers" instance=ExtResource( 9 )]
+position = Vector2( 21915.9, -185.422 )
+id = "nat20"
+dialogText = "Hello friend! Save us from these monsters. I have something to help you. Go ahead and take it!"
+
 [node name="nextLevelTrigger" parent="Triggers" instance=ExtResource( 10 )]
 position = Vector2( 25740, -231.889 )
 id = "next_level"
@@ -623,11 +629,6 @@ id = "ch4"
 [node name="checkpointTrigger6" parent="Triggers" instance=ExtResource( 11 )]
 position = Vector2( 12637.1, -625.75 )
 id = "ch5"
-
-[node name="dialogTrigger" parent="." instance=ExtResource( 9 )]
-position = Vector2( 21915.9, -185.422 )
-id = "nat4"
-dialogText = "Hello friend! Save us from these monsters. I have something to help you. Go ahead and take it!"
 
 [node name="Spawners" type="Node2D" parent="."]
 
