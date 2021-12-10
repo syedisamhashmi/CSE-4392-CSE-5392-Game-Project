@@ -37,6 +37,7 @@ animations = [ {
 } ]
 
 [node name="npc" type="KinematicBody2D"]
+collision_layer = 512
 script = ExtResource( 1 )
 type = 120
 
