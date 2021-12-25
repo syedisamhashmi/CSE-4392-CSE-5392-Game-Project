@@ -1,5 +1,9 @@
 # Team Hashmi Project CSE-5392/CSE-4392
 
+PAID OR NON-OPEN-SOURCE ASSETS HAVE BEEN DELETED AND SPLICED FROM GIT HISTORY. IF YOU ARE INTERESTED IN RECEIVING THEM, REACH OUT TO ME AT: is@mhashmi.com 
+___
+
+
 [![CI for OSX/Windows/Linux ](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml/badge.svg)](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-godot-pipeline.yml)
 
 [![CI for Project Proposal](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-project-proposal.yml/badge.svg)](https://github.com/syedisamhashmi/CSE-4392-CSE-5392-Game-Project/actions/workflows/build-project-proposal.yml)
