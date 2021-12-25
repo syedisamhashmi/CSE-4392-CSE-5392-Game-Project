@@ -1,6 +1,8 @@
 # Team Hashmi Project CSE-5392/CSE-4392
 
 PAID OR NON-OPEN-SOURCE ASSETS HAVE BEEN DELETED AND SPLICED FROM GIT HISTORY. IF YOU ARE INTERESTED IN RECEIVING THEM, REACH OUT TO ME AT: is@mhashmi.com 
+---
+If you want to run it, there are executables available under the releases section
 ___
 
 
